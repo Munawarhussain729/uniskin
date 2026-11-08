@@ -45,7 +45,7 @@ jobs:
           cd "$SCRATCH"
           printf '{"name":"uniskin-install-check","private":true,"type":"module"}\n' > package.json
           pnpm add "$RUNNER_TEMP"/tarballs/*.tgz
-          pnpm add -D tailwindcss@^4 @tailwindcss/cli@^4
+          pnpm add -D --ignore-scripts tailwindcss@^4 @tailwindcss/cli@^4
       - name: Compile the README quick-start
         run: |
           SCRATCH="$RUNNER_TEMP/uniskin-install-check"
