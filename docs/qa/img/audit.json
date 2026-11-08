@@ -1,0 +1,704 @@
+{
+  "contrast": [
+    {
+      "adapter": "default",
+      "cls": "ui-badge",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-badge ui-primary",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-badge ui-secondary",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-badge ui-success",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-badge ui-warning",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-badge ui-danger",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-badge ui-primary ui-outline",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-badge ui-success ui-outline",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-badge ui-primary ui-soft",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-badge ui-danger ui-soft",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-badge ui-primary ui-ghost",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-badge ui-primary ui-sm",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-badge ui-primary ui-lg",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-alert",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-alert ui-primary ui-soft",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-alert ui-success ui-soft",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-alert ui-warning ui-soft",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-alert ui-danger ui-soft",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-alert ui-danger",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-alert ui-primary ui-outline",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "default",
+      "cls": "ui-alert ui-secondary ui-ghost ui-sm",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button",
+      "tag": "BUTTON",
+      "color": "rgb(248, 250, 252)",
+      "bg": "rgb(15, 23, 42)",
+      "ratio": 17.06
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-primary",
+      "tag": "BUTTON",
+      "color": "rgb(248, 250, 252)",
+      "bg": "rgba(15, 23, 42, 0.957)",
+      "ratio": 17.06
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-secondary",
+      "tag": "BUTTON",
+      "color": "rgb(15, 23, 42)",
+      "bg": "rgb(241, 245, 249)",
+      "ratio": 16.3
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-danger",
+      "tag": "BUTTON",
+      "color": "rgb(248, 250, 252)",
+      "bg": "rgb(239, 68, 68)",
+      "ratio": 3.6
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-outline",
+      "tag": "BUTTON",
+      "color": "rgb(2, 8, 23)",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 20.01
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-primary ui-outline",
+      "tag": "BUTTON",
+      "color": "rgb(2, 8, 23)",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 20.01
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-secondary ui-outline",
+      "tag": "BUTTON",
+      "color": "rgb(2, 8, 23)",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 20.01
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-success ui-outline",
+      "tag": "BUTTON",
+      "color": "rgb(2, 8, 23)",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 20.01
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-warning ui-outline",
+      "tag": "BUTTON",
+      "color": "rgb(2, 8, 23)",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 20.01
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-danger ui-outline",
+      "tag": "BUTTON",
+      "color": "rgb(2, 8, 23)",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 20.01
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-ghost",
+      "tag": "BUTTON",
+      "color": "rgb(2, 8, 23)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 19.17
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-primary ui-ghost",
+      "tag": "BUTTON",
+      "color": "rgb(2, 8, 23)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 19.17
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-secondary ui-ghost",
+      "tag": "BUTTON",
+      "color": "rgb(2, 8, 23)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 19.17
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-success ui-ghost",
+      "tag": "BUTTON",
+      "color": "rgb(2, 8, 23)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 19.17
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-warning ui-ghost",
+      "tag": "BUTTON",
+      "color": "rgb(2, 8, 23)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 19.17
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-danger ui-ghost",
+      "tag": "BUTTON",
+      "color": "rgb(2, 8, 23)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 19.17
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-soft",
+      "tag": "BUTTON",
+      "color": "rgb(15, 23, 42)",
+      "bg": "rgb(241, 245, 249)",
+      "ratio": 16.3
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-primary ui-sm",
+      "tag": "BUTTON",
+      "color": "rgb(248, 250, 252)",
+      "bg": "rgb(15, 23, 42)",
+      "ratio": 17.06
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-primary ui-lg",
+      "tag": "BUTTON",
+      "color": "rgb(248, 250, 252)",
+      "bg": "rgb(15, 23, 42)",
+      "ratio": 17.06
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-primary ui-disabled",
+      "tag": "BUTTON",
+      "color": "rgb(248, 250, 252)",
+      "bg": "rgb(15, 23, 42)",
+      "ratio": 17.06
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-secondary ui-loading",
+      "tag": "BUTTON",
+      "color": "rgb(15, 23, 42)",
+      "bg": "rgb(241, 245, 249)",
+      "ratio": 16.3
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-outline ui-active",
+      "tag": "BUTTON",
+      "color": "rgb(2, 8, 23)",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 20.01
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-badge",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-badge ui-primary",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-badge ui-secondary",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-badge ui-success",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-badge ui-warning",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-badge ui-danger",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-badge ui-primary ui-outline",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-badge ui-success ui-outline",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-badge ui-primary ui-soft",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-badge ui-danger ui-soft",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-badge ui-primary ui-ghost",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-badge ui-primary ui-sm",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-badge ui-primary ui-lg",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-alert",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-alert ui-primary ui-soft",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-alert ui-success ui-soft",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-alert ui-warning ui-soft",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-alert ui-danger ui-soft",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-alert ui-danger",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-alert ui-primary ui-outline",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-alert ui-secondary ui-ghost ui-sm",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "shadcn",
+      "cls": "ui-button ui-ghost ui-sm",
+      "tag": "BUTTON",
+      "color": "rgb(2, 8, 23)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 19.17
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-badge",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-badge ui-primary",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-badge ui-secondary",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-badge ui-success",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-badge ui-warning",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-badge ui-danger",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-badge ui-primary ui-outline",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-badge ui-success ui-outline",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-badge ui-primary ui-soft",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-badge ui-danger ui-soft",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-badge ui-primary ui-ghost",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-badge ui-primary ui-sm",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-badge ui-primary ui-lg",
+      "tag": "SPAN",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-alert",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-alert ui-primary ui-soft",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-alert ui-success ui-soft",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-alert ui-warning ui-soft",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-alert ui-danger ui-soft",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-alert ui-danger",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-alert ui-primary ui-outline",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    },
+    {
+      "adapter": "daisyui",
+      "cls": "ui-alert ui-secondary ui-ghost ui-sm",
+      "tag": "DIV",
+      "color": "rgb(17, 17, 17)",
+      "bg": "rgb(250, 250, 250)",
+      "ratio": 18.09
+    }
+  ],
+  "sizes": {
+    "default": {
+      "mobileOverflowPx": 0
+    },
+    "shadcn": {
+      "mobileOverflowPx": 0
+    },
+    "daisyui": {
+      "mobileOverflowPx": 0
+    }
+  },
+  "notes": []
+}
