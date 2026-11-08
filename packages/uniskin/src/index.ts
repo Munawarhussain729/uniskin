@@ -1,6 +1,6 @@
 import plugin from "tailwindcss/plugin";
-import { defaultAdapter, defaultBaseExtras } from "./default-theme.js";
-import { buildRules } from "./emit.js";
+import { defaultAdapter, defaultKeyframes } from "./default-theme.js";
+import { DEFAULT_PREFIX, buildRules } from "./emit.js";
 import { mergeAdapter, resolveAdapter, warnUnsupported } from "./merge.js";
 
 export interface UniskinOptions {
@@ -16,17 +16,16 @@ export interface UniskinOptions {
 
 const uniskin: (options?: UniskinOptions) => unknown = plugin.withOptions<UniskinOptions>(
   (options = {}) => {
-    const prefix = (options.prefix ?? "ui").replace(/-+$/, "") || "ui";
+    const prefix = (options.prefix ?? DEFAULT_PREFIX).replace(/-+$/, "") || DEFAULT_PREFIX;
     const adapter = resolveAdapter(options.adapter ?? "default");
     const merged =
       adapter.name === "default" ? defaultAdapter : mergeAdapter(defaultAdapter, adapter);
     warnUnsupported(adapter);
 
     return ({ addBase, addUtilities }) => {
-      const { base, utilities } = buildRules(merged, prefix);
+      const { base, utilities } = buildRules(merged, prefix, defaultKeyframes);
       type CssInJs = Parameters<typeof addBase>[0];
       addBase(base as CssInJs);
-      addBase(defaultBaseExtras as CssInJs);
       addUtilities(utilities as Parameters<typeof addUtilities>[0]);
     };
   },
