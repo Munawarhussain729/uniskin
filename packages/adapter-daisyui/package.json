@@ -1,6 +1,6 @@
 {
   "name": "@uniskin/daisyui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "daisyUI visual style adapter for Uniskin — uses live daisyUI theme vars when present",
   "type": "module",
   "main": "./dist/index.js",
@@ -11,7 +11,9 @@
       "default": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
@@ -35,10 +37,19 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "uniskin": "workspace:*"
+  "peerDependencies": {
+    "daisyui": "^5.0.0",
+    "tailwindcss": "^4.0.0",
+    "uniskin": "workspace:^"
+  },
+  "peerDependenciesMeta": {
+    "daisyui": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "tailwindcss": "^4.3.5",
+    "typescript": "^5.9.3",
+    "uniskin": "workspace:*"
   }
 }
