@@ -57,7 +57,8 @@ Prefix is `ui-` by default; change it with `prefix: "uk"` → `uk-button`.
 
 Status: the full v1 vocabulary ships in the default skin. The shadcn and
 daisyUI adapters restyle every component; slots they don't define fall
-back to the default skin.
+back to the default skin. Per-component markup, modifiers, native-attribute
+equivalents and accessibility notes: [docs/vocabulary.md](docs/vocabulary.md).
 
 Notes:
 - `ui-modal` works on a `<div>`, a `<dialog>` (`open` / `showModal()`) or a
