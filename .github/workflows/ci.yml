@@ -78,7 +78,14 @@ jobs:
           pnpm install --no-frozen-lockfile
       - name: Show resolved Tailwind versions
         run: |
-          node -e 'for (const p of ["tailwindcss", "@tailwindcss/cli", "@tailwindcss/node", "@tailwindcss/oxide"]) console.log(p, require(`./apps/playground/node_modules/${p}/package.json`).version)'
+          node -e '
+            const { createRequire } = require("module");
+            // resolve through @tailwindcss/cli so transitive @tailwindcss/*
+            // internals (siblings in the pnpm store) are found too
+            const req = createRequire(require("path").resolve("apps/playground/node_modules/@tailwindcss/cli/package.json"));
+            for (const p of ["tailwindcss", "@tailwindcss/cli", "@tailwindcss/node", "@tailwindcss/oxide"])
+              console.log(p, require(req.resolve(`${p}/package.json`)).version);
+          '
       - run: pnpm --filter playground test
 
   install-check:
