@@ -84,6 +84,21 @@ You can still override a component's `&:`-level states or repaint a
 whole slot when tokens aren't enough (see `@uniskin/shadcn`'s outline,
 which stays neutral because shadcn/ui has no colored-outline variant).
 
+## Runtime notes
+
+Measured on the CI Node matrix (20 and 22):
+
+- **CJS adapters** load on every supported Node.
+- **ESM adapters** (`.mjs`, or `.js` in a `type: "module"` package) load
+  via `require(esm)` — unflagged since **Node 20.19 / 22.12**. On Node
+  20.0–20.18 an ESM-only adapter fails to load; the resolution error
+  reports `ERR_REQUIRE_ESM` with the module path.
+- **`.ts` adapters** load only where Node strips types — **Node 22.18+**
+  (and 23+). On Node 20 a `.ts` adapter cannot load; ship compiled `.js`
+  for broad compatibility.
+- Whatever Node cannot load is named — path and underlying cause — in
+  the `Could not resolve adapter` error.
+
 ## Publishing an adapter
 
 - Package it as anything resolvable (`@scope/name`, `uniskin-adapter-x`).

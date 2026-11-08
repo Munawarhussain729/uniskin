@@ -290,4 +290,53 @@ describe("uniskin plugin adapter base", () => {
     ).not.toThrow();
     warn.mockRestore();
   });
+
+  it("falls back to cwd for every odd-but-harmless `this` shape", () => {
+    // None of these contexts carry a usable stylesheet path — a direct JS
+    // call, a caller that binds `{}`, stdin CSS (file: null), or a Tailwind
+    // version that doesn't forward `src` (e.g. 4.0.0). Resolution must land
+    // on the process cwd rather than throw.
+    const oddContexts = [
+      {},
+      42,
+      "string",
+      null,
+      { src: null },
+      { src: [] },
+      { src: [null, 0, 0] },
+      { src: [{ file: null }, 0, 0] },
+      { src: [{}, 0, 0] },
+      { options: { adapter: "x" } },
+    ];
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    for (const context of oddContexts) {
+      const { handler } = uniskin.call(context, {
+        adapter: "./test/fixtures/css/adapters/local-adapter.cjs",
+      });
+      const bases: Record<string, unknown>[] = [];
+      handler({
+        addBase: (b) => bases.push(b),
+        addUtilities: () => {},
+      });
+      // The adapter loaded and the build produced its :root tokens.
+      const root = bases.find((b) => ":root" in b)?.[":root"] as Record<string, string>;
+      expect(root["--ui-fixture-loaded"], JSON.stringify(context)).toBe("yes");
+    }
+    warn.mockRestore();
+  });
+
+  it("throws a clear error when `this.src` has an unexpected shape", () => {
+    const malformedContexts = [
+      { src: "styles.css" },
+      { src: { file: "styles.css" } },
+      { src: [42] },
+      { src: [["nested", "array"]] },
+      { src: [{ file: 123 }] },
+    ];
+    for (const context of malformedContexts) {
+      expect(() => uniskin.call(context, {}), JSON.stringify(context)).toThrowError(
+        /\[uniskin\] Unexpected Tailwind plugin context/,
+      );
+    }
+  });
 });

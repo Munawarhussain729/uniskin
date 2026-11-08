@@ -47,10 +47,26 @@ interface PluginDetails {
 }
 
 function stylesheetDir(details: unknown): string | undefined {
-  const file = (details as PluginDetails | null | undefined)?.src?.[0]?.file;
-  return typeof file === "string" && file.length > 0
-    ? path.dirname(path.resolve(file))
-    : undefined;
+  if (details === null || typeof details !== "object") return undefined;
+  const src = (details as PluginDetails).src;
+  if (src === undefined || src === null) return undefined;
+  const malformed = () =>
+    new Error(
+      "[uniskin] Unexpected Tailwind plugin context: `this.src` is present but " +
+        "does not have the shape [source, index, length] that Tailwind v4 " +
+        "passes to @plugin options functions. If this Tailwind version changed " +
+        "its plugin internals, relative adapter paths cannot be resolved from " +
+        'the stylesheet — pass an absolute path or use `adapter: "default"`, ' +
+        "and please report the Tailwind version so uniskin can adapt.",
+    );
+  if (!Array.isArray(src)) throw malformed();
+  const loc: unknown = src[0];
+  if (loc === undefined || loc === null) return undefined;
+  if (typeof loc !== "object" || Array.isArray(loc)) throw malformed();
+  const file = (loc as { file?: unknown }).file;
+  if (file === undefined || file === null) return undefined;
+  if (typeof file !== "string") throw malformed();
+  return file.length > 0 ? path.dirname(path.resolve(file)) : undefined;
 }
 
 function uniskin(this: unknown, options: UniskinOptions = {}) {
