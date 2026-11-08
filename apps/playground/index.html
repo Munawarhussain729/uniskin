@@ -4,6 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Uniskin playground</title>
+    <script>
+      // Apply the stored/OS theme before first paint to avoid a flash.
+      (function () {
+        var stored = null;
+        try { stored = localStorage.getItem("uniskin-theme"); } catch (e) { /* ignore */ }
+        var dark = stored ? stored === "dark"
+          : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.add(dark ? "dark" : "light");
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+      })();
+    </script>
     <link id="uniskin-css" rel="stylesheet" href="/adapters/default.css" />
     <style>
       body {
@@ -16,35 +27,53 @@
       h1 { font-size: 1.4rem; margin: 0 0 0.25rem; }
       h2 { font-size: 1rem; margin: 2rem 0 0.75rem; text-transform: capitalize; }
       .row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
-      .switcher { display: flex; gap: 0.5rem; margin: 1rem 0 0.5rem; }
+      .switcher { display: flex; gap: 0.5rem; margin: 1rem 0 0.5rem; align-items: center; }
+      .switcher .switcher-label { font-size: 0.85rem; color: #666; margin-right: 0.25rem; }
+      /* Page-level chrome (not Uniskin components) — explicit colours per
+         mode so the pills stay readable regardless of the loaded skin. */
       .switcher button {
         font: inherit;
         padding: 0.35rem 0.9rem;
         border-radius: 999px;
         border: 1px solid #ccc;
         background: #fff;
+        color: #111;
         cursor: pointer;
       }
       .switcher button[aria-pressed="true"] { background: #111; color: #fff; border-color: #111; }
+      .switcher button:focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; }
+      html.dark body { background: #18181b; color: #e4e4e7; }
+      html.dark .hint { color: #a1a1aa; }
+      html.dark .switcher .switcher-label { color: #a1a1aa; }
+      html.dark .switcher button { border-color: #52525b; background: #27272a; color: #e4e4e7; }
+      html.dark .switcher button[aria-pressed="true"] { background: #e4e4e7; color: #18181b; border-color: #e4e4e7; }
+      html.dark .switcher button:focus-visible { outline-color: #93c5fd; }
+      html.dark h2.group { border-top-color: #3f3f46; }
       h2.group { font-size: 1.15rem; text-transform: none; margin: 3rem 0 0; padding-top: 1.5rem; border-top: 1px solid #ddd; }
       .fields { display: grid; gap: 0.75rem; max-width: 26rem; }
       .cols { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); align-items: start; }
       .check { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
-      .demo-modal { position: relative; height: 15rem; overflow: hidden; border-radius: 8px; border: 1px dashed #bbb; }
-      .demo-modal .ui-modal { position: absolute; }
       .hint { color: #666; font-size: 0.85rem; }
     </style>
   </head>
   <body>
+    <main>
     <h1>Uniskin playground</h1>
     <div class="hint">
       Same markup, different skin — the adapter only changes the CSS file.
-      Try <code>?adapter=shadcn</code> or <code>?adapter=daisyui</code>.
+      Try <code>?adapter=shadcn</code> or <code>?adapter=daisyui</code>;
+      <code>&amp;theme=dark</code> forces dark mode.
     </div>
     <div class="switcher" id="switcher">
+      <span class="switcher-label">skin</span>
       <button data-adapter="default">default</button>
       <button data-adapter="shadcn">shadcn</button>
       <button data-adapter="daisyui">daisyui</button>
+    </div>
+    <div class="switcher" id="theme-switcher">
+      <span class="switcher-label">theme</span>
+      <button data-set-theme="light">light</button>
+      <button data-set-theme="dark">dark</button>
     </div>
 
     <h2>intents (solid)</h2>
@@ -97,9 +126,9 @@
     <h2>states</h2>
     <div class="row">
       <button class="ui-button ui-primary" disabled>:disabled</button>
-      <button class="ui-button ui-primary ui-disabled">.ui-disabled</button>
+      <button class="ui-button ui-primary ui-disabled" aria-disabled="true">.ui-disabled</button>
       <button class="ui-button ui-primary" aria-disabled="true">aria-disabled</button>
-      <button class="ui-button ui-secondary ui-loading">.ui-loading</button>
+      <button class="ui-button ui-secondary ui-loading" aria-busy="true">.ui-loading</button>
       <button class="ui-button ui-secondary" aria-busy="true">aria-busy</button>
       <button class="ui-button ui-outline ui-active">.ui-active</button>
       <button class="ui-button ui-outline" aria-pressed="true">aria-pressed</button>
@@ -208,52 +237,53 @@
         <button class="ui-tab" role="tab" aria-selected="true">Overview</button>
         <button class="ui-tab" role="tab" aria-selected="false">Activity</button>
         <button class="ui-tab" role="tab" aria-selected="false">Settings</button>
-        <button class="ui-tab ui-disabled" role="tab" disabled>Billing</button>
+        <button class="ui-tab ui-disabled" role="tab" disabled aria-disabled="true" aria-selected="false">Billing</button>
       </div>
       <div class="ui-tabs ui-primary" role="tablist">
         <button class="ui-tab" role="tab" aria-selected="true">Primary</button>
-        <button class="ui-tab" role="tab">Activity</button>
-        <button class="ui-tab" role="tab">Settings</button>
+        <button class="ui-tab" role="tab" aria-selected="false">Activity</button>
+        <button class="ui-tab" role="tab" aria-selected="false">Settings</button>
       </div>
       <div class="ui-tabs ui-primary ui-outline" role="tablist">
         <button class="ui-tab" role="tab" aria-selected="true">Outline</button>
-        <button class="ui-tab" role="tab">Activity</button>
-        <button class="ui-tab" role="tab">Settings</button>
+        <button class="ui-tab" role="tab" aria-selected="false">Activity</button>
+        <button class="ui-tab" role="tab" aria-selected="false">Settings</button>
       </div>
       <div class="ui-tabs ui-primary ui-soft" role="tablist">
         <button class="ui-tab" role="tab" aria-selected="true">Soft</button>
-        <button class="ui-tab" role="tab">Activity</button>
-        <button class="ui-tab" role="tab">Settings</button>
+        <button class="ui-tab" role="tab" aria-selected="false">Activity</button>
+        <button class="ui-tab" role="tab" aria-selected="false">Settings</button>
       </div>
       <div class="ui-tabs ui-ghost ui-success ui-sm" role="tablist">
         <button class="ui-tab" role="tab" aria-selected="true">Ghost sm</button>
-        <button class="ui-tab" role="tab">Activity</button>
+        <button class="ui-tab" role="tab" aria-selected="false">Activity</button>
       </div>
     </div>
 
     <h2>modal</h2>
     <div class="row" style="margin-bottom:.75rem">
-      <button class="ui-button ui-primary" id="open-modal" aria-controls="demo-modal">Toggle modal</button>
+      <button class="ui-button ui-primary" id="open-modal" aria-haspopup="dialog">
+        Open modal
+      </button>
     </div>
-    <div class="demo-modal">
-      <div class="ui-modal" id="demo-modal" role="dialog" aria-modal="true" aria-label="Delete project">
-        <div class="ui-modal-box ui-danger">
-          <h3 style="margin:0 0 .5rem">Delete project?</h3>
-          <p style="margin:0 0 1.25rem">This permanently removes all deployments and cannot be undone.</p>
-          <div class="row" style="justify-content:flex-end">
-            <button class="ui-button ui-ghost" data-close>Cancel</button>
-            <button class="ui-button ui-danger" data-close>Delete</button>
-          </div>
-        </div>
+    <dialog class="ui-modal" id="demo-modal" aria-label="Delete project">
+      <div class="ui-modal-box ui-danger">
+        <h3 style="margin:0 0 .5rem">Delete project?</h3>
+        <p style="margin:0 0 1.25rem">This permanently removes all deployments and cannot be undone.</p>
+        <form method="dialog" class="row" style="justify-content:flex-end">
+          <button class="ui-button ui-ghost" value="cancel">Cancel</button>
+          <button class="ui-button ui-danger" value="delete">Delete</button>
+        </form>
       </div>
-    </div>
+    </dialog>
 
     <script>
       document.getElementById("indet").indeterminate = true;
       const modal = document.getElementById("demo-modal");
-      document.getElementById("open-modal").addEventListener("click", () => modal.classList.toggle("ui-active"));
+      document.getElementById("open-modal").addEventListener("click", () => modal.showModal());
       modal.addEventListener("click", (e) => {
-        if (e.target === modal || e.target.hasAttribute("data-close")) modal.classList.remove("ui-active");
+        // click on the overlay itself (outside ui-modal-box) closes the dialog
+        if (e.target === modal) modal.close();
       });
       document.querySelectorAll(".ui-tabs").forEach((tabs) =>
         tabs.addEventListener("click", (e) => {
@@ -273,7 +303,7 @@
         current = name;
         link.href = `/adapters/${name}.css`;
         localStorage.setItem("uniskin-adapter", name);
-        for (const btn of document.querySelectorAll("#switcher button"))
+        for (const btn of document.querySelectorAll("#switcher button[data-adapter]"))
           btn.setAttribute("aria-pressed", String(btn.dataset.adapter === name));
       }
 
@@ -282,6 +312,29 @@
         if (name) setAdapter(name);
       });
       setAdapter(current);
+
+      const mq = matchMedia("(prefers-color-scheme: dark)");
+      let theme = params.get("theme") || localStorage.getItem("uniskin-theme") || (mq.matches ? "dark" : "light");
+
+      function setTheme(name, persist = true) {
+        theme = name === "dark" ? "dark" : "light";
+        document.documentElement.classList.toggle("dark", theme === "dark");
+        document.documentElement.classList.toggle("light", theme === "light");
+        document.documentElement.dataset.theme = theme;
+        if (persist) localStorage.setItem("uniskin-theme", theme);
+        for (const btn of document.querySelectorAll("#theme-switcher button"))
+          btn.setAttribute("aria-pressed", String(btn.dataset.setTheme === theme));
+      }
+
+      document.getElementById("theme-switcher").addEventListener("click", (e) => {
+        const name = e.target?.dataset?.setTheme;
+        if (name) setTheme(name);
+      });
+      mq.addEventListener("change", (e) => {
+        if (!localStorage.getItem("uniskin-theme")) setTheme(e.matches ? "dark" : "light", false);
+      });
+      setTheme(theme, false);
     </script>
+    </main>
   </body>
 </html>
