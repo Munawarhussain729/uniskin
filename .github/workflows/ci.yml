@@ -27,6 +27,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm -r build
+      - run: pnpm --filter site build
       - run: pnpm -r test
 
   # Runs the playground suite against a Tailwind version matrix to catch

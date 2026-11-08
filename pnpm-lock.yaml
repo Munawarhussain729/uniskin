@@ -260,6 +260,34 @@ importers:
         specifier: ^3.2.4
         version: 3.2.7(@types/node@26.6.6)(jiti@2.7.0)(lightningcss@1.33.0)
 
+  apps/site:
+    dependencies:
+      '@uniskin/daisyui':
+        specifier: workspace:*
+        version: link:../../packages/adapter-daisyui
+      '@uniskin/shadcn':
+        specifier: workspace:*
+        version: link:../../packages/adapter-shadcn
+      uniskin:
+        specifier: workspace:*
+        version: link:../../packages/uniskin
+    devDependencies:
+      '@tailwindcss/cli':
+        specifier: ^4.3.5
+        version: 4.3.5
+      daisyui:
+        specifier: ^5.7.50
+        version: 5.7.50
+      tailwindcss:
+        specifier: ^4.3.5
+        version: 4.3.5
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vite:
+        specifier: ^7.2.4
+        version: 7.3.7(@types/node@26.6.6)(jiti@2.7.0)(lightningcss@1.33.0)
+
   packages/adapter-daisyui:
     dependencies:
       daisyui:

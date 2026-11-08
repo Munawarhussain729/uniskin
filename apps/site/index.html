@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uniskin — one class vocabulary, swappable Tailwind v4 skins</title>
+    <meta
+      name="description"
+      content="Uniskin is a Tailwind CSS v4 plugin: one semantic ui-* class vocabulary, swappable skins — default, shadcn, daisyUI, or your own. CSS only, zero markup changes."
+    />
+    <script>
+      /* Apply the stored/OS appearance before first paint to avoid a flash. */
+      (() => {
+        const q = new URLSearchParams(location.search);
+        const stored = localStorage.getItem("uniskin-appearance");
+        const dark = q.has("dark")
+          ? q.get("dark") === "1" || q.get("dark") === "true"
+          : stored
+            ? stored === "dark"
+            : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="site-head">
+      <div class="wrap head-row">
+        <a class="wordmark" href="#top" aria-label="Uniskin home">
+          uniskin<span class="wordmark-dot">.</span><span class="wordmark-tld">dev</span>
+        </a>
+        <nav class="head-nav" aria-label="Sections">
+          <a href="#how">How it works</a>
+          <a href="#vocabulary">Vocabulary</a>
+          <a href="#adapters">Adapters</a>
+          <a href="#options">Options</a>
+        </nav>
+        <a class="head-gh" href="https://github.com/Munawarhussain729/uniskin">GitHub</a>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- 1 · hero -->
+      <section class="hero">
+        <div class="wrap">
+          <p class="eyebrow">Tailwind CSS v4 plugin &middot; CSS only &middot; no runtime JS</p>
+          <h1 class="display">
+            Write the classes once.<span class="br" aria-hidden="true"></span>
+            <em>Swap the skin in one line.</em>
+          </h1>
+          <p class="lede">
+            Uniskin is one semantic <code>ui-*</code> vocabulary —
+            <code>ui-button ui-primary ui-outline ui-sm</code> — that any &ldquo;skin&rdquo; can
+            wear. Pick the default look, a shadcn/ui look, a daisyUI look, or write your own
+            adapter. Switching never touches your markup.
+          </p>
+
+          <p class="release-note" id="release-note" hidden>
+            Pre-release: npm 0.1.0 coming soon — the commands below are the post-release ones.
+          </p>
+
+          <div class="install" id="install">
+            <pre class="code"><code><span class="c-p">$</span> pnpm add uniskin @uniskin/shadcn @uniskin/daisyui
+
+<span class="c-c">/* app.css */</span>
+<span class="c-k">@import</span> <span class="c-s">"tailwindcss"</span>;
+<span class="c-k">@plugin</span> <span class="c-s">"uniskin"</span> { adapter: <span class="c-s">"shadcn"</span>; }
+
+<span class="c-c">&lt;!-- anywhere: HTML, JSX, Vue, PHP --&gt;</span>
+&lt;button class=<span class="c-s">"ui-button ui-primary ui-outline ui-sm"</span>&gt;Save&lt;/button&gt;</code></pre>
+            <button class="copy-btn" id="copy-install" type="button">Copy</button>
+          </div>
+
+          <div class="demo" id="demo">
+            <div class="demo-bar">
+              <div class="seg" role="radiogroup" aria-label="Skin adapter">
+                <button role="radio" aria-checked="true" data-adapter="default">default</button>
+                <button role="radio" aria-checked="false" tabindex="-1" data-adapter="shadcn">
+                  shadcn
+                </button>
+                <button role="radio" aria-checked="false" tabindex="-1" data-adapter="daisyui">
+                  daisyui
+                </button>
+              </div>
+              <button class="switch" id="appearance" role="switch" aria-checked="false">
+                <span class="switch-track"><span class="switch-thumb"></span></span>
+                <span class="switch-label">Dark</span>
+              </button>
+            </div>
+            <iframe
+              class="demo-frame"
+              data-skin-frame
+              src="frames/demo.html"
+              title="Live Uniskin demo — the same markup rendered by the selected adapter"
+            ></iframe>
+            <p class="demo-note">
+              One HTML file, three stylesheets — the control only swaps
+              <code id="skin-path">/adapters/default.css</code>. The markup is identical for every
+              adapter.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 · how it works -->
+      <section class="section" id="how">
+        <div class="wrap">
+          <h2 class="sec-head"><span class="sec-num">01</span> How it works</h2>
+          <div class="steps">
+            <div class="step">
+              <p class="step-num">01</p>
+              <h3>Write the vocabulary</h3>
+              <p>
+                <code>ui-button</code>, <code>ui-input</code>, <code>ui-card</code> &hellip; semantic
+                classes plus modifiers — intents, styles, sizes, states. They compile to compound
+                selectors, so <code>ui-outline</code> on a button and a card can mean different
+                things.
+              </p>
+            </div>
+            <div class="step">
+              <p class="step-num">02</p>
+              <h3>Pick an adapter</h3>
+              <p>
+                One <code>@plugin</code> option decides how the vocabulary looks:
+                <code>"default"</code>, <code>"shadcn"</code>, <code>"daisyui"</code>, or a path to
+                your own adapter file.
+              </p>
+            </div>
+            <div class="step">
+              <p class="step-num">03</p>
+              <h3>Ship plain CSS</h3>
+              <p>
+                Tailwind emits a stylesheet from the classes it finds — the same scan that finds
+                <code>p-4</code> finds <code>ui-button</code>. No runtime JS; re-skinning is a
+                one-line CSS change.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3 · vocabulary tour -->
+      <section class="section" id="vocabulary">
+        <div class="wrap">
+          <h2 class="sec-head"><span class="sec-num">02</span> The vocabulary</h2>
+          <p class="sec-intro">
+            Components plus four modifier kinds. Everything below renders with the adapter you
+            selected above — these are live examples, not screenshots.
+          </p>
+
+          <div class="tour">
+            <div class="tour-row">
+              <div class="tour-text">
+                <h3>Components</h3>
+                <p>
+                  Ten components — <code>ui-button</code> <code>ui-input</code>
+                  <code>ui-textarea</code> <code>ui-select</code> <code>ui-checkbox</code>
+                  <code>ui-card</code> <code>ui-badge</code> <code>ui-alert</code>
+                  <code>ui-modal</code> <code>ui-tabs</code> — plus part classes like
+                  <code>ui-card-header</code> and <code>ui-modal-box</code>.
+                </p>
+              </div>
+              <iframe
+                class="spec-frame"
+                data-skin-frame
+                data-frame="components"
+                src="frames/components.html"
+                title="Rendered examples of every Uniskin component"
+              ></iframe>
+            </div>
+
+            <div class="tour-row">
+              <div class="tour-text">
+                <h3>Intents</h3>
+                <p>
+                  <code>ui-primary</code> <code>ui-secondary</code> <code>ui-success</code>
+                  <code>ui-warning</code> <code>ui-danger</code> — unset is neutral. Intents set
+                  five <code>--ui-c*</code> variables on the element; styles read them.
+                </p>
+              </div>
+              <iframe
+                class="spec-frame"
+                data-skin-frame
+                data-frame="intents"
+                src="frames/intents.html"
+                title="The five intents across the four styles"
+              ></iframe>
+            </div>
+
+            <div class="tour-row">
+              <div class="tour-text">
+                <h3>Styles</h3>
+                <p>
+                  <code>ui-outline</code> <code>ui-ghost</code> <code>ui-soft</code>; omitted means
+                  solid. Intents and styles combine freely — <code>ui-danger ui-outline</code>
+                  needs no special rule.
+                </p>
+              </div>
+              <iframe
+                class="spec-frame"
+                data-skin-frame
+                data-frame="styles"
+                src="frames/styles.html"
+                title="The four styles on buttons and alerts"
+              ></iframe>
+            </div>
+
+            <div class="tour-row">
+              <div class="tour-text">
+                <h3>Sizes</h3>
+                <p>
+                  <code>ui-sm</code> and <code>ui-lg</code>; omitted means md. On
+                  <code>ui-card</code> the size scales the padding of all its parts.
+                </p>
+              </div>
+              <iframe
+                class="spec-frame"
+                data-skin-frame
+                data-frame="sizes"
+                src="frames/sizes.html"
+                title="Small, medium and large variants"
+              ></iframe>
+            </div>
+
+            <div class="tour-row">
+              <div class="tour-text">
+                <h3>States</h3>
+                <p>
+                  <code>ui-disabled</code> <code>ui-loading</code> <code>ui-active</code> — each is
+                  emitted together with its native equivalents (<code>:disabled</code>,
+                  <code>[aria-busy]</code>, <code>[aria-selected]</code>&hellip;), so the accessible
+                  attribute is also the styling hook.
+                </p>
+              </div>
+              <iframe
+                class="spec-frame"
+                data-skin-frame
+                data-frame="states"
+                src="frames/states.html"
+                title="State classes and their native attribute equivalents"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4 · adapters -->
+      <section class="section" id="adapters">
+        <div class="wrap">
+          <h2 class="sec-head"><span class="sec-num">03</span> Adapters</h2>
+          <p class="sec-intro">
+            An adapter is a plain object that describes how the vocabulary looks, deep-merged over
+            the built-in default. Anything it omits falls back.
+          </p>
+
+          <div class="adapter-list">
+            <article class="adapter">
+              <div class="adapter-info">
+                <h3>default</h3>
+                <p>
+                  Ships inside <code>uniskin</code> — a neutral token-driven skin that covers the
+                  whole vocabulary. No extra package.
+                </p>
+                <pre class="code code-inline"><code><span class="c-k">@plugin</span> <span class="c-s">"uniskin"</span>;</code></pre>
+              </div>
+              <iframe
+                class="swatch-frame"
+                data-skin-frame
+                data-frame="swatches"
+                data-pin
+                src="frames/swatches.html?adapter=default"
+                title="Default skin preview"
+              ></iframe>
+            </article>
+            <article class="adapter">
+              <div class="adapter-info">
+                <h3>shadcn</h3>
+                <p>
+                  The shadcn/ui look — near-black primary, neutral outline and ghost, ring focus —
+                  as pure CSS. No React, no Radix required.
+                </p>
+                <pre class="code code-inline"><code><span class="c-k">@plugin</span> <span class="c-s">"uniskin"</span> { adapter: <span class="c-s">"shadcn"</span>; }</code></pre>
+              </div>
+              <iframe
+                class="swatch-frame"
+                data-skin-frame
+                data-frame="swatches"
+                data-pin
+                src="frames/swatches.html?adapter=shadcn"
+                title="shadcn skin preview"
+              ></iframe>
+            </article>
+            <article class="adapter">
+              <div class="adapter-info">
+                <h3>daisyui</h3>
+                <p>
+                  Maps Uniskin tokens onto daisyUI&rsquo;s own <code>--color-*</code> variables, so
+                  <code>ui-*</code> classes follow the active daisyUI theme — including
+                  <code>data-theme="dark"</code> and custom themes.
+                </p>
+                <pre class="code code-inline"><code><span class="c-k">@plugin</span> <span class="c-s">"uniskin"</span> { adapter: <span class="c-s">"daisyui"</span>; }</code></pre>
+              </div>
+              <iframe
+                class="swatch-frame"
+                data-skin-frame
+                data-frame="swatches"
+                data-pin
+                src="frames/swatches.html?adapter=daisyui"
+                title="daisyUI skin preview"
+              ></iframe>
+            </article>
+          </div>
+
+          <div class="own-adapter">
+            <div class="own-text">
+              <h3>Write your own</h3>
+              <p>
+                Override only what you change — often just the tokens. Remap
+                <code>--ui-primary</code> &amp; friends and every component, style and size inherits
+                your palette; hover and soft shades derive with <code>color-mix()</code>.
+              </p>
+              <p>
+                <a href="https://github.com/Munawarhussain729/uniskin/blob/main/docs/writing-adapters.md"
+                  >Full adapter guide &rarr;</a
+                >
+              </p>
+            </div>
+            <pre class="code"><code><span class="c-k">import</span> { defineAdapter } <span class="c-k">from</span> <span class="c-s">"uniskin/adapter"</span>;
+
+<span class="c-k">export default</span> <span class="c-f">defineAdapter</span>({
+  name: <span class="c-s">"acme"</span>,
+  tokens: { <span class="c-s">"--ui-primary"</span>: <span class="c-s">"rebeccapurple"</span> },
+  components: {
+    button: { base: { <span class="c-s">"border-radius"</span>: <span class="c-s">"999px"</span> } },
+  },
+});</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 · dark mode & prefix -->
+      <section class="section" id="options">
+        <div class="wrap">
+          <h2 class="sec-head"><span class="sec-num">04</span> Dark mode &amp; prefix</h2>
+          <div class="options">
+            <div class="option">
+              <h3>Dark mode, your way</h3>
+              <p>
+                <code>dark: "media"</code> (default) follows
+                <code>prefers-color-scheme</code> and honors <code>.dark</code> /
+                <code>[data-theme="dark"]</code>; <code>"class"</code> restricts it to the
+                selectors; <code>false</code> emits no dark tokens. The toggle above drives the
+                same <code>class</code> + <code>data-theme</code> pair.
+              </p>
+              <pre class="code code-inline"><code><span class="c-k">@plugin</span> <span class="c-s">"uniskin"</span> { dark: <span class="c-s">"class"</span>; }</code></pre>
+            </div>
+            <div class="option">
+              <h3>Your prefix</h3>
+              <p>
+                Don&rsquo;t want <code>ui-*</code>? Set <code>prefix</code> and every class,
+                compound selector and keyframe follows —
+                <code>uk-button uk-primary uk-outline</code>.
+              </p>
+              <pre class="code code-inline"><code><span class="c-k">@plugin</span> <span class="c-s">"uniskin"</span> { prefix: <span class="c-s">"uk"</span>; }</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-foot">
+      <div class="wrap foot-row">
+        <div>
+          <p class="foot-tag">One vocabulary. Any skin. CSS only.</p>
+          <p class="foot-colophon">
+            Specimen sheet — set in ui-serif display, ui-monospace labels, system body.
+          </p>
+        </div>
+        <nav class="foot-nav" aria-label="Footer">
+          <a href="https://github.com/Munawarhussain729/uniskin">GitHub</a>
+          <a href="https://github.com/Munawarhussain729/uniskin/blob/main/docs/vocabulary.md"
+            >Vocabulary reference</a
+          >
+          <a href="https://github.com/Munawarhussain729/uniskin/blob/main/LICENSE">MIT license</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
