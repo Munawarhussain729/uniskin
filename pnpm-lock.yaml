@@ -262,23 +262,31 @@ importers:
 
   packages/adapter-daisyui:
     dependencies:
-      uniskin:
-        specifier: workspace:*
-        version: link:../uniskin
+      daisyui:
+        specifier: ^5.0.0
+        version: 5.7.50
     devDependencies:
+      tailwindcss:
+        specifier: ^4.3.5
+        version: 4.3.5
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+      uniskin:
+        specifier: workspace:*
+        version: link:../uniskin
 
   packages/adapter-shadcn:
-    dependencies:
-      uniskin:
-        specifier: workspace:*
-        version: link:../uniskin
     devDependencies:
+      tailwindcss:
+        specifier: ^4.3.5
+        version: 4.3.5
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+      uniskin:
+        specifier: workspace:*
+        version: link:../uniskin
 
   packages/uniskin:
     devDependencies:
