@@ -1,4 +1,4 @@
-import plugin from "tailwindcss/plugin";
+import path from "node:path";
 import { defaultAdapter, defaultBaseExtras } from "./default-theme.js";
 import { buildRules } from "./emit.js";
 import { mergeAdapter, resolveAdapter, warnUnsupported } from "./merge.js";
@@ -8,32 +8,68 @@ export interface UniskinOptions {
    * Which adapter to use: `"default"`, a package shorthand (`"shadcn"`,
    * `"daisyui"` → `@uniskin/shadcn`, `@uniskin/daisyui`), any package
    * name, or a path to a local adapter file (`"./my-adapter.js"`).
+   * Paths and package names resolve relative to the stylesheet that
+   * declared `@plugin` — falling back to the process cwd when uniskin is
+   * invoked directly from JavaScript.
    */
   adapter?: string;
   /** Class prefix. Defaults to `"ui"` → classes like `ui-button`. */
   prefix?: string;
 }
 
-const uniskin: (options?: UniskinOptions) => unknown = plugin.withOptions<UniskinOptions>(
-  (options = {}) => {
-    const prefix = (options.prefix ?? "ui").replace(/-+$/, "") || "ui";
-    const adapter = resolveAdapter(options.adapter ?? "default");
-    const merged =
-      adapter.name === "default" ? defaultAdapter : mergeAdapter(defaultAdapter, adapter);
-    warnUnsupported(adapter);
+type CssInJs = Record<string, unknown>;
 
-    return ({ addBase, addUtilities }) => {
+/** The slice of the Tailwind v4 PluginAPI uniskin uses. */
+interface PluginApi {
+  addBase(base: CssInJs): void;
+  addUtilities(utilities: CssInJs): void;
+}
+
+/**
+ * Tailwind v4 invokes a `@plugin` options function as
+ * `details.plugin(details.options)`, so `this` is Tailwind's plugin-details
+ * record. Its `src` is the `@plugin` at-rule's source location —
+ * `src[0].file` is the stylesheet that declared the plugin, which makes it
+ * the correct base for resolving relative adapter paths and package names
+ * (monorepo subfolders included). Direct JS callers and `@plugin` without
+ * options invoke this function with `this === undefined`, where resolution
+ * falls back to the process cwd.
+ */
+interface PluginDetails {
+  src?: [{ file?: string | null } | undefined, number, number];
+}
+
+function stylesheetDir(details: unknown): string | undefined {
+  const file = (details as PluginDetails | null | undefined)?.src?.[0]?.file;
+  return typeof file === "string" && file.length > 0
+    ? path.dirname(path.resolve(file))
+    : undefined;
+}
+
+function uniskin(this: unknown, options: UniskinOptions = {}) {
+  const prefix = (options.prefix ?? "ui").replace(/-+$/, "") || "ui";
+  const adapter = resolveAdapter(options.adapter ?? "default", {
+    base: stylesheetDir(this),
+  });
+  const merged =
+    adapter.name === "default" ? defaultAdapter : mergeAdapter(defaultAdapter, adapter);
+  warnUnsupported(adapter);
+
+  return {
+    handler({ addBase, addUtilities }: PluginApi) {
       const { base, utilities } = buildRules(merged, prefix);
-      type CssInJs = Parameters<typeof addBase>[0];
       addBase(base as CssInJs);
       addBase(defaultBaseExtras as CssInJs);
-      addUtilities(utilities as Parameters<typeof addUtilities>[0]);
-    };
-  },
-  () => ({}),
-);
+      addUtilities(utilities as CssInJs);
+    },
+    config: {},
+  };
+}
 
-export default uniskin;
+// Same marker `tailwindcss/plugin`'s `withOptions` sets; the function is
+// built by hand so adapter resolution can see the caller's `this` (which
+// `withOptions` does not forward).
+export default Object.assign(uniskin, { __isOptionsFunction: true as const });
 export { defineAdapter } from "./types.js";
 export type {
   Adapter,
@@ -46,5 +82,6 @@ export type {
   StyleModifier,
 } from "./types.js";
 export { mergeAdapter, resolveAdapter } from "./merge.js";
+export type { ResolveAdapterOptions } from "./merge.js";
 export { buildRules } from "./emit.js";
 export { defaultAdapter } from "./default-theme.js";
