@@ -15,11 +15,30 @@ const STATE_NATIVES: Record<StateModifier, string[]> = {
   active: ['[aria-selected="true"]', '[aria-pressed="true"]'],
 };
 
+/** Default class/keyframes prefix — themes reference keyframes as `ui-<name>`. */
+export const DEFAULT_PREFIX = "ui";
+
 export interface EmittedRules {
   /** Goes to addBase — :root tokens, keyframes. Always emitted. */
   base: Record<string, unknown>;
   /** Goes to addUtilities — emitted on demand per component. */
   utilities: Record<string, CssRuleObject>;
+}
+
+/** Re-point `ui-<keyframe>` references in declaration values at `replacement`. */
+function rePrefixKeyframes(
+  rule: CssRuleObject,
+  ref: RegExp,
+  replacement: string,
+): CssRuleObject {
+  const out: CssRuleObject = {};
+  for (const [key, value] of Object.entries(rule)) {
+    out[key] =
+      typeof value === "string"
+        ? value.replace(ref, replacement)
+        : value && rePrefixKeyframes(value, ref, replacement);
+  }
+  return out;
 }
 
 /**
@@ -28,14 +47,25 @@ export interface EmittedRules {
  * Every modifier is emitted as a compound selector
  * (`.ui-button.ui-primary`) so the same modifier can mean different
  * things on different components.
+ *
+ * `keyframes` (the default theme's spin/pulse) are emitted as
+ * `@keyframes <prefix>-<name>`. `animation:` values in the theme
+ * reference them as `ui-<name>` and are re-prefixed to match.
  */
-export function buildRules(adapter: Adapter, prefix: string): EmittedRules {
+export function buildRules(
+  adapter: Adapter,
+  prefix: string,
+  keyframes?: Record<string, CssRuleObject>,
+): EmittedRules {
   const p = `${prefix}-`;
   const utilities: Record<string, CssRuleObject> = {};
   const base: Record<string, unknown> = {};
 
   if (adapter.tokens && Object.keys(adapter.tokens).length > 0) {
     base[adapter.rootSelector ?? ":root"] = adapter.tokens;
+  }
+  for (const [name, frames] of Object.entries(keyframes ?? {})) {
+    base[`@keyframes ${p}${name}`] = frames;
   }
 
   for (const [name, def] of Object.entries(adapter.components ?? {})) {
@@ -61,6 +91,16 @@ export function buildRules(adapter: Adapter, prefix: string): EmittedRules {
       if (!rules) continue;
       const selectors = [`${cls}.${p}${state}`, ...STATE_NATIVES[state].map((n) => `${cls}${n}`)];
       utilities[selectors.join(", ")] = rules;
+    }
+  }
+
+  const kfNames = Object.keys(keyframes ?? {});
+  if (kfNames.length > 0 && prefix !== DEFAULT_PREFIX) {
+    // The lookbehind keeps custom properties (`--ui-*`) and longer
+    // identifiers (`foo-ui-spin`) untouched.
+    const ref = new RegExp(`(?<![-\\w])${DEFAULT_PREFIX}-(${kfNames.join("|")})\\b`, "g");
+    for (const sel of Object.keys(utilities)) {
+      utilities[sel] = rePrefixKeyframes(utilities[sel], ref, `${p}$1`);
     }
   }
 
