@@ -712,12 +712,12 @@ export const defaultAdapter = defineAdapter({
   },
 });
 
-/** Base-layer extras that can't live inside a component rule. */
-export const defaultBaseExtras: Record<string, unknown> = {
-  "@keyframes ui-spin": {
-    to: { transform: "rotate(360deg)" },
-  },
-  "@keyframes ui-pulse": {
-    "50%": { opacity: "0.55" },
-  },
+/**
+ * Base-layer keyframes that can't live inside a component rule.
+ * Emitted as `@keyframes <prefix>-<name>`; `animation:` values in this
+ * theme reference them as `ui-<name>` and are re-prefixed in buildRules.
+ */
+export const defaultKeyframes: Record<string, CssRuleObject> = {
+  spin: { to: { transform: "rotate(360deg)" } },
+  pulse: { "50%": { opacity: "0.55" } },
 };
