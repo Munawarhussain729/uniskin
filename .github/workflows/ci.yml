@@ -27,7 +27,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm -r build
-      - run: pnpm --filter site build
       - run: pnpm -r test
 
   # Runs the playground suite against a Tailwind version matrix to catch
@@ -81,11 +80,16 @@ jobs:
         run: |
           node -e '
             const { createRequire } = require("module");
+            const { join, dirname, resolve } = require("path");
+            const { existsSync, realpathSync } = require("fs");
             // resolve through @tailwindcss/cli so transitive @tailwindcss/*
             // internals (siblings in the pnpm store) are found too
-            const req = createRequire(require("path").resolve("apps/playground/node_modules/@tailwindcss/cli/package.json"));
-            for (const p of ["tailwindcss", "@tailwindcss/cli", "@tailwindcss/node", "@tailwindcss/oxide"])
-              console.log(p, require(req.resolve(`${p}/package.json`)).version);
+            const req = createRequire(realpathSync(resolve("apps/playground/node_modules/@tailwindcss/cli/package.json")));
+            const ver = (p) => { let d = dirname(req.resolve(p)); while (!existsSync(join(d, "package.json"))) d = dirname(d); return require(join(d, "package.json")).version; };
+            console.log("tailwindcss", ver("tailwindcss"));
+            console.log("@tailwindcss/cli", require(resolve("apps/playground/node_modules/@tailwindcss/cli/package.json")).version);
+            console.log("@tailwindcss/node", ver("@tailwindcss/node"));
+            console.log("@tailwindcss/oxide", ver("@tailwindcss/oxide"));
           '
       - run: pnpm --filter playground test
 
