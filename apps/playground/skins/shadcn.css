@@ -1,0 +1,5 @@
+@import "tailwindcss" source(none);
+@plugin "uniskin" { adapter: "shadcn"; }
+
+@source "../index.html";
+@source "../fixtures";
