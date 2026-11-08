@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
@@ -17,6 +17,22 @@ export function compileAdapter(name: string): string {
     stdio: "pipe",
   });
   return readFileSync(out, "utf8");
+}
+
+/**
+ * Compile one of the playground adapter stylesheets and return the CLI's
+ * stderr — this is where the plugin's unsupported-slot warnings land.
+ */
+export function compileAdapterStderr(name: string, env?: NodeJS.ProcessEnv): string {
+  const out = join(playgroundRoot, "tests", "__out__", `${name}.css`);
+  mkdirSync(dirname(out), { recursive: true });
+  const res = spawnSync(
+    tailwind,
+    ["-i", join(playgroundRoot, "skins", `${name}.css`), "-o", out],
+    { cwd: playgroundRoot, env: { ...process.env, ...env }, encoding: "utf8" },
+  );
+  if (res.status !== 0) throw new Error(`tailwindcss failed:\n${res.stderr}`);
+  return res.stderr;
 }
 
 /**
