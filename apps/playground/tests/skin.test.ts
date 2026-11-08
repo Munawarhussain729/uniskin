@@ -272,7 +272,7 @@ describe("custom prefix", () => {
 });
 
 describe("dark mode", () => {
-  const darkBlock = (css: string) => css.match(/\.dark,\s*\[data-theme="dark"\]\s*\{[^}]*\}/)?.[0] ?? "";
+  const darkBlock = (css: string) => css.match(/\.dark, \[data-theme="dark"\] \{[\s\S]*?\n {2}\}/)?.[0] ?? "";
 
   it("default skin emits dark tokens for .dark, [data-theme=dark] and prefers-color-scheme", () => {
     const css = compileAdapter("default");
