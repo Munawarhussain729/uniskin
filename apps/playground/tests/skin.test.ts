@@ -318,7 +318,8 @@ describe("contrast and dark-theme legibility", () => {
     it(`${adapter}: ghost/outline text uses --ui-c-text so neutral never vanishes`, () => {
       const css = compileAdapter(adapter);
       expect(css).toContain("--ui-c-text: var(--ui-surface-fg)");
-      expect(css).toContain("--ui-c-text: var(--ui-primary)");
+      expect(css).toContain("--ui-c-text: var(--ui-primary-text, var(--ui-primary))");
+      expect(css).toMatch(/--ui-c-text: var\(--ui-warning-text, color-mix\(in oklab, var\(--ui-warning\) 55%, var\(--ui-surface-fg\)\)\)/);
     });
   }
 
@@ -326,5 +327,38 @@ describe("contrast and dark-theme legibility", () => {
     const css = compileAdapter("shadcn");
     expect(css).toContain("--ui-secondary-soft: hsl(var(--secondary))");
     expect(css).toContain("--ui-secondary-soft-fg: hsl(var(--secondary-foreground))");
+  });
+});
+
+describe("accessibility fixes", () => {
+  for (const adapter of ADAPTERS) {
+    it(`${adapter}: every animation has a prefers-reduced-motion override`, () => {
+      const css = skin(adapter);
+      expect(css).toContain("@media (prefers-reduced-motion: reduce)");
+      // the spinner and the pulse each stop
+      expect(css).toMatch(/ui-spin 0\.6s linear infinite[\s\S]{0,600}prefers-reduced-motion: reduce[\s\S]{0,80}animation: none/);
+    });
+  }
+
+  it("default: text fields focus with a solid 2px ring-colour outline (not a faint shadow)", () => {
+    const css = skin("default");
+    expect(css).toMatch(/&:focus-visible \{\s*outline: 2px solid var\(--ui-ring\);\s*outline-offset: 1px;/);
+  });
+
+  it("daisyui pins readable text colours for its bright intents", () => {
+    const css = skin("daisyui");
+    for (const i of ["secondary", "success", "danger"])
+      expect(css).toContain(`--ui-${i}-text: color-mix(`);
+  });
+
+  it("shadcn pressed outline buttons keep their focus ring", () => {
+    const css = skin("shadcn");
+    expect(css).toMatch(/\.ui-button\.ui-active \{[\s\S]{0,200}&:focus-visible \{\s*box-shadow: inset 0 2px 4px[^;]*0 0 0 4px/);
+  });
+
+  it("the default light palette's success and danger fills are dark enough for light text", () => {
+    const css = skin("default");
+    expect(css).toContain("--ui-success: oklch(0.5 0.14 163)");
+    expect(css).toContain("--ui-danger: oklch(0.56 0.2 27)");
   });
 });

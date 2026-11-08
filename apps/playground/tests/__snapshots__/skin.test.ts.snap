@@ -40,7 +40,7 @@ exports[`compiled skins > daisyui > .ui-button base rule matches snapshot 1`] = 
       }
     }
     &:focus-visible {
-      outline: 2px solid var(--ui-c);
+      outline: 2px solid var(--ui-c-text);
       outline-offset: 2px;
     }
     height: calc(var(--size-field, 0.25rem) * 10);

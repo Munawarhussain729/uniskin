@@ -18,51 +18,10 @@ const DISABLED_LOOKING = '.ui-disabled, :disabled, [aria-disabled="true"]';
  * test fails, and both must be updated. Keys: adapter/mode.
  */
 const KNOWN_RING_DEFECTS: Record<string, string[]> = {
-  "default/light": [
-    'input.ui-input ""',
-    'input.ui-input.ui-primary ""',
-    'input.ui-input.ui-danger ""',
-    'input.ui-input.ui-success ""',
-    'input.ui-input.ui-soft ""',
-    'input.ui-input.ui-ghost ""',
-    'input.ui-input.ui-sm ""',
-    'input.ui-input.ui-lg ""',
-    'textarea.ui-textarea ""',
-    'textarea.ui-textarea.ui-warning.ui-soft "Soft warning"',
-    'select.ui-select "FreeProTeam"',
-    'select.ui-select.ui-primary.ui-outline "Outline primary"',
-    'select.ui-select.ui-sm "Small"',
-  ],
-  "shadcn/light": [
-    'button.ui-button.ui-outline.ui-active ".ui-active"',
-    'button.ui-button.ui-outline "aria-pressed"',
-  ],
-  "daisyui/light": [
-    'button.ui-button.ui-success "success"',
-    'button.ui-button.ui-warning "warning"',
-    'button.ui-button.ui-danger "danger"',
-    'button.ui-button.ui-success.ui-outline "success"',
-    'button.ui-button.ui-warning.ui-outline "warning"',
-    'button.ui-button.ui-danger.ui-outline "danger"',
-    'button.ui-button.ui-success.ui-ghost "success"',
-    'button.ui-button.ui-warning.ui-ghost "warning"',
-    'button.ui-button.ui-danger.ui-ghost "danger"',
-    'button.ui-button.ui-success.ui-soft "success"',
-    'button.ui-button.ui-warning.ui-soft "warning"',
-    'button.ui-button.ui-danger.ui-soft "danger"',
-    'input.ui-input.ui-danger ""',
-    'input.ui-input.ui-success ""',
-    'textarea.ui-textarea.ui-warning.ui-soft "Soft warning"',
-  ],
-  "daisyui/dark": [
-    'button.ui-button "default"',
-    'button.ui-button.ui-outline "default"',
-    'button.ui-button.ui-ghost "default"',
-    'button.ui-button.ui-soft "default"',
-    'button.ui-button.ui-outline.ui-active ".ui-active"',
-    'button.ui-button.ui-outline "aria-pressed"',
-    'button.ui-button.ui-ghost.ui-sm "Cancel"',
-  ],
+  "default/light": [],
+  "shadcn/light": [],
+  "daisyui/light": [],
+  "daisyui/dark": [],
 };
 KNOWN_RING_DEFECTS["default/dark"] = KNOWN_RING_DEFECTS["default/light"];
 KNOWN_RING_DEFECTS["shadcn/dark"] = KNOWN_RING_DEFECTS["shadcn/light"];

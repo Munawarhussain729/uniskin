@@ -7,7 +7,7 @@ const field = {
     "var(--ui-field-c, color-mix(in oklab, var(--color-base-content, #1f2937) 20%, transparent))",
   "&:hover": {},
   "&:focus-visible": {
-    outline: "2px solid var(--ui-c)",
+    outline: "2px solid var(--ui-c-text)",
     "outline-offset": "2px",
     "box-shadow": "none",
     "border-color":
@@ -63,6 +63,13 @@ export default defineAdapter({
     "--ui-warning-fg": "var(--color-warning-content, oklch(41% 0.112 45.904))",
     "--ui-danger": "var(--color-error, oklch(71% 0.194 13.428))",
     "--ui-danger-fg": "var(--color-error-content, oklch(27% 0.105 12.094))",
+
+    /* daisyUI's bright intent colours are too light to read as text or focus
+       rings on a light page: use a darkened mix (against base-content) wherever
+       the intent colour is the foreground. Fills keep daisyUI's exact colours. */
+    "--ui-secondary-text": "color-mix(in oklab, var(--ui-secondary) 80%, var(--ui-surface-fg))",
+    "--ui-success-text": "color-mix(in oklab, var(--ui-success) 55%, var(--ui-surface-fg))",
+    "--ui-danger-text": "color-mix(in oklab, var(--ui-danger) 70%, var(--ui-surface-fg))",
 
     "--ui-neutral": "var(--color-neutral, oklch(14% 0.005 285.823))",
     "--ui-neutral-fg": "var(--color-neutral-content, oklch(92% 0.004 286.32))",
@@ -149,7 +156,7 @@ export default defineAdapter({
           transform: "scale(0.97)",
         },
         "&:focus-visible": {
-          outline: "2px solid var(--ui-c)",
+          outline: "2px solid var(--ui-c-text)",
           "outline-offset": "2px",
         },
       },

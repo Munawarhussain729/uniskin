@@ -5,19 +5,12 @@ const running = (name: string, duration: string): boolean =>
   name !== "none" && duration.split(",").some((d) => parseFloat(d) > 0);
 
 /**
- * Known defect: the loading spinner (`::after`, `ui-spin`) keeps animating
- * under `prefers-reduced-motion: reduce` in all three skins — the only
- * reduced-motion rule emitted is `.ui-modal { transition: none }`.
- * See docs/qa/a11y-2026-11.md. The expected-failure list encodes exactly
- * which animations are broken; when a skin is fixed this test fails and both
- * the list and the report must be updated.
+ * The loading spinner (`::after`, `ui-spin`) and every `ui-pulse` animation
+ * must stop under `prefers-reduced-motion: reduce` in all three skins
+ * (fixed: `buildRules` adds a reduced-motion override wherever a rule
+ * declares an `animation`). The list stays so a regression fails loudly.
  */
 const EXPECTED_BROKEN: string[] = [];
-for (const a of ADAPTERS) {
-  for (const el of ["button.ui-loading", "button[aria-busy='true']"]) {
-    EXPECTED_BROKEN.push(`${a} | ${el} | ::after`);
-  }
-}
 
 test("loading spin/pulse under prefers-reduced-motion: reduce", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
