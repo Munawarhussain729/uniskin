@@ -270,3 +270,61 @@ describe("custom prefix", () => {
     expect(css).not.toMatch(/\.ui-/);
   });
 });
+
+describe("dark mode", () => {
+  const darkBlock = (css: string) => css.match(/\.dark, \[data-theme="dark"\] \{[\s\S]*?\n {2}\}/)?.[0] ?? "";
+
+  it("default skin emits dark tokens for .dark, [data-theme=dark] and prefers-color-scheme", () => {
+    const css = compileAdapter("default");
+    expect(darkBlock(css)).toContain("--ui-surface:");
+    expect(css).toContain("@media (prefers-color-scheme: dark)");
+    expect(css).toMatch(/:root:not\(\.light\):not\(\[data-theme="light"\]\)/);
+  });
+
+  it("shadcn dark scope re-declares the --ui-* aliases and the shadcn palette", () => {
+    const block = darkBlock(compileAdapter("shadcn"));
+    expect(block).toContain("--card: 222.2 84% 4.9%");
+    expect(block).toContain("--ui-surface: hsl(var(--card))");
+    expect(block).toContain("--ui-secondary-soft:");
+  });
+
+  it("daisyui does not override its theme: no dark tokens, aliases follow [data-theme]", () => {
+    const css = compileAdapter("daisyui");
+    expect(darkBlock(css)).toBe("");
+    // (daisyUI itself emits prefers-color-scheme rules; ours use :root:not(.light))
+    expect(css).not.toMatch(/:root:not\(\.light\)/);
+    expect(css).toMatch(/:root,\s*\[data-theme\]\s*\{/);
+  });
+
+  it('dark: "class" drops the media query, dark: false drops everything', () => {
+    const cls = compileWithFiles({ "a.html": '<b class="ui-button"></b>' }, 'dark: "class";');
+    expect(cls).toContain('[data-theme="dark"]');
+    expect(cls).not.toContain("prefers-color-scheme");
+    const off = compileWithFiles({ "a.html": '<b class="ui-button"></b>' }, "dark: false;");
+    expect(off).not.toContain('[data-theme="dark"]');
+    expect(off).not.toContain("prefers-color-scheme");
+  });
+});
+
+describe("contrast and dark-theme legibility", () => {
+  for (const adapter of ["default", "shadcn", "daisyui"]) {
+    it(`${adapter}: soft tints derive from the surface, not hard-coded white/black`, () => {
+      const css = compileAdapter(adapter);
+      expect(css).toMatch(/--ui-c-soft:\s*var\(--ui-\w+-soft, color-mix\([^;]*var\(--ui-surface\)\)\)/);
+      expect(css).toMatch(/--ui-c-soft-fg:\s*var\(--ui-\w+-soft-fg, color-mix\([^;]*var\(--ui-surface-fg\)\)\)/);
+      expect(css).not.toMatch(/--ui-c-soft:[^;]*\bwhite\b/);
+    });
+
+    it(`${adapter}: ghost/outline text uses --ui-c-text so neutral never vanishes`, () => {
+      const css = compileAdapter(adapter);
+      expect(css).toContain("--ui-c-text: var(--ui-surface-fg)");
+      expect(css).toContain("--ui-c-text: var(--ui-primary)");
+    });
+  }
+
+  it("shadcn pins secondary soft to its own secondary / secondary-foreground", () => {
+    const css = compileAdapter("shadcn");
+    expect(css).toContain("--ui-secondary-soft: hsl(var(--secondary))");
+    expect(css).toContain("--ui-secondary-soft-fg: hsl(var(--secondary-foreground))");
+  });
+});

@@ -59,3 +59,17 @@ darkening, `:focus-visible` rings, `disabled`/`aria-disabled`,
 | modal | ✅ | ✅ | ✅ | all three |
 | hover / focus-visible | ✅ | ✅ | ✅ | light |
 | 375 px layout | ✅ | ✅ | ✅ | — |
+
+## Fix status (branch `fix/dark-mode-contrast`)
+
+| Defect | Status |
+|---|---|
+| daisyui dark: `ui-soft` button unreadable (critical) | Fixed: soft tints mix with the surface, neutral text uses `--ui-c-text` |
+| daisyui dark: `ui-ghost` neutral invisible (major) | Fixed: `--ui-c-text` |
+| shadcn `ui-secondary ui-soft` < AA (major) | Fixed: pinned to shadcn's secondary / secondary-foreground |
+| default + shadcn have no dark mode (major) | Fixed: `darkTokens` + `dark` option |
+| daisyui soft badge/alert stay light in dark (moderate) | Fixed: surface-derived tints |
+| daisyui dark tabs/ghost input on light page (minor/info) | Not a defect: artifact of the light playground page |
+| shadcn `ui-danger` 3.6:1 (minor) | Unchanged: shadcn's own `--destructive` value |
+
+Re-measured with Playwright (computed colours): in dark mode no button is below 3:1 in any skin, and no soft button/badge/alert is below 4.5:1 in default or shadcn. Remaining, pre-existing and not in the original report: daisyUI light `ui-soft`/`ui-outline` for success/warning (about 1.7–2:1) mirrors upstream `btn-soft`/`btn-outline` (coloured text on a pale surface).

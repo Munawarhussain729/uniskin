@@ -25,6 +25,33 @@ const fieldHeights = {
 /* shadcn alert: card-like by default; intents keep their own border color */
 const alertIntent = { "border-color": "var(--ui-c)" };
 
+/* Map Uniskin tokens onto the shadcn variables. These are var() aliases, so they
+   are repeated inside the dark scope to re-resolve against the dark palette. */
+const uiMap = {
+  "--ui-primary": "hsl(var(--primary))",
+  "--ui-primary-fg": "hsl(var(--primary-foreground))",
+  "--ui-secondary": "hsl(var(--secondary))",
+  "--ui-secondary-fg": "hsl(var(--secondary-foreground))",
+  "--ui-danger": "hsl(var(--destructive))",
+  "--ui-danger-fg": "hsl(var(--destructive-foreground))",
+  /* shadcn has no success/warning tokens — those stay on Uniskin's
+     defaults (documented fallback behaviour) */
+  "--ui-neutral": "hsl(var(--primary))",
+  "--ui-neutral-fg": "hsl(var(--primary-foreground))",
+  "--ui-neutral-soft": "hsl(var(--accent))",
+  "--ui-neutral-soft-fg": "hsl(var(--accent-foreground))",
+  "--ui-surface": "hsl(var(--card))",
+  "--ui-surface-fg": "hsl(var(--card-foreground))",
+  "--ui-surface-muted": "hsl(var(--muted))",
+  "--ui-border": "hsl(var(--border))",
+  "--ui-ring": "hsl(var(--ring))",
+  "--ui-radius": "var(--radius)",
+  /* shadcn's secondary is already a soft tint: use it (and its foreground)
+     as the soft look so ui-secondary ui-soft stays above WCAG AA */
+  "--ui-secondary-soft": "hsl(var(--secondary))",
+  "--ui-secondary-soft-fg": "hsl(var(--secondary-foreground))",
+};
+
 /**
  * shadcn/ui visual style for Uniskin — pure CSS, no React, no Radix.
  *
@@ -35,6 +62,36 @@ const alertIntent = { "border-color": "var(--ui-c)" };
  */
 export default defineAdapter({
   name: "shadcn",
+  darkTokens: {
+    /* shadcn/ui canonical dark theme (HSL channels) */
+    "--background": "222.2 84% 4.9%",
+    "--foreground": "210 40% 98%",
+    "--card": "222.2 84% 4.9%",
+    "--card-foreground": "210 40% 98%",
+    "--primary": "210 40% 98%",
+    "--primary-foreground": "222.2 47.4% 11.2%",
+    "--secondary": "217.2 32.6% 17.5%",
+    "--secondary-foreground": "210 40% 98%",
+    "--muted": "217.2 32.6% 17.5%",
+    "--muted-foreground": "215 20.2% 65.1%",
+    "--accent": "217.2 32.6% 17.5%",
+    "--accent-foreground": "210 40% 98%",
+    "--destructive": "0 62.8% 30.6%",
+    "--destructive-foreground": "210 40% 98%",
+    "--border": "217.2 32.6% 17.5%",
+    "--input": "217.2 32.6% 17.5%",
+    "--ring": "212.7 26.8% 83.9%",
+    /* success/warning aren't shadcn tokens — dark values of Uniskin's defaults */
+    "--ui-success": "oklch(0.72 0.15 163)",
+    "--ui-success-fg": "oklch(0.15 0.03 163)",
+    "--ui-warning": "oklch(0.82 0.15 85)",
+    "--ui-warning-fg": "oklch(0.2 0.04 90)",
+    /* shadcn's dark destructive is deliberately deep (30% lightness) — too dark
+       to read as soft text, so pin a lighter red pair for ui-danger ui-soft */
+    "--ui-danger-soft": "color-mix(in oklab, hsl(0 72% 51%) 22%, hsl(var(--card)))",
+    "--ui-danger-soft-fg": "hsl(0 90% 78%)",
+    ...uiMap,
+  },
   tokens: {
     /* shadcn/ui canonical variables (light theme, HSL channels) */
     "--background": "0 0% 100%",
@@ -56,25 +113,7 @@ export default defineAdapter({
     "--ring": "222.2 84% 4.9%",
     "--radius": "0.5rem",
 
-    /* map Uniskin tokens onto the shadcn variables */
-    "--ui-primary": "hsl(var(--primary))",
-    "--ui-primary-fg": "hsl(var(--primary-foreground))",
-    "--ui-secondary": "hsl(var(--secondary))",
-    "--ui-secondary-fg": "hsl(var(--secondary-foreground))",
-    "--ui-danger": "hsl(var(--destructive))",
-    "--ui-danger-fg": "hsl(var(--destructive-foreground))",
-    /* shadcn has no success/warning tokens — those stay on Uniskin's
-       defaults (documented fallback behaviour) */
-    "--ui-neutral": "hsl(var(--primary))",
-    "--ui-neutral-fg": "hsl(var(--primary-foreground))",
-    "--ui-neutral-soft": "hsl(var(--accent))",
-    "--ui-neutral-soft-fg": "hsl(var(--accent-foreground))",
-    "--ui-surface": "hsl(var(--card))",
-    "--ui-surface-fg": "hsl(var(--card-foreground))",
-    "--ui-surface-muted": "hsl(var(--muted))",
-    "--ui-border": "hsl(var(--border))",
-    "--ui-ring": "hsl(var(--ring))",
-    "--ui-radius": "var(--radius)",
+    ...uiMap,
   },
   components: {
     input: {

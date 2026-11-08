@@ -99,6 +99,16 @@ export interface Adapter {
    */
   rootSelector?: string;
   /**
+   * Token overrides for dark mode, emitted under `.dark, [data-theme="dark"]`
+   * and (unless the `dark` plugin option says otherwise) inside
+   * `@media (prefers-color-scheme: dark)`. When defined — even as `{}` — it
+   * replaces the default theme's dark tokens entirely; leave it undefined to
+   * inherit them. Adapters whose tokens already follow an external theme
+   * (daisyUI) should set `{}`. Tokens that are `var()` aliases of other
+   * variables must be repeated here so they re-resolve inside the dark scope.
+   */
+  darkTokens?: Record<string, string>;
+  /**
    * Per-component overrides, deep-merged over the default theme.
    * Only define what your style changes — everything else falls back.
    */

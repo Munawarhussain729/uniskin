@@ -14,9 +14,12 @@ function intentVars(intent: Intent): CssRuleObject {
   const [soft, fg] = INTENT_MIX[intent];
   return {
     "--ui-c": `var(--ui-${intent})`,
+    "--ui-c-text": `var(--ui-${intent})`,
     "--ui-on-c": `var(--ui-${intent}-fg)`,
-    "--ui-c-soft": `color-mix(in oklab, var(--ui-${intent}) ${soft}%, white)`,
-    "--ui-c-soft-fg": `color-mix(in oklab, var(--ui-${intent}) ${fg}%, black)`,
+    /* mixed with the surface (not white/black) so soft looks stay legible in dark themes */
+    /* adapters can pin exact soft colors with --ui-<intent>-soft / -soft-fg */
+    "--ui-c-soft": `var(--ui-${intent}-soft, color-mix(in oklab, var(--ui-${intent}) ${soft}%, var(--ui-surface)))`,
+    "--ui-c-soft-fg": `var(--ui-${intent}-soft-fg, color-mix(in oklab, var(--ui-${intent}) ${fg}%, var(--ui-surface-fg)))`,
   };
 }
 
@@ -32,6 +35,7 @@ const intents = intentMap();
 /** Variables for the neutral (no intent) look. */
 const neutralVars: CssRuleObject = {
   "--ui-c": "var(--ui-neutral)",
+  "--ui-c-text": "var(--ui-surface-fg)",
   "--ui-on-c": "var(--ui-neutral-fg)",
   "--ui-c-soft": "var(--ui-neutral-soft)",
   "--ui-c-soft-fg": "var(--ui-neutral-soft-fg)",
@@ -182,11 +186,35 @@ export const defaultAdapter = defineAdapter({
     "--ui-text-md": "0.9375rem",
     "--ui-text-lg": "1.0625rem",
   },
+  darkTokens: {
+    "--ui-neutral": "oklch(0.92 0.01 265)",
+    "--ui-neutral-fg": "oklch(0.2 0.02 265)",
+    "--ui-neutral-soft": "oklch(0.3 0.015 265)",
+    "--ui-neutral-soft-fg": "oklch(0.92 0.01 265)",
+
+    "--ui-primary": "oklch(0.68 0.17 267)",
+    "--ui-primary-fg": "oklch(0.15 0.02 265)",
+    "--ui-secondary": "oklch(0.7 0.07 285)",
+    "--ui-secondary-fg": "oklch(0.15 0.02 285)",
+    "--ui-success": "oklch(0.72 0.15 163)",
+    "--ui-success-fg": "oklch(0.15 0.03 163)",
+    "--ui-warning": "oklch(0.82 0.15 85)",
+    "--ui-warning-fg": "oklch(0.2 0.04 90)",
+    "--ui-danger": "oklch(0.68 0.19 27)",
+    "--ui-danger-fg": "oklch(0.15 0.03 27)",
+
+    "--ui-surface": "oklch(0.21 0.015 265)",
+    "--ui-surface-fg": "oklch(0.95 0.005 265)",
+    "--ui-surface-muted": "oklch(0.26 0.015 265)",
+    "--ui-border": "oklch(0.34 0.015 265)",
+    "--ui-ring": "oklch(0.7 0.15 262)",
+  },
   components: {
     button: {
       base: {
         /* default = neutral intent; intents below override these vars */
         "--ui-c": "var(--ui-neutral)",
+        "--ui-c-text": "var(--ui-surface-fg)",
         "--ui-on-c": "var(--ui-neutral-fg)",
         "--ui-c-hover": "color-mix(in oklab, var(--ui-c) 85%, black)",
         "--ui-c-soft": "var(--ui-neutral-soft)",
@@ -224,7 +252,7 @@ export const defaultAdapter = defineAdapter({
       styles: {
         outline: {
           "background-color": "transparent",
-          color: "var(--ui-c)",
+          color: "var(--ui-c-text)",
           "border-color": "var(--ui-c)",
           "&:hover": {
             "background-color": "var(--ui-c)",
@@ -235,7 +263,7 @@ export const defaultAdapter = defineAdapter({
         ghost: {
           "background-color": "transparent",
           "border-color": "transparent",
-          color: "var(--ui-c)",
+          color: "var(--ui-c-text)",
           "&:hover": {
             "background-color": "var(--ui-c-soft)",
             "border-color": "transparent",
@@ -494,11 +522,11 @@ export const defaultAdapter = defineAdapter({
       },
       intents,
       styles: {
-        outline: { "background-color": "transparent", color: "var(--ui-c)" },
+        outline: { "background-color": "transparent", color: "var(--ui-c-text)" },
         ghost: {
           "background-color": "transparent",
           "border-color": "transparent",
-          color: "var(--ui-c)",
+          color: "var(--ui-c-text)",
         },
         soft: {
           "background-color": "var(--ui-c-soft)",
@@ -535,7 +563,7 @@ export const defaultAdapter = defineAdapter({
         ghost: {
           "background-color": "transparent",
           "border-color": "transparent",
-          color: "var(--ui-c)",
+          color: "var(--ui-c-text)",
         },
         soft: {
           "background-color": "var(--ui-c-soft)",
