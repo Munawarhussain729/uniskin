@@ -86,46 +86,82 @@ export function mergeAdapter(base: Adapter, override: Adapter): Adapter {
   };
 }
 
+/** Options for {@link resolveAdapter}. */
+export interface ResolveAdapterOptions {
+  /**
+   * Directory adapter paths and package names resolve from. The plugin
+   * passes the directory of the stylesheet containing `@plugin`, so
+   * `adapter: "./my-adapter.js"` and `adapter: "my-adapter-pkg"` work no
+   * matter where the Tailwind process was started (e.g. a monorepo root).
+   * Defaults to `process.cwd()` for direct JS callers.
+   */
+  base?: string;
+}
+
 /**
  * Resolve the `adapter` option to an Adapter object.
  *
  * - `"default"` → the built-in theme (no merge needed)
- * - `"./my-adapter.js"` / absolute path → resolved from process.cwd()
- * - `"shadcn"` → tries `shadcn`, `@uniskin/shadcn`, `uniskin-adapter-shadcn`
+ * - `"./my-adapter.js"` / absolute path → resolved from `options.base`
+ *   (the declaring stylesheet's directory when invoked through `@plugin`,
+ *   `process.cwd()` otherwise)
+ * - `"shadcn"` → tries `@uniskin/shadcn`, `uniskin-adapter-shadcn`, `shadcn`
+ *
+ * Adapters may ship as CJS or ESM, and `.ts` files load where the Node
+ * runtime strips types (v22.18+/v23+). Anything Node cannot load —
+ * an ESM-only module on an old runtime, a broken file, a missing file —
+ * is reported in the thrown error with the module's path and cause.
  */
-export function resolveAdapter(option: string): Adapter {
+export function resolveAdapter(option: string, options?: ResolveAdapterOptions): Adapter {
   if (option === "default") {
     // Lazy import cycle avoided by caller passing defaultAdapter in.
     return { name: "default" };
   }
 
-  const req = createRequire(path.join(process.cwd(), "uniskin-resolve.js"));
+  const base = options?.base ?? process.cwd();
+  const req = createRequire(path.join(base, "uniskin-resolve.js"));
   const isPath = option.startsWith(".") || option.startsWith("/");
   // For bare names prefer the conventional prefixed packages so that
   // `adapter: "daisyui"` finds @uniskin/daisyui rather than the (unrelated)
   // `daisyui` package itself.
   const candidates = isPath
-    ? [path.resolve(process.cwd(), option)]
+    ? [path.resolve(base, option)]
     : [`@uniskin/${option}`, `uniskin-adapter-${option}`, option];
 
+  const failures: string[] = [];
   for (const candidate of candidates) {
     let mod: unknown;
     try {
       mod = req(candidate);
-    } catch {
-      continue; // not installed — try next candidate
+    } catch (err) {
+      failures.push(`${candidate}: ${describeLoadError(err)}`);
+      continue;
     }
     const adapter = (mod as { default?: unknown }).default ?? mod;
     if (isAdapter(adapter)) return adapter;
     // Module resolved but isn't an adapter — keep looking (e.g. the
     // `daisyui` package when asked for the "daisyui" adapter).
+    failures.push(`${candidate}: resolved, but does not export a uniskin adapter`);
   }
 
   throw new Error(
-    `[uniskin] Could not resolve adapter "${option}". Tried: ${candidates.join(", ")}. ` +
-      `Pass a built-in name ("default", "shadcn", "daisyui"), a package name, or a relative path like "./my-adapter.js". ` +
+    `[uniskin] Could not resolve adapter "${option}" (base: ${base}):\n` +
+      failures.map((f) => `  - ${f}`).join("\n") +
+      `\nPass a built-in name ("default", "shadcn", "daisyui"), a package name, or a relative path like "./my-adapter.js". ` +
       `Adapters must be created with defineAdapter({ name, tokens, components }).`,
   );
+}
+
+/** One-line description of why `require` rejected a candidate. */
+function describeLoadError(err: unknown): string {
+  const code = (err as NodeJS.ErrnoException | undefined)?.code;
+  const message = (err instanceof Error ? err.message : String(err)).split("\n")[0];
+  // `require` of an ESM-only module on a Node without require(esm)
+  // (< v20.19 / v22.12), of a module using top-level await, or of a `.ts`
+  // file without type stripping (< v22.18) lands here — prefix the code so
+  // the runtime limitation is unmistakable.
+  if (code && code !== "MODULE_NOT_FOUND") return `${code} — ${message}`;
+  return message;
 }
 
 function isAdapter(value: unknown): value is Adapter {
