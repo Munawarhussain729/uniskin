@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uniskin — styles</title>
+    <link id="skin" rel="stylesheet" href="/adapters/default.css" />
+    <style>
+      :root { color-scheme: light; }
+      html.dark { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 1.25rem;
+        background: var(--ui-surface);
+        color: var(--ui-surface-fg);
+        font-family: var(--ui-font-sans);
+      }
+      .f-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); align-items: start; }
+      .f-cell { display: grid; gap: 0.6rem; }
+      .f-tag { font-size: 0.75rem; opacity: 0.6; font-family: ui-monospace, monospace; }
+      .f-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    </style>
+    <script>
+      (() => {
+        const q = new URLSearchParams(location.search);
+        const adapter = q.get("adapter");
+        if (adapter) document.getElementById("skin").href = "/adapters/" + adapter + ".css";
+        const dark = q.has("dark")
+          ? q.get("dark") === "1" || q.get("dark") === "true"
+          : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+        document.documentElement.classList.toggle("light", !dark);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="f-grid">
+      <div class="f-cell">
+        <span class="f-tag">solid (default)</span>
+        <div class="f-row"><button class="ui-button ui-danger">Delete</button></div>
+        <div class="ui-alert ui-danger ui-sm" role="alert">Payment failed.</div>
+      </div>
+      <div class="f-cell">
+        <span class="f-tag">ui-outline</span>
+        <div class="f-row"><button class="ui-button ui-danger ui-outline">Delete</button></div>
+        <div class="ui-alert ui-danger ui-outline ui-sm" role="alert">Payment failed.</div>
+      </div>
+      <div class="f-cell">
+        <span class="f-tag">ui-soft</span>
+        <div class="f-row"><button class="ui-button ui-danger ui-soft">Delete</button></div>
+        <div class="ui-alert ui-danger ui-soft ui-sm" role="alert">Payment failed.</div>
+      </div>
+      <div class="f-cell">
+        <span class="f-tag">ui-ghost</span>
+        <div class="f-row"><button class="ui-button ui-danger ui-ghost">Delete</button></div>
+        <div class="ui-alert ui-danger ui-ghost ui-sm" role="alert">Payment failed.</div>
+      </div>
+    </div>
+  </body>
+</html>

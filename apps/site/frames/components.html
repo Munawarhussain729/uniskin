@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uniskin — components</title>
+    <link id="skin" rel="stylesheet" href="/adapters/default.css" />
+    <style>
+      :root { color-scheme: light; }
+      html.dark { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 1.25rem;
+        background: var(--ui-surface);
+        color: var(--ui-surface-fg);
+        font-family: var(--ui-font-sans);
+      }
+      .f-grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); align-items: start; }
+      .f-cell { display: grid; gap: 0.6rem; }
+      .f-label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.55; }
+      .f-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+      .f-check { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
+    </style>
+    <script>
+      (() => {
+        const q = new URLSearchParams(location.search);
+        const adapter = q.get("adapter");
+        if (adapter) document.getElementById("skin").href = "/adapters/" + adapter + ".css";
+        const dark = q.has("dark")
+          ? q.get("dark") === "1" || q.get("dark") === "true"
+          : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+        document.documentElement.classList.toggle("light", !dark);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="f-grid">
+      <div class="f-cell">
+        <span class="f-label">ui-button</span>
+        <div class="f-row">
+          <button class="ui-button ui-primary">Save</button>
+          <button class="ui-button ui-outline">Cancel</button>
+        </div>
+      </div>
+      <div class="f-cell">
+        <span class="f-label">ui-input · ui-select</span>
+        <input class="ui-input ui-sm" placeholder="you@example.com" aria-label="Email" />
+        <select class="ui-select ui-sm" aria-label="Plan"><option>Free</option><option>Pro</option></select>
+      </div>
+      <div class="f-cell">
+        <span class="f-label">ui-checkbox</span>
+        <label class="f-check"><input type="checkbox" class="ui-checkbox" checked /> Enabled</label>
+        <label class="f-check"><input type="checkbox" class="ui-checkbox ui-success" checked /> Verified</label>
+      </div>
+      <div class="f-cell">
+        <span class="f-label">ui-badge</span>
+        <div class="f-row">
+          <span class="ui-badge ui-primary">new</span>
+          <span class="ui-badge ui-warning ui-outline">beta</span>
+          <span class="ui-badge ui-danger ui-soft">3</span>
+        </div>
+      </div>
+      <div class="f-cell">
+        <span class="f-label">ui-alert</span>
+        <div class="ui-alert ui-primary ui-soft ui-sm" role="alert">A new version is available.</div>
+      </div>
+      <div class="f-cell">
+        <span class="f-label">ui-tabs</span>
+        <div class="ui-tabs" role="tablist">
+          <button class="ui-tab" role="tab" aria-selected="true">Code</button>
+          <button class="ui-tab" role="tab" aria-selected="false">Preview</button>
+        </div>
+      </div>
+      <div class="f-cell">
+        <span class="f-label">ui-card</span>
+        <div class="ui-card ui-sm">
+          <div class="ui-card-header">Invoice #42</div>
+          <div class="ui-card-body">Two line items, paid in full.</div>
+          <div class="ui-card-footer"><button class="ui-button ui-primary ui-sm">Download</button></div>
+        </div>
+      </div>
+      <div class="f-cell">
+        <span class="f-label">ui-textarea</span>
+        <textarea class="ui-textarea ui-sm" rows="2" placeholder="Notes…" aria-label="Notes"></textarea>
+      </div>
+      <div class="f-cell">
+        <span class="f-label">ui-modal</span>
+        <div class="f-row">
+          <a class="ui-button ui-secondary ui-sm" href="#f-modal">Open :target modal</a>
+        </div>
+      </div>
+    </div>
+    <div class="ui-modal" id="f-modal" role="dialog" aria-modal="true" aria-label="Example dialog">
+      <div class="ui-modal-box ui-sm">
+        <p style="margin: 0 0 1rem">Pure CSS — opened via <code>:target</code>.</p>
+        <div class="f-row" style="justify-content: flex-end">
+          <a class="ui-button ui-ghost ui-sm" href="#">Close</a>
+          <a class="ui-button ui-primary ui-sm" href="#">Confirm</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

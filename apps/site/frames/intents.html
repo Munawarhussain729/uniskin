@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uniskin — intents</title>
+    <link id="skin" rel="stylesheet" href="/adapters/default.css" />
+    <style>
+      :root { color-scheme: light; }
+      html.dark { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 1.25rem;
+        background: var(--ui-surface);
+        color: var(--ui-surface-fg);
+        font-family: var(--ui-font-sans);
+      }
+      .f-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 0.75rem; }
+      .f-row:last-child { margin-bottom: 0; }
+      .f-tag { min-width: 4.5rem; font-size: 0.75rem; opacity: 0.6; font-family: ui-monospace, monospace; }
+    </style>
+    <script>
+      (() => {
+        const q = new URLSearchParams(location.search);
+        const adapter = q.get("adapter");
+        if (adapter) document.getElementById("skin").href = "/adapters/" + adapter + ".css";
+        const dark = q.has("dark")
+          ? q.get("dark") === "1" || q.get("dark") === "true"
+          : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+        document.documentElement.classList.toggle("light", !dark);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="f-row">
+      <span class="f-tag">solid</span>
+      <button class="ui-button">neutral</button>
+      <button class="ui-button ui-primary">primary</button>
+      <button class="ui-button ui-secondary">secondary</button>
+      <button class="ui-button ui-success">success</button>
+      <button class="ui-button ui-warning">warning</button>
+      <button class="ui-button ui-danger">danger</button>
+    </div>
+    <div class="f-row">
+      <span class="f-tag">outline</span>
+      <button class="ui-button ui-outline">neutral</button>
+      <button class="ui-button ui-primary ui-outline">primary</button>
+      <button class="ui-button ui-secondary ui-outline">secondary</button>
+      <button class="ui-button ui-success ui-outline">success</button>
+      <button class="ui-button ui-warning ui-outline">warning</button>
+      <button class="ui-button ui-danger ui-outline">danger</button>
+    </div>
+    <div class="f-row">
+      <span class="f-tag">soft</span>
+      <button class="ui-button ui-soft">neutral</button>
+      <button class="ui-button ui-primary ui-soft">primary</button>
+      <button class="ui-button ui-secondary ui-soft">secondary</button>
+      <button class="ui-button ui-success ui-soft">success</button>
+      <button class="ui-button ui-warning ui-soft">warning</button>
+      <button class="ui-button ui-danger ui-soft">danger</button>
+    </div>
+    <div class="f-row">
+      <span class="f-tag">ghost</span>
+      <button class="ui-button ui-ghost">neutral</button>
+      <button class="ui-button ui-primary ui-ghost">primary</button>
+      <button class="ui-button ui-secondary ui-ghost">secondary</button>
+      <button class="ui-button ui-success ui-ghost">success</button>
+      <button class="ui-button ui-warning ui-ghost">warning</button>
+      <button class="ui-button ui-danger ui-ghost">danger</button>
+    </div>
+  </body>
+</html>

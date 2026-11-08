@@ -1,0 +1,4 @@
+@import "tailwindcss" source(none);
+@plugin "uniskin" { adapter: "shadcn"; }
+
+@source "../frames";
