@@ -47,6 +47,11 @@ const alertIntent = {
  */
 export default defineAdapter({
   name: "daisyui",
+  /* the --ui-* tokens are var() aliases of daisyUI's theme variables; re-declare
+     them on every [data-theme] element so nested/switched themes re-resolve */
+  rootSelector: ":root, [data-theme]",
+  /* dark mode is handled by daisyUI's own themes, not by Uniskin */
+  darkTokens: {},
   tokens: {
     "--ui-primary": "var(--color-primary, oklch(45% 0.24 277.023))",
     "--ui-primary-fg": "var(--color-primary-content, oklch(93% 0.034 272.788))",
@@ -153,7 +158,7 @@ export default defineAdapter({
            inverts to the intent's content color */
         outline: {
           "background-color": "transparent",
-          color: "var(--ui-c)",
+          color: "var(--ui-c-text)",
           "border-color": "var(--ui-c)",
           "&:hover": {
             "background-color": "var(--ui-c)",
@@ -165,7 +170,7 @@ export default defineAdapter({
         ghost: {
           "background-color": "transparent",
           "border-color": "transparent",
-          color: "var(--ui-c)",
+          color: "var(--ui-c-text)",
           "&:hover": {
             "background-color": "color-mix(in oklab, var(--ui-c) 20%, transparent)",
             "border-color": "transparent",
@@ -175,7 +180,7 @@ export default defineAdapter({
         soft: {
           "background-color": "color-mix(in oklab, var(--ui-c) 12%, var(--ui-surface))",
           "border-color": "transparent",
-          color: "var(--ui-c)",
+          color: "var(--ui-c-text)",
           "&:hover": {
             "background-color": "var(--ui-c)",
             "border-color": "var(--ui-c)",

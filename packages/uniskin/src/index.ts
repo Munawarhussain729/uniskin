@@ -1,6 +1,6 @@
 import path from "node:path";
 import { defaultAdapter, defaultKeyframes } from "./default-theme.js";
-import { DEFAULT_PREFIX, buildRules } from "./emit.js";
+import { DEFAULT_PREFIX, buildRules, type DarkStrategy } from "./emit.js";
 import { mergeAdapter, resolveAdapter, warnUnsupported } from "./merge.js";
 
 export interface UniskinOptions {
@@ -15,6 +15,13 @@ export interface UniskinOptions {
   adapter?: string;
   /** Class prefix. Defaults to `"ui"` → classes like `ui-button`. */
   prefix?: string;
+  /**
+   * How dark mode is activated. `"media"` (default): `.dark` /
+   * `[data-theme="dark"]` plus `prefers-color-scheme: dark` (opt out with
+   * `.light` / `[data-theme="light"]`). `"class"`: only `.dark` /
+   * `[data-theme="dark"]`. `false`: no dark tokens.
+   */
+  dark?: DarkStrategy;
 }
 
 type CssInJs = Record<string, unknown>;
@@ -57,7 +64,7 @@ function uniskin(this: unknown, options: UniskinOptions = {}) {
 
   return {
     handler({ addBase, addUtilities }: PluginApi) {
-      const { base, utilities } = buildRules(merged, prefix, defaultKeyframes);
+      const { base, utilities } = buildRules(merged, prefix, defaultKeyframes, options.dark ?? "media");
       addBase(base as CssInJs);
       addUtilities(utilities as CssInJs);
     },

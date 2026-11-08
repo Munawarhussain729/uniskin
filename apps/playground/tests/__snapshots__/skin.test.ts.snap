@@ -3,6 +3,7 @@
 exports[`compiled skins > daisyui > .ui-button base rule matches snapshot 1`] = `
 ".ui-button {
     --ui-c: var(--ui-neutral);
+    --ui-c-text: var(--ui-surface-fg);
     --ui-on-c: var(--ui-neutral-fg);
     --ui-c-hover: var(--ui-c);
     @supports (color: color-mix(in lab, red, red)) {
@@ -52,6 +53,7 @@ exports[`compiled skins > daisyui > .ui-button base rule matches snapshot 1`] = 
 exports[`compiled skins > default > .ui-button base rule matches snapshot 1`] = `
 ".ui-button {
     --ui-c: var(--ui-neutral);
+    --ui-c-text: var(--ui-surface-fg);
     --ui-on-c: var(--ui-neutral-fg);
     --ui-c-hover: var(--ui-c);
     @supports (color: color-mix(in lab, red, red)) {
@@ -91,6 +93,7 @@ exports[`compiled skins > default > .ui-button base rule matches snapshot 1`] = 
 exports[`compiled skins > shadcn > .ui-button base rule matches snapshot 1`] = `
 ".ui-button {
     --ui-c: var(--ui-neutral);
+    --ui-c-text: var(--ui-surface-fg);
     --ui-on-c: var(--ui-neutral-fg);
     --ui-c-hover: var(--ui-c);
     @supports (color: color-mix(in lab, red, red)) {

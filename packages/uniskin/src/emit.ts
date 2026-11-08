@@ -52,10 +52,13 @@ function rePrefixKeyframes(
  * `@keyframes <prefix>-<name>`. `animation:` values in the theme
  * reference them as `ui-<name>` and are re-prefixed to match.
  */
+export type DarkStrategy = "media" | "class" | false;
+
 export function buildRules(
   adapter: Adapter,
   prefix: string,
   keyframes?: Record<string, CssRuleObject>,
+  dark: DarkStrategy = "media",
 ): EmittedRules {
   const p = `${prefix}-`;
   const utilities: Record<string, CssRuleObject> = {};
@@ -63,6 +66,15 @@ export function buildRules(
 
   if (adapter.tokens && Object.keys(adapter.tokens).length > 0) {
     base[adapter.rootSelector ?? ":root"] = adapter.tokens;
+  }
+  if (dark && adapter.darkTokens && Object.keys(adapter.darkTokens).length > 0) {
+    base['.dark, [data-theme="dark"]'] = adapter.darkTokens;
+    if (dark === "media") {
+      // OS preference, unless the page explicitly opts into light.
+      base["@media (prefers-color-scheme: dark)"] = {
+        ':root:not(.light):not([data-theme="light"])': adapter.darkTokens,
+      };
+    }
   }
   for (const [name, frames] of Object.entries(keyframes ?? {})) {
     base[`@keyframes ${p}${name}`] = frames;
