@@ -1,6 +1,6 @@
 {
   "name": "@uniskin/shadcn",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "shadcn/ui visual style adapter for Uniskin (pure CSS, no React/Radix)",
   "type": "module",
   "main": "./dist/index.js",
@@ -11,16 +11,39 @@
       "default": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "keywords": [
+    "tailwindcss",
+    "uniskin",
+    "shadcn",
+    "css",
+    "ui",
+    "theme",
+    "adapter"
+  ],
   "license": "MIT",
-  "dependencies": {
-    "uniskin": "workspace:*"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Munawarhussain729/uniskin.git",
+    "directory": "packages/adapter-shadcn"
+  },
+  "homepage": "https://github.com/Munawarhussain729/uniskin#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^4.0.0",
+    "uniskin": "workspace:^"
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "tailwindcss": "^4.3.5",
+    "typescript": "^5.9.3",
+    "uniskin": "workspace:*"
   }
 }

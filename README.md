@@ -55,8 +55,18 @@ Prefix is `ui-` by default; change it with `prefix: "uk"` → `uk-button`.
   `ui-active` ⇔ `[aria-selected="true"]`/`[aria-pressed="true"]`.
 - Every interactive component has `:focus-visible` styling.
 
-Status: v1 ships `button` end-to-end across all adapters; the remaining
-components are landing in follow-up PRs.
+Status: the full v1 vocabulary ships in the default skin. The shadcn and
+daisyUI adapters restyle every component; slots they don't define fall
+back to the default skin. Per-component markup, modifiers, native-attribute
+equivalents and accessibility notes: [docs/vocabulary.md](docs/vocabulary.md).
+
+Notes:
+- `ui-modal` works on a `<div>`, a `<dialog>` (`open` / `showModal()`) or a
+  `:target`; add `ui-active` to show a plain `<div>`. Put `ui-modal-box` inside it.
+- `ui-tabs` wraps `ui-tab` buttons; mark the current one with
+  `aria-selected="true"` (or `ui-active`). Tabs styles: default underline,
+  `ui-outline` boxed, `ui-soft` pill, `ui-ghost` text only.
+- `ui-card` size (`ui-sm`/`ui-lg`) scales the padding of its header, body and footer.
 
 ## Fallback rule
 
