@@ -40,7 +40,10 @@ export function compileAdapterStderr(name: string, env?: NodeJS.ProcessEnv): str
  * Used to prove that classes appearing solely in .php/.vue/… sources are
  * picked up by Tailwind's automatic content detection.
  */
-export function compileWithFiles(files: Record<string, string>): string {
+export function compileWithFiles(
+  files: Record<string, string>,
+  pluginOptions?: string,
+): string {
   const dir = mkdtempSync(join(tmpdir(), "uniskin-scan-"));
   const uniskinEntry = join(playgroundRoot, "node_modules", "uniskin", "dist", "index.js");
   for (const [name, content] of Object.entries(files)) {
@@ -48,7 +51,7 @@ export function compileWithFiles(files: Record<string, string>): string {
   }
   writeFileSync(
     join(dir, "in.css"),
-    `@import "tailwindcss";\n@plugin "${uniskinEntry}";\n`,
+    `@import "tailwindcss";\n@plugin "${uniskinEntry}"${pluginOptions ? ` { ${pluginOptions} }` : ""};\n`,
   );
   const out = join(dir, "out.css");
   execFileSync(tailwind, ["-i", join(dir, "in.css"), "-o", out], {

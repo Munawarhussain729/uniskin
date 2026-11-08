@@ -252,3 +252,21 @@ describe("content scanning", () => {
     expect(css).not.toContain(".ui-button");
   });
 });
+
+describe("custom prefix", () => {
+  it('prefix: "uk" namespaces classes, keyframes and animation references', () => {
+    const css = compileWithFiles(
+      { "index.html": '<button class="uk-button uk-loading">x</button>' },
+      'prefix: "uk";',
+    );
+    expect(css).toContain(".uk-button");
+    expect(css).toContain(".uk-button.uk-loading");
+    expect(css).toContain("@keyframes uk-spin");
+    expect(css).toContain("@keyframes uk-pulse");
+    expect(css).toContain("uk-pulse 1.2s ease-in-out infinite");
+    expect(css).toContain("uk-spin 0.6s linear infinite");
+    expect(css).not.toContain("ui-spin");
+    expect(css).not.toContain("ui-pulse");
+    expect(css).not.toMatch(/\.ui-/);
+  });
+});
