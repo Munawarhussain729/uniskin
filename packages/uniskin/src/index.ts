@@ -1,6 +1,6 @@
 import path from "node:path";
-import { defaultAdapter, defaultBaseExtras } from "./default-theme.js";
-import { buildRules } from "./emit.js";
+import { defaultAdapter, defaultKeyframes } from "./default-theme.js";
+import { DEFAULT_PREFIX, buildRules } from "./emit.js";
 import { mergeAdapter, resolveAdapter, warnUnsupported } from "./merge.js";
 
 export interface UniskinOptions {
@@ -47,7 +47,7 @@ function stylesheetDir(details: unknown): string | undefined {
 }
 
 function uniskin(this: unknown, options: UniskinOptions = {}) {
-  const prefix = (options.prefix ?? "ui").replace(/-+$/, "") || "ui";
+  const prefix = (options.prefix ?? DEFAULT_PREFIX).replace(/-+$/, "") || DEFAULT_PREFIX;
   const adapter = resolveAdapter(options.adapter ?? "default", {
     base: stylesheetDir(this),
   });
@@ -57,9 +57,8 @@ function uniskin(this: unknown, options: UniskinOptions = {}) {
 
   return {
     handler({ addBase, addUtilities }: PluginApi) {
-      const { base, utilities } = buildRules(merged, prefix);
+      const { base, utilities } = buildRules(merged, prefix, defaultKeyframes);
       addBase(base as CssInJs);
-      addBase(defaultBaseExtras as CssInJs);
       addUtilities(utilities as CssInJs);
     },
     config: {},
