@@ -1,0 +1,10 @@
+@import "tailwindcss" source(none);
+
+/* Optional: loading real daisyUI makes the @uniskin/daisyui adapter
+   follow the active daisyUI theme (it maps onto --color-* etc.).
+   Remove this line and the adapter still works via bundled fallbacks. */
+@plugin "daisyui";
+@plugin "uniskin" { adapter: "daisyui"; }
+
+@source "../index.html";
+@source "../fixtures";

@@ -1,0 +1,115 @@
+# Uniskin
+
+One class vocabulary, swappable Tailwind CSS v4 skins.
+
+Write `ui-button ui-primary ui-md` once — in plain HTML, React, Vue, PHP,
+anything. Pick an "adapter" in your CSS to decide how it looks: the
+built-in default, a shadcn/ui look, a daisyUI look, or your own. Switching
+adapters requires **zero markup changes**. Output is CSS only — no
+runtime JavaScript.
+
+```css
+@import "tailwindcss";
+@plugin "uniskin" { adapter: "shadcn"; }   /* or "daisyui", or "./my-adapter.js" */
+```
+
+```html
+<button class="ui-button ui-primary ui-outline ui-sm">Save</button>
+```
+
+## Quick start
+
+```sh
+pnpm add uniskin            # core plugin + built-in default skin
+pnpm add @uniskin/shadcn    # optional adapter
+pnpm add @uniskin/daisyui   # optional adapter
+```
+
+Then in your Tailwind v4 entry CSS, add the `@plugin` line shown above.
+
+Uniskin classes are emitted on demand from Tailwind's automatic content
+detection — the same scanning that finds `p-4` finds `ui-button`, in any
+file type it scans (HTML, JSX, Vue, PHP, …). If you keep templates in a
+file type Tailwind doesn't scan, add an explicit
+[`@source`](https://tailwindcss.com/docs/functions-and-directives#source-directive).
+
+## Vocabulary v1
+
+Prefix is `ui-` by default; change it with `prefix: "uk"` → `uk-button`.
+
+| Kind       | Classes |
+|------------|---------|
+| Components | `ui-button`, `ui-input`, `ui-textarea`, `ui-select`, `ui-checkbox`, `ui-card`, `ui-badge`, `ui-alert`, `ui-modal`, `ui-tabs` |
+| Parts      | `ui-card-header`, `ui-card-body`, `ui-card-footer`, `ui-modal-box`, `ui-tab` |
+| Intent     | `ui-primary`, `ui-secondary`, `ui-success`, `ui-warning`, `ui-danger` |
+| Style      | `ui-outline`, `ui-ghost`, `ui-soft` (`solid` is the default) |
+| Size       | `ui-sm`, `ui-lg` (`md` is the default) |
+| State      | `ui-disabled`, `ui-loading`, `ui-active` |
+
+- Intents and styles combine freely: `ui-danger ui-outline`.
+- Modifiers are emitted as compound selectors (`.ui-button.ui-primary`),
+  never as global classes — `ui-outline` on a button and a card can look
+  completely different.
+- States also style the native equivalents: `ui-disabled` ⇔
+  `:disabled`/`[aria-disabled="true"]`, `ui-loading` ⇔ `[aria-busy="true"]`,
+  `ui-active` ⇔ `[aria-selected="true"]`/`[aria-pressed="true"]`.
+- Every interactive component has `:focus-visible` styling.
+
+Status: v1 ships `button` end-to-end across all adapters; the remaining
+components are landing in follow-up PRs.
+
+## Fallback rule
+
+Uniskin ships a complete built-in default style driven by `--ui-*` CSS
+variables. An adapter overrides only what it supports; everything else
+silently falls back to the default. In dev builds, Uniskin prints a
+warning listing the slots an adapter doesn't cover.
+
+## Writing your own adapter
+
+```ts
+// my-adapter.ts
+import { defineAdapter } from "uniskin/adapter";
+
+export default defineAdapter({
+  name: "acme",
+  tokens: { "--ui-primary": "rebeccapurple" },
+  components: {
+    button: {
+      base: { "border-radius": "999px" },
+      styles: { outline: { "border-width": "2px" } },
+    },
+  },
+});
+```
+
+```css
+@plugin "uniskin" { adapter: "./my-adapter.ts"; }
+```
+
+Everything you omit falls back to the default theme. See
+[docs/writing-adapters.md](docs/writing-adapters.md) for the full
+interface and the `--ui-c` composition model.
+
+## Pairing with JS behaviour
+
+Uniskin is CSS-only. For interactive behaviour pair it with native
+`<dialog>` (`ui-modal` styles it), Alpine.js (`x-show` + `ui-*` classes),
+or a headless library like Radix/Ark UI — their unstyled components take
+`ui-*` classes directly.
+
+## Repo layout
+
+- `packages/uniskin` — the plugin, default theme, adapter interface
+- `packages/adapter-shadcn`, `packages/adapter-daisyui` — adapters
+- `apps/playground` — Vite demo + manual test (`pnpm dev` in there)
+- `docs/` — decisions, adapter guide
+
+## Development
+
+```sh
+pnpm install
+pnpm -r build
+pnpm -r test
+cd apps/playground && pnpm dev
+```

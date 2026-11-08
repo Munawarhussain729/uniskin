@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uniskin playground</title>
+    <link id="uniskin-css" rel="stylesheet" href="/adapters/default.css" />
+    <style>
+      body {
+        font-family: ui-sans-serif, system-ui, sans-serif;
+        margin: 0;
+        padding: 2rem;
+        background: #fafafa;
+        color: #111;
+      }
+      h1 { font-size: 1.4rem; margin: 0 0 0.25rem; }
+      h2 { font-size: 1rem; margin: 2rem 0 0.75rem; text-transform: capitalize; }
+      .row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+      .switcher { display: flex; gap: 0.5rem; margin: 1rem 0 0.5rem; }
+      .switcher button {
+        font: inherit;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid #ccc;
+        background: #fff;
+        cursor: pointer;
+      }
+      .switcher button[aria-pressed="true"] { background: #111; color: #fff; border-color: #111; }
+      .hint { color: #666; font-size: 0.85rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Uniskin playground</h1>
+    <div class="hint">
+      Same markup, different skin — the adapter only changes the CSS file.
+      Try <code>?adapter=shadcn</code> or <code>?adapter=daisyui</code>.
+    </div>
+    <div class="switcher" id="switcher">
+      <button data-adapter="default">default</button>
+      <button data-adapter="shadcn">shadcn</button>
+      <button data-adapter="daisyui">daisyui</button>
+    </div>
+
+    <h2>intents (solid)</h2>
+    <div class="row">
+      <button class="ui-button">default</button>
+      <button class="ui-button ui-primary">primary</button>
+      <button class="ui-button ui-secondary">secondary</button>
+      <button class="ui-button ui-success">success</button>
+      <button class="ui-button ui-warning">warning</button>
+      <button class="ui-button ui-danger">danger</button>
+    </div>
+
+    <h2>outline</h2>
+    <div class="row">
+      <button class="ui-button ui-outline">default</button>
+      <button class="ui-button ui-primary ui-outline">primary</button>
+      <button class="ui-button ui-secondary ui-outline">secondary</button>
+      <button class="ui-button ui-success ui-outline">success</button>
+      <button class="ui-button ui-warning ui-outline">warning</button>
+      <button class="ui-button ui-danger ui-outline">danger</button>
+    </div>
+
+    <h2>ghost</h2>
+    <div class="row">
+      <button class="ui-button ui-ghost">default</button>
+      <button class="ui-button ui-primary ui-ghost">primary</button>
+      <button class="ui-button ui-secondary ui-ghost">secondary</button>
+      <button class="ui-button ui-success ui-ghost">success</button>
+      <button class="ui-button ui-warning ui-ghost">warning</button>
+      <button class="ui-button ui-danger ui-ghost">danger</button>
+    </div>
+
+    <h2>soft</h2>
+    <div class="row">
+      <button class="ui-button ui-soft">default</button>
+      <button class="ui-button ui-primary ui-soft">primary</button>
+      <button class="ui-button ui-secondary ui-soft">secondary</button>
+      <button class="ui-button ui-success ui-soft">success</button>
+      <button class="ui-button ui-warning ui-soft">warning</button>
+      <button class="ui-button ui-danger ui-soft">danger</button>
+    </div>
+
+    <h2>sizes</h2>
+    <div class="row">
+      <button class="ui-button ui-primary ui-sm">sm</button>
+      <button class="ui-button ui-primary">md</button>
+      <button class="ui-button ui-primary ui-lg">lg</button>
+    </div>
+
+    <h2>states</h2>
+    <div class="row">
+      <button class="ui-button ui-primary" disabled>:disabled</button>
+      <button class="ui-button ui-primary ui-disabled">.ui-disabled</button>
+      <button class="ui-button ui-primary" aria-disabled="true">aria-disabled</button>
+      <button class="ui-button ui-secondary ui-loading">.ui-loading</button>
+      <button class="ui-button ui-secondary" aria-busy="true">aria-busy</button>
+      <button class="ui-button ui-outline ui-active">.ui-active</button>
+      <button class="ui-button ui-outline" aria-pressed="true">aria-pressed</button>
+    </div>
+
+    <script>
+      const link = document.getElementById("uniskin-css");
+      const params = new URLSearchParams(location.search);
+      let current = params.get("adapter") || localStorage.getItem("uniskin-adapter") || "default";
+
+      function setAdapter(name) {
+        current = name;
+        link.href = `/adapters/${name}.css`;
+        localStorage.setItem("uniskin-adapter", name);
+        for (const btn of document.querySelectorAll("#switcher button"))
+          btn.setAttribute("aria-pressed", String(btn.dataset.adapter === name));
+      }
+
+      document.getElementById("switcher").addEventListener("click", (e) => {
+        const name = e.target?.dataset?.adapter;
+        if (name) setAdapter(name);
+      });
+      setAdapter(current);
+    </script>
+  </body>
+</html>

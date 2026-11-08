@@ -1,0 +1,26 @@
+{
+  "name": "playground",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "css": "node scripts/build-css.mjs",
+    "dev": "node scripts/dev.mjs",
+    "build": "node scripts/build-css.mjs && vite build",
+    "pretest": "pnpm --filter uniskin --filter @uniskin/shadcn --filter @uniskin/daisyui build",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@uniskin/daisyui": "workspace:*",
+    "@uniskin/shadcn": "workspace:*",
+    "uniskin": "workspace:*"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.5",
+    "daisyui": "^5.7.50",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.4",
+    "vitest": "^3.2.4"
+  }
+}

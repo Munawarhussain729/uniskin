@@ -1,0 +1,7 @@
+@import "tailwindcss" source(none);
+@plugin "uniskin";
+
+/* The skin entries live in skins/ so Tailwind only scans what we point
+   it at — deterministic output, immune to test artifacts. */
+@source "../index.html";
+@source "../fixtures";
