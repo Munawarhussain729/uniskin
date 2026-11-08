@@ -19,3 +19,41 @@ jobs:
       - run: pnpm lint
       - run: pnpm -r build
       - run: pnpm -r test
+
+  install-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm -r build
+      - name: Pack publishable packages
+        run: |
+          mkdir -p "$RUNNER_TEMP/tarballs"
+          for pkg in uniskin adapter-shadcn adapter-daisyui; do
+            (cd "packages/$pkg" && pnpm pack --pack-destination "$RUNNER_TEMP/tarballs")
+          done
+          ls -la "$RUNNER_TEMP/tarballs"
+      - name: Install tarballs into a fresh project
+        run: |
+          SCRATCH="$RUNNER_TEMP/uniskin-install-check"
+          mkdir -p "$SCRATCH"
+          cd "$SCRATCH"
+          printf '{"name":"uniskin-install-check","private":true,"type":"module"}\n' > package.json
+          pnpm add "$RUNNER_TEMP"/tarballs/*.tgz
+          pnpm add -D tailwindcss@^4 @tailwindcss/cli@^4
+      - name: Compile the README quick-start
+        run: |
+          SCRATCH="$RUNNER_TEMP/uniskin-install-check"
+          cd "$SCRATCH"
+          printf '<button class="ui-button ui-primary ui-outline ui-sm">Save</button>\n' > index.html
+          for adapter in default shadcn daisyui; do
+            printf '@import "tailwindcss";\n@plugin "uniskin" { adapter: "%s"; }\n@source "./index.html";\n' "$adapter" > "input-$adapter.css"
+            ./node_modules/.bin/tailwindcss -i "input-$adapter.css" -o "output-$adapter.css"
+            grep -q '.ui-button.ui-primary' "output-$adapter.css"
+            grep -q '.ui-button.ui-outline' "output-$adapter.css"
+          done
