@@ -8,6 +8,38 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm -r build
+      - run: pnpm -r test
+
+  # Runs the playground suite against a Tailwind version matrix to catch
+  # breakage in the internals uniskin relies on (the @plugin `this.src`
+  # context and how plugin utilities are serialized).
+  tailwind-compat:
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.tailwind == 'latest' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        tailwind:
+          # Measured floor: ≤4.3.2 emits compound utilities nested rather
+          # than as the flat `.ui-x.ui-y` selectors the suite asserts.
+          - "4.3.3"
+          # The version pinned in apps/playground/package.json.
+          - "4.3.5"
+          - "latest"
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -16,9 +48,32 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
       - run: pnpm -r build
-      - run: pnpm -r test
+      - name: Pin tailwindcss ${{ matrix.tailwind }}
+        env:
+          TW: ${{ matrix.tailwind }}
+        run: |
+          # Edits files rather than `pnpm add` (which keeps ^-ranges), and
+          # pins @tailwindcss/node + oxide too — cli's internal deps are
+          # ^-ranges and would otherwise silently mix in newer internals.
+          node -e '
+            const fs = require("fs");
+            const v = process.env.TW;
+            const p = "apps/playground/package.json";
+            const pkg = JSON.parse(fs.readFileSync(p, "utf8"));
+            pkg.devDependencies["tailwindcss"] = v;
+            pkg.devDependencies["@tailwindcss/cli"] = v;
+            fs.writeFileSync(p, JSON.stringify(pkg, null, 2) + "\n");
+            const w = "pnpm-workspace.yaml";
+            const s = fs.readFileSync(w, "utf8");
+            if (/^overrides:/m.test(s)) throw new Error("pnpm-workspace.yaml already has overrides");
+            fs.writeFileSync(w, s + `\noverrides:\n  "@tailwindcss/node": "${v}"\n  "@tailwindcss/oxide": "${v}"\n`);
+          '
+          pnpm install
+      - name: Show resolved Tailwind versions
+        run: |
+          node -e 'for (const p of ["tailwindcss", "@tailwindcss/cli", "@tailwindcss/node", "@tailwindcss/oxide"]) console.log(p, require(`./apps/playground/node_modules/${p}/package.json`).version)'
+      - run: pnpm --filter playground test
 
   install-check:
     runs-on: ubuntu-latest

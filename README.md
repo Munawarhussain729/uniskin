@@ -27,6 +27,12 @@ pnpm add @uniskin/daisyui   # optional adapter
 
 Then in your Tailwind v4 entry CSS, add the `@plugin` line shown above.
 
+Compatibility: **tailwindcss ≥ 4.3.3** — verified in CI against 4.3.3 (the
+oldest supported 4.x), the version pinned in this repo, and `latest`.
+Older 4.x releases compile but are not supported: they serialize plugin
+utilities differently, and 4.0.0 does not forward the `@plugin` source
+location uniskin uses to resolve relative adapter paths.
+
 Uniskin classes are emitted on demand from Tailwind's automatic content
 detection — the same scanning that finds `p-4` finds `ui-button`, in any
 file type it scans (HTML, JSX, Vue, PHP, …). If you keep templates in a
