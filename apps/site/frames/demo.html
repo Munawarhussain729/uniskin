@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uniskin — live demo</title>
+    <link id="skin" rel="stylesheet" href="/adapters/default.css" />
+    <style>
+      :root { color-scheme: light; }
+      html.dark { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 1.25rem;
+        background: var(--ui-surface);
+        color: var(--ui-surface-fg);
+        font-family: var(--ui-font-sans);
+      }
+      .f-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+      .f-title { font-weight: 600; font-size: 1rem; }
+      .f-fields { display: grid; gap: 0.75rem; margin: 1rem 0; }
+      .f-grid2 { display: grid; gap: 0.75rem; grid-template-columns: 1fr 1fr; }
+      .f-check { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+      .f-actions { display: flex; justify-content: flex-end; gap: 0.5rem; flex-wrap: wrap; }
+      .f-intents { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
+      @media (max-width: 30rem) { .f-grid2 { grid-template-columns: 1fr; } }
+    </style>
+    <script>
+      /* Frames are standalone-linkable: ?adapter=shadcn&dark=1 pins a skin.
+         The parent page also drives these same properties on the loaded
+         document — the markup itself never changes between adapters. */
+      (() => {
+        const q = new URLSearchParams(location.search);
+        const adapter = q.get("adapter");
+        if (adapter) document.getElementById("skin").href = "/adapters/" + adapter + ".css";
+        const dark = q.has("dark")
+          ? q.get("dark") === "1" || q.get("dark") === "true"
+          : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+        document.documentElement.classList.toggle("light", !dark);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="ui-card">
+      <div class="ui-card-header f-head">
+        <span class="f-title">Project settings</span>
+        <span class="ui-badge ui-success">Active</span>
+      </div>
+      <div class="ui-card-body">
+        <div class="ui-tabs" role="tablist" aria-label="Settings sections">
+          <button class="ui-tab" role="tab" aria-selected="true">General</button>
+          <button class="ui-tab" role="tab" aria-selected="false">Members</button>
+          <button class="ui-tab" role="tab" aria-selected="false">Usage</button>
+          <button class="ui-tab ui-disabled" role="tab" aria-disabled="true">Billing</button>
+        </div>
+        <div class="f-fields">
+          <div class="ui-alert ui-warning ui-soft" role="alert">
+            Trial ends in 3 days — upgrade to keep this workspace.
+          </div>
+          <div class="f-grid2">
+            <input class="ui-input" value="uniskin-docs" aria-label="Project name" />
+            <select class="ui-select" aria-label="Region">
+              <option>eu-central</option>
+              <option>us-east</option>
+              <option>ap-south</option>
+            </select>
+          </div>
+          <label class="f-check">
+            <input type="checkbox" class="ui-checkbox ui-primary" checked />
+            Deploy previews on every push
+          </label>
+        </div>
+      </div>
+      <div class="ui-card-footer f-actions">
+        <button class="ui-button ui-ghost">Cancel</button>
+        <button class="ui-button ui-outline">Reset</button>
+        <button class="ui-button ui-primary">Save changes</button>
+      </div>
+    </div>
+    <div class="f-intents">
+      <button class="ui-button ui-primary ui-sm">primary</button>
+      <button class="ui-button ui-secondary ui-sm">secondary</button>
+      <button class="ui-button ui-success ui-sm">success</button>
+      <button class="ui-button ui-warning ui-sm">warning</button>
+      <button class="ui-button ui-danger ui-sm">danger</button>
+      <button class="ui-button ui-primary ui-outline ui-sm">outline</button>
+      <button class="ui-button ui-primary ui-soft ui-sm">soft</button>
+      <button class="ui-button ui-primary ui-ghost ui-sm">ghost</button>
+      <button class="ui-button ui-sm" disabled>disabled</button>
+      <button class="ui-button ui-secondary ui-loading ui-sm">loading</button>
+    </div>
+    <script>
+      document.querySelectorAll(".ui-tabs").forEach((tabs) =>
+        tabs.addEventListener("click", (e) => {
+          const tab = e.target.closest(".ui-tab");
+          if (!tab || tab.disabled || tab.classList.contains("ui-disabled")) return;
+          tabs
+            .querySelectorAll(".ui-tab")
+            .forEach((t) => t.setAttribute("aria-selected", String(t === tab)));
+        }),
+      );
+    </script>
+  </body>
+</html>

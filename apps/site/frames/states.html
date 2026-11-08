@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uniskin — states</title>
+    <link id="skin" rel="stylesheet" href="/adapters/default.css" />
+    <style>
+      :root { color-scheme: light; }
+      html.dark { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 1.25rem;
+        background: var(--ui-surface);
+        color: var(--ui-surface-fg);
+        font-family: var(--ui-font-sans);
+      }
+      .f-row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-bottom: 1rem; }
+      .f-row:last-child { margin-bottom: 0; }
+      .f-tag { min-width: 7.5rem; font-size: 0.75rem; opacity: 0.6; font-family: ui-monospace, monospace; }
+    </style>
+    <script>
+      (() => {
+        const q = new URLSearchParams(location.search);
+        const adapter = q.get("adapter");
+        if (adapter) document.getElementById("skin").href = "/adapters/" + adapter + ".css";
+        const dark = q.has("dark")
+          ? q.get("dark") === "1" || q.get("dark") === "true"
+          : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+        document.documentElement.classList.toggle("light", !dark);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="f-row">
+      <span class="f-tag">ui-disabled</span>
+      <button class="ui-button ui-primary" disabled>:disabled</button>
+      <button class="ui-button ui-primary ui-disabled">.ui-disabled</button>
+      <button class="ui-button ui-primary" aria-disabled="true">aria-disabled</button>
+      <input class="ui-input" style="max-width: 9rem" placeholder="disabled" disabled aria-label="Disabled" />
+    </div>
+    <div class="f-row">
+      <span class="f-tag">ui-loading</span>
+      <button class="ui-button ui-secondary ui-loading">.ui-loading</button>
+      <button class="ui-button ui-secondary" aria-busy="true">aria-busy</button>
+      <input class="ui-input ui-loading" style="max-width: 9rem" value="saving…" aria-label="Loading" />
+    </div>
+    <div class="f-row">
+      <span class="f-tag">ui-active</span>
+      <button class="ui-button ui-outline ui-active">.ui-active</button>
+      <button class="ui-button ui-outline" aria-pressed="true">aria-pressed</button>
+      <div class="ui-tabs ui-sm" role="tablist">
+        <button class="ui-tab" role="tab" aria-selected="true">selected</button>
+        <button class="ui-tab" role="tab" aria-selected="false">idle</button>
+      </div>
+    </div>
+  </body>
+</html>

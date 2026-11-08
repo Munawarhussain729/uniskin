@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uniskin — adapter swatch</title>
+    <link id="skin" rel="stylesheet" href="/adapters/default.css" />
+    <style>
+      :root { color-scheme: light; }
+      html.dark { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 1.25rem;
+        background: var(--ui-surface);
+        color: var(--ui-surface-fg);
+        font-family: var(--ui-font-sans);
+      }
+      .f-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 0.75rem; }
+      .f-row:last-child { margin-bottom: 0; }
+    </style>
+    <script>
+      (() => {
+        const q = new URLSearchParams(location.search);
+        const adapter = q.get("adapter");
+        if (adapter) document.getElementById("skin").href = "/adapters/" + adapter + ".css";
+        const dark = q.has("dark")
+          ? q.get("dark") === "1" || q.get("dark") === "true"
+          : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+        document.documentElement.classList.toggle("light", !dark);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="f-row">
+      <button class="ui-button ui-primary ui-sm">Save</button>
+      <button class="ui-button ui-primary ui-outline ui-sm">Outline</button>
+      <button class="ui-button ui-ghost ui-sm">Ghost</button>
+      <span class="ui-badge ui-success">ok</span>
+      <span class="ui-badge ui-danger ui-soft">err</span>
+      <input type="checkbox" class="ui-checkbox ui-primary" checked aria-label="Checked" />
+    </div>
+    <div class="f-row">
+      <input class="ui-input ui-sm" style="max-width: 11rem" placeholder="Text field" aria-label="Text field" />
+      <select class="ui-select ui-sm" style="max-width: 8rem" aria-label="Select"><option>Pick…</option></select>
+    </div>
+  </body>
+</html>
