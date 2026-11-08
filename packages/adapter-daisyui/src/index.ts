@@ -1,5 +1,36 @@
 import { defineAdapter } from "uniskin/adapter";
 
+/* daisyUI input/select: field-height box, 1px base-content border, outline focus */
+const field = {
+  "border-width": "var(--border, 1px)",
+  "border-color":
+    "var(--ui-field-c, color-mix(in oklab, var(--color-base-content, #1f2937) 20%, transparent))",
+  "&:hover": {},
+  "&:focus-visible": {
+    outline: "2px solid var(--ui-c)",
+    "outline-offset": "2px",
+    "box-shadow": "none",
+    "border-color":
+      "var(--ui-field-c, color-mix(in oklab, var(--color-base-content, #1f2937) 20%, transparent))",
+  },
+};
+const singleLine = {
+  ...field,
+  height: "calc(var(--size-field, 0.25rem) * 10)",
+  padding: "0 0.75rem",
+};
+const fieldSizes = {
+  sm: { height: "calc(var(--size-field, 0.25rem) * 8)", padding: "0 0.625rem", "font-size": "0.75rem" },
+  lg: { height: "calc(var(--size-field, 0.25rem) * 12)", padding: "0 1rem", "font-size": "1.125rem" },
+};
+
+/* daisyUI alert: tinted surface with a matching border, text in the intent color */
+const alertIntent = {
+  "background-color": "color-mix(in oklab, var(--ui-c) 10%, var(--ui-surface))",
+  "border-color": "color-mix(in oklab, var(--ui-c) 40%, transparent)",
+  color: "color-mix(in oklab, var(--ui-c) 85%, var(--ui-surface-fg))",
+};
+
 /**
  * daisyUI 5 visual style for Uniskin.
  *
@@ -41,6 +72,62 @@ export default defineAdapter({
     "--ui-radius": "var(--radius-field, 0.25rem)",
   },
   components: {
+    input: { base: singleLine, sizes: fieldSizes },
+    textarea: { base: field },
+    select: { base: singleLine, sizes: fieldSizes },
+    checkbox: {
+      base: {
+        "--ui-check-size": "calc(var(--size-selector, 0.25rem) * 6)",
+        "border-radius": "var(--radius-selector, 0.5rem)",
+        "border-color": "color-mix(in oklab, var(--color-base-content, #1f2937) 20%, transparent)",
+      },
+      sizes: {
+        sm: { "--ui-check-size": "calc(var(--size-selector, 0.25rem) * 5)" },
+        lg: { "--ui-check-size": "calc(var(--size-selector, 0.25rem) * 7)" },
+      },
+    },
+    card: {
+      base: {
+        "border-radius": "var(--radius-box, 1rem)",
+        "box-shadow": "0 1px 3px rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+      },
+    },
+    "card-header": { base: { "border-bottom": "0", "padding-bottom": "0" } },
+    "card-footer": { base: { "background-color": "transparent", "border-top": "0" } },
+    badge: {
+      base: {
+        height: "calc(var(--size-selector, 0.25rem) * 6)",
+        "border-radius": "var(--radius-selector, 0.5rem)",
+        "font-size": "0.875rem",
+        padding: "0 0.5rem",
+      },
+      sizes: {
+        sm: { height: "calc(var(--size-selector, 0.25rem) * 5)", "font-size": "0.75rem" },
+        lg: { height: "calc(var(--size-selector, 0.25rem) * 7)", "font-size": "1rem" },
+      },
+    },
+    alert: {
+      base: {
+        "border-radius": "var(--radius-box, 1rem)",
+        "background-color": "var(--ui-surface-muted)",
+        color: "var(--ui-surface-fg)",
+        "border-color": "var(--ui-border)",
+        "font-size": "0.875rem",
+      },
+      intents: {
+        primary: alertIntent,
+        secondary: alertIntent,
+        success: alertIntent,
+        warning: alertIntent,
+        danger: alertIntent,
+      },
+    },
+    "modal-box": {
+      base: {
+        "border-radius": "var(--radius-box, 1rem)",
+        "box-shadow": "0 25px 50px -12px rgb(0 0 0 / 0.25)",
+      },
+    },
     button: {
       base: {
         /* daisyUI btn: semibold, snappy press animation */

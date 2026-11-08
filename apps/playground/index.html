@@ -26,6 +26,12 @@
         cursor: pointer;
       }
       .switcher button[aria-pressed="true"] { background: #111; color: #fff; border-color: #111; }
+      h2.group { font-size: 1.15rem; text-transform: none; margin: 3rem 0 0; padding-top: 1.5rem; border-top: 1px solid #ddd; }
+      .fields { display: grid; gap: 0.75rem; max-width: 26rem; }
+      .cols { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); align-items: start; }
+      .check { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+      .demo-modal { position: relative; height: 15rem; overflow: hidden; border-radius: 8px; border: 1px dashed #bbb; }
+      .demo-modal .ui-modal { position: absolute; }
       .hint { color: #666; font-size: 0.85rem; }
     </style>
   </head>
@@ -98,6 +104,165 @@
       <button class="ui-button ui-outline ui-active">.ui-active</button>
       <button class="ui-button ui-outline" aria-pressed="true">aria-pressed</button>
     </div>
+
+    <h2 class="group">Form fields</h2>
+    <div class="cols">
+      <div class="fields">
+        <h2>input</h2>
+        <input class="ui-input" placeholder="Default" aria-label="Default" />
+        <input class="ui-input ui-primary" value="Primary" aria-label="Primary" />
+        <input class="ui-input ui-danger" value="Invalid value" aria-invalid="true" aria-label="Danger" />
+        <input class="ui-input ui-success" value="Looks good" aria-label="Success" />
+        <input class="ui-input ui-soft" placeholder="Soft" aria-label="Soft" />
+        <input class="ui-input ui-ghost" placeholder="Ghost" aria-label="Ghost" />
+        <input class="ui-input ui-sm" placeholder="Small" aria-label="Small" />
+        <input class="ui-input ui-lg" placeholder="Large" aria-label="Large" />
+        <input class="ui-input" placeholder="Disabled" disabled aria-label="Disabled" />
+      </div>
+      <div class="fields">
+        <h2>textarea &amp; select</h2>
+        <textarea class="ui-textarea" placeholder="Tell us more…" aria-label="Message"></textarea>
+        <textarea class="ui-textarea ui-warning ui-soft" aria-label="Warning">Soft warning</textarea>
+        <select class="ui-select" aria-label="Plan">
+          <option>Free</option><option>Pro</option><option>Team</option>
+        </select>
+        <select class="ui-select ui-primary ui-outline" aria-label="Outline">
+          <option>Outline primary</option>
+        </select>
+        <select class="ui-select ui-sm" aria-label="Small"><option>Small</option></select>
+        <select class="ui-select" disabled aria-label="Disabled"><option>Disabled</option></select>
+      </div>
+      <div class="fields">
+        <h2>checkbox</h2>
+        <label class="check"><input type="checkbox" class="ui-checkbox" /> Unchecked</label>
+        <label class="check"><input type="checkbox" class="ui-checkbox" checked /> Checked</label>
+        <label class="check"><input type="checkbox" class="ui-checkbox ui-primary" checked /> Primary</label>
+        <label class="check"><input type="checkbox" class="ui-checkbox ui-success ui-soft" checked /> Success soft</label>
+        <label class="check"><input type="checkbox" class="ui-checkbox ui-danger ui-outline" checked /> Danger outline</label>
+        <label class="check"><input type="checkbox" class="ui-checkbox ui-warning" checked /> Warning</label>
+        <label class="check"><input type="checkbox" class="ui-checkbox ui-primary" id="indet" /> Indeterminate</label>
+        <div class="row">
+          <input type="checkbox" class="ui-checkbox ui-sm ui-primary" checked aria-label="sm" />
+          <input type="checkbox" class="ui-checkbox ui-primary" checked aria-label="md" />
+          <input type="checkbox" class="ui-checkbox ui-lg ui-primary" checked aria-label="lg" />
+          <input type="checkbox" class="ui-checkbox" checked disabled aria-label="disabled" />
+        </div>
+      </div>
+    </div>
+
+    <h2 class="group">Feedback</h2>
+    <h2>badge</h2>
+    <div class="row">
+      <span class="ui-badge">default</span>
+      <span class="ui-badge ui-primary">primary</span>
+      <span class="ui-badge ui-secondary">secondary</span>
+      <span class="ui-badge ui-success">success</span>
+      <span class="ui-badge ui-warning">warning</span>
+      <span class="ui-badge ui-danger">danger</span>
+    </div>
+    <div class="row" style="margin-top:.75rem">
+      <span class="ui-badge ui-primary ui-outline">outline</span>
+      <span class="ui-badge ui-success ui-outline">outline</span>
+      <span class="ui-badge ui-primary ui-soft">soft</span>
+      <span class="ui-badge ui-danger ui-soft">soft</span>
+      <span class="ui-badge ui-primary ui-ghost">ghost</span>
+      <span class="ui-badge ui-primary ui-sm">sm</span>
+      <span class="ui-badge ui-primary ui-lg">lg</span>
+    </div>
+
+    <h2>alert</h2>
+    <div class="fields" style="max-width:40rem">
+      <div class="ui-alert" role="alert">Your session will expire in five minutes.</div>
+      <div class="ui-alert ui-primary ui-soft" role="alert">A new version is available.</div>
+      <div class="ui-alert ui-success ui-soft" role="alert">Changes saved successfully.</div>
+      <div class="ui-alert ui-warning ui-soft" role="alert">Storage is almost full.</div>
+      <div class="ui-alert ui-danger ui-soft" role="alert">Payment failed — check your card.</div>
+      <div class="ui-alert ui-danger" role="alert">Solid danger alert.</div>
+      <div class="ui-alert ui-primary ui-outline" role="alert">Outline alert.</div>
+      <div class="ui-alert ui-secondary ui-ghost ui-sm" role="alert">Ghost small alert.</div>
+    </div>
+
+    <h2 class="group">Containers</h2>
+    <div class="cols">
+      <div class="ui-card">
+        <div class="ui-card-header">Team plan</div>
+        <div class="ui-card-body">Everything in Pro, plus shared workspaces and audit logs.</div>
+        <div class="ui-card-footer">
+          <button class="ui-button ui-ghost ui-sm">Cancel</button>
+          <button class="ui-button ui-primary ui-sm">Upgrade</button>
+        </div>
+      </div>
+      <div class="ui-card ui-primary ui-outline">
+        <div class="ui-card-header">Outline primary</div>
+        <div class="ui-card-body">Intent colors the border; style removes the shadow.</div>
+      </div>
+      <div class="ui-card ui-success ui-soft ui-lg">
+        <div class="ui-card-header">Soft success, large</div>
+        <div class="ui-card-body">Padding scales with the card size.</div>
+      </div>
+    </div>
+
+    <h2>tabs</h2>
+    <div class="fields" style="max-width:40rem; gap:1.5rem">
+      <div class="ui-tabs" role="tablist">
+        <button class="ui-tab" role="tab" aria-selected="true">Overview</button>
+        <button class="ui-tab" role="tab" aria-selected="false">Activity</button>
+        <button class="ui-tab" role="tab" aria-selected="false">Settings</button>
+        <button class="ui-tab ui-disabled" role="tab" disabled>Billing</button>
+      </div>
+      <div class="ui-tabs ui-primary" role="tablist">
+        <button class="ui-tab" role="tab" aria-selected="true">Primary</button>
+        <button class="ui-tab" role="tab">Activity</button>
+        <button class="ui-tab" role="tab">Settings</button>
+      </div>
+      <div class="ui-tabs ui-primary ui-outline" role="tablist">
+        <button class="ui-tab" role="tab" aria-selected="true">Outline</button>
+        <button class="ui-tab" role="tab">Activity</button>
+        <button class="ui-tab" role="tab">Settings</button>
+      </div>
+      <div class="ui-tabs ui-primary ui-soft" role="tablist">
+        <button class="ui-tab" role="tab" aria-selected="true">Soft</button>
+        <button class="ui-tab" role="tab">Activity</button>
+        <button class="ui-tab" role="tab">Settings</button>
+      </div>
+      <div class="ui-tabs ui-ghost ui-success ui-sm" role="tablist">
+        <button class="ui-tab" role="tab" aria-selected="true">Ghost sm</button>
+        <button class="ui-tab" role="tab">Activity</button>
+      </div>
+    </div>
+
+    <h2>modal</h2>
+    <div class="row" style="margin-bottom:.75rem">
+      <button class="ui-button ui-primary" id="open-modal" aria-controls="demo-modal">Toggle modal</button>
+    </div>
+    <div class="demo-modal">
+      <div class="ui-modal" id="demo-modal" role="dialog" aria-modal="true" aria-label="Delete project">
+        <div class="ui-modal-box ui-danger">
+          <h3 style="margin:0 0 .5rem">Delete project?</h3>
+          <p style="margin:0 0 1.25rem">This permanently removes all deployments and cannot be undone.</p>
+          <div class="row" style="justify-content:flex-end">
+            <button class="ui-button ui-ghost" data-close>Cancel</button>
+            <button class="ui-button ui-danger" data-close>Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("indet").indeterminate = true;
+      const modal = document.getElementById("demo-modal");
+      document.getElementById("open-modal").addEventListener("click", () => modal.classList.toggle("ui-active"));
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal || e.target.hasAttribute("data-close")) modal.classList.remove("ui-active");
+      });
+      document.querySelectorAll(".ui-tabs").forEach((tabs) =>
+        tabs.addEventListener("click", (e) => {
+          const tab = e.target.closest(".ui-tab");
+          if (!tab || tab.disabled) return;
+          tabs.querySelectorAll(".ui-tab").forEach((t) => t.setAttribute("aria-selected", String(t === tab)));
+        }),
+      );
+    </script>
 
     <script>
       const link = document.getElementById("uniskin-css");
