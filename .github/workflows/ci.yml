@@ -8,6 +8,44 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      # pnpm 11 imports node:sqlite, absent on Node 20 — use the bundled
+      # standalone binary there. Scripts still run under the runner's
+      # Node (20), which is what the matrix measures.
+      - uses: pnpm/action-setup@v4
+        with:
+          standalone: ${{ matrix.node == 20 }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm -r build
+      - run: pnpm --filter site build
+      - run: pnpm -r test
+
+  # Runs the playground suite against a Tailwind version matrix to catch
+  # breakage in the internals uniskin relies on (the @plugin `this.src`
+  # context and how plugin utilities are serialized).
+  tailwind-compat:
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.tailwind == 'latest' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        tailwind:
+          # Measured floor: ≤4.3.2 emits compound utilities nested rather
+          # than as the flat `.ui-x.ui-y` selectors the suite asserts.
+          - "4.3.3"
+          # The version pinned in apps/playground/package.json.
+          - "4.3.5"
+          - "latest"
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -16,9 +54,45 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
       - run: pnpm -r build
-      - run: pnpm -r test
+      - name: Pin tailwindcss ${{ matrix.tailwind }}
+        env:
+          TW: ${{ matrix.tailwind }}
+        run: |
+          # Edits files rather than `pnpm add` (which keeps ^-ranges), and
+          # pins @tailwindcss/node + oxide too — cli's internal deps are
+          # ^-ranges and would otherwise silently mix in newer internals.
+          node -e '
+            const fs = require("fs");
+            const v = process.env.TW;
+            const p = "apps/playground/package.json";
+            const pkg = JSON.parse(fs.readFileSync(p, "utf8"));
+            pkg.devDependencies["tailwindcss"] = v;
+            pkg.devDependencies["@tailwindcss/cli"] = v;
+            fs.writeFileSync(p, JSON.stringify(pkg, null, 2) + "\n");
+            const w = "pnpm-workspace.yaml";
+            const s = fs.readFileSync(w, "utf8");
+            if (/^overrides:/m.test(s)) throw new Error("pnpm-workspace.yaml already has overrides");
+            fs.writeFileSync(w, s + `\noverrides:\n  "@tailwindcss/node": "${v}"\n  "@tailwindcss/oxide": "${v}"\n`);
+          '
+          # CI auto-freezes; the pin deliberately rewrites deps/overrides.
+          pnpm install --no-frozen-lockfile
+      - name: Show resolved Tailwind versions
+        run: |
+          node -e '
+            const { createRequire } = require("module");
+            const { join, dirname, resolve } = require("path");
+            const { existsSync, realpathSync } = require("fs");
+            // resolve through @tailwindcss/cli so transitive @tailwindcss/*
+            // internals (siblings in the pnpm store) are found too
+            const req = createRequire(realpathSync(resolve("apps/playground/node_modules/@tailwindcss/cli/package.json")));
+            const ver = (p) => { let d = dirname(req.resolve(p)); while (!existsSync(join(d, "package.json"))) d = dirname(d); return require(join(d, "package.json")).version; };
+            console.log("tailwindcss", ver("tailwindcss"));
+            console.log("@tailwindcss/cli", require(resolve("apps/playground/node_modules/@tailwindcss/cli/package.json")).version);
+            console.log("@tailwindcss/node", ver("@tailwindcss/node"));
+            console.log("@tailwindcss/oxide", ver("@tailwindcss/oxide"));
+          '
+      - run: pnpm --filter playground test
 
   install-check:
     runs-on: ubuntu-latest

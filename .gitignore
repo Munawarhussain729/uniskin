@@ -4,3 +4,4 @@ dist/
 apps/playground/public/adapters/
 .DS_Store
 apps/playground/tests/__out__/
+apps/site/public/adapters/

@@ -1,0 +1,9 @@
+@import "tailwindcss" source(none);
+
+/* Loading real daisyUI makes the @uniskin/daisyui adapter follow the
+   active daisyUI theme (it maps onto --color-* etc.), so data-theme="dark"
+   on a frame's <html> gives daisyUI's own dark palette. */
+@plugin "daisyui";
+@plugin "uniskin" { adapter: "daisyui"; }
+
+@source "../frames";
