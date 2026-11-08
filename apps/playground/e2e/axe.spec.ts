@@ -39,19 +39,9 @@ const ALLOWLIST: AllowEntry[] = [
     modes: ["light"],
     rule: "color-contrast",
     selector:
-      ".ui-success.ui-soft, .ui-warning.ui-soft, .ui-success.ui-outline, .ui-warning.ui-outline",
+      ".ui-secondary, .ui-danger",
     kind: "upstream",
-    why: "daisyUI light success/warning soft & outline ≈1.7–2:1 — mirrors upstream daisyUI",
-  },
-  {
-    adapters: ["daisyui"],
-    modes: ["light"],
-    rule: "color-contrast",
-    selector:
-      ".ui-secondary, .ui-danger, .ui-success.ui-ghost, .ui-warning.ui-ghost, " +
-      ".ui-tabs.ui-ghost .ui-tab",
-    kind: "upstream",
-    why: "daisyUI light secondary/danger and ghost text are daisyUI's own colours",
+    why: "daisyUI light secondary/danger fills are daisyUI's own palette (about 3:1 with its content colour)",
   },
   {
     adapters: ["daisyui"],
@@ -71,26 +61,6 @@ const ALLOWLIST: AllowEntry[] = [
       ".ui-tabs .ui-tab[aria-selected='false']",
     kind: "upstream",
     why: "shadcn destructive badge/alert and muted-foreground inactive tabs mirror upstream",
-  },
-  // ── Known defects in the default skin's light palette (see report) ────────
-  {
-    adapters: ["default"],
-    modes: ["light"],
-    rule: "color-contrast",
-    selector:
-      ".ui-success, .ui-warning.ui-outline, .ui-warning.ui-ghost, " +
-      ".ui-danger:not(.ui-outline):not(.ui-ghost):not(.ui-soft), " +
-      ".ui-tabs.ui-ghost.ui-success .ui-tab",
-    kind: "defect",
-    why: "default light: success (all), warning outline/ghost, danger solid < 4.5:1",
-  },
-  {
-    adapters: ["shadcn"],
-    modes: ["light"],
-    rule: "color-contrast",
-    selector: ".ui-success",
-    kind: "defect",
-    why: "shadcn light inherits the default skin's low-contrast success tokens",
   },
 ];
 

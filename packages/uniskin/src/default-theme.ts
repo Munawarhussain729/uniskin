@@ -9,12 +9,21 @@ const INTENT_MIX: Record<Intent, [number, number]> = {
   danger: [12, 70],
 };
 
+/** Share of the intent colour kept when it is used as text (rest = surface text).
+ *  Only warning is too light to read on a light surface at full strength. */
+const INTENT_TEXT_MIX: Partial<Record<Intent, number>> = { warning: 55 };
+
 /** The five per-element variables an intent sets (see composition model). */
 function intentVars(intent: Intent): CssRuleObject {
   const [soft, fg] = INTENT_MIX[intent];
   return {
     "--ui-c": `var(--ui-${intent})`,
-    "--ui-c-text": `var(--ui-${intent})`,
+    /* adapters can pin the text colour with --ui-<intent>-text */
+    "--ui-c-text": `var(--ui-${intent}-text, ${
+      INTENT_TEXT_MIX[intent]
+        ? `color-mix(in oklab, var(--ui-${intent}) ${INTENT_TEXT_MIX[intent]}%, var(--ui-surface-fg))`
+        : `var(--ui-${intent})`
+    })`,
     "--ui-on-c": `var(--ui-${intent}-fg)`,
     /* mixed with the surface (not white/black) so soft looks stay legible in dark themes */
     /* adapters can pin exact soft colors with --ui-<intent>-soft / -soft-fg */
@@ -53,6 +62,7 @@ const focusRing: CssRuleObject = {
 const fieldBase: CssRuleObject = {
   /* focus/accent color; intents re-point it, --ui-field-c also tints the border */
   "--ui-c": "var(--ui-ring)",
+  "--ui-c-text": "var(--ui-ring)",
   display: "block",
   width: "100%",
   "box-sizing": "border-box",
@@ -74,9 +84,10 @@ const fieldBase: CssRuleObject = {
       "var(--ui-field-c, color-mix(in oklab, var(--ui-border) 65%, var(--ui-surface-fg)))",
   },
   "&:focus-visible": {
-    outline: "2px solid transparent",
+    outline: "2px solid var(--ui-ring)",
+    "outline-offset": "1px",
     "border-color": "var(--ui-c)",
-    "box-shadow": "0 0 0 3px color-mix(in oklab, var(--ui-c) 25%, transparent)",
+    "box-shadow": "none",
   },
 };
 
@@ -166,11 +177,11 @@ export const defaultAdapter = defineAdapter({
     "--ui-primary-fg": "oklch(0.98 0 0)",
     "--ui-secondary": "oklch(0.55 0.05 285)",
     "--ui-secondary-fg": "oklch(0.98 0 0)",
-    "--ui-success": "oklch(0.62 0.15 163)",
+    "--ui-success": "oklch(0.5 0.14 163)",
     "--ui-success-fg": "oklch(0.98 0 0)",
     "--ui-warning": "oklch(0.78 0.15 85)",
     "--ui-warning-fg": "oklch(0.28 0.04 90)",
-    "--ui-danger": "oklch(0.58 0.21 27)",
+    "--ui-danger": "oklch(0.56 0.2 27)",
     "--ui-danger-fg": "oklch(0.98 0 0)",
 
     /* surfaces */
@@ -726,12 +737,12 @@ export const defaultAdapter = defineAdapter({
         disabled: { opacity: "0.45", cursor: "not-allowed", "pointer-events": "none" },
         loading: { cursor: "progress", animation: "ui-pulse 1.2s ease-in-out infinite" },
         active: {
-          color: "var(--ui-tab-active-fg, var(--ui-c, var(--ui-surface-fg)))",
+          color: "var(--ui-tab-active-fg, var(--ui-c-text, var(--ui-surface-fg)))",
           "background-color": "var(--ui-tab-active-bg, transparent)",
           "border-bottom-color": "var(--ui-tab-active-line, var(--ui-c, var(--ui-surface-fg)))",
           "box-shadow": "var(--ui-tab-active-shadow, none)",
           "&:hover": {
-            color: "var(--ui-tab-active-fg, var(--ui-c, var(--ui-surface-fg)))",
+            color: "var(--ui-tab-active-fg, var(--ui-c-text, var(--ui-surface-fg)))",
             "background-color": "var(--ui-tab-active-bg, transparent)",
           },
         },

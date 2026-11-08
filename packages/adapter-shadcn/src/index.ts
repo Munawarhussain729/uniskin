@@ -255,6 +255,16 @@ export default defineAdapter({
           },
         },
       },
+      states: {
+        /* the default pressed look is an inset shadow, which would replace the
+           ring while the button is focused — keep both */
+        active: {
+          "&:focus-visible": {
+            "box-shadow":
+              "inset 0 2px 4px rgb(0 0 0 / 0.2), 0 0 0 1px hsl(var(--background)), 0 0 0 4px hsl(var(--ring) / 0.5)",
+          },
+        },
+      },
       sizes: {
         sm: { height: "2rem", padding: "0 0.75rem", "font-size": "0.75rem" },
         lg: { height: "2.5rem", padding: "0 2rem" },

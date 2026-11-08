@@ -116,5 +116,30 @@ export function buildRules(
     }
   }
 
+  for (const sel of Object.keys(utilities)) {
+    utilities[sel] = withReducedMotion(utilities[sel]);
+  }
+
   return { base, utilities };
+}
+
+const REDUCED_MOTION = "@media (prefers-reduced-motion: reduce)";
+
+/**
+ * Wherever a rule declares an `animation`, add a reduced-motion override that
+ * turns it off (spinners and pulses stay static). Applied recursively so
+ * nested rules such as the button's `&::after` spinner are covered.
+ */
+function withReducedMotion(rule: CssRuleObject): CssRuleObject {
+  const out: CssRuleObject = {};
+  let animates = false;
+  for (const [key, value] of Object.entries(rule)) {
+    if (typeof value === "object" && value !== null) out[key] = withReducedMotion(value);
+    else {
+      out[key] = value;
+      if (key === "animation" && typeof value === "string" && value !== "none") animates = true;
+    }
+  }
+  if (animates) out[REDUCED_MOTION] = { animation: "none" };
+  return out;
 }
