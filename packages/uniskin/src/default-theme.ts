@@ -704,7 +704,7 @@ export const defaultAdapter = defineAdapter({
         "--ui-card-border": `color-mix(in oklab, var(--ui-${i}) 45%, var(--ui-border))`,
       })),
       styles: {
-        outline: { "box-shadow": "none", "border-color": "var(--ui-c)" },
+        outline: { "box-shadow": "none", "border-color": "var(--ui-c-border, var(--ui-c))" },
         ghost: {
           "box-shadow": "none",
           "background-color": "transparent",
@@ -766,7 +766,7 @@ export const defaultAdapter = defineAdapter({
         "line-height": "1",
         padding: "0.3125rem 0.625rem",
         "border-radius": "9999px",
-        border: "1px solid var(--ui-c)",
+        border: "1px solid var(--ui-c-border, var(--ui-c))",
         "background-color": "var(--ui-c)",
         color: "var(--ui-on-c)",
         "white-space": "nowrap",
@@ -804,7 +804,7 @@ export const defaultAdapter = defineAdapter({
         "line-height": "1.4",
         padding: "0.875rem 1rem",
         "border-radius": "var(--ui-radius)",
-        border: "1px solid var(--ui-c)",
+        border: "1px solid var(--ui-c-border, var(--ui-c))",
         "background-color": "var(--ui-c)",
         color: "var(--ui-on-c)",
       },
