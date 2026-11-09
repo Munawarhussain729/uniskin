@@ -4,7 +4,10 @@ import { ADAPTERS, MODES, inspectElement, openPlayground } from "./helpers.js";
 const FOCUSABLE = [
   "button:not([disabled])",
   "a[href]",
-  "input:not([disabled])",
+  // native radios: Tab only enters a group once, at the checked radio —
+  // the others are reached with arrow keys (asserted separately below)
+  "input:not([disabled]):not([type='radio'])",
+  "input[type='radio']:checked:not([disabled])",
   "select:not([disabled])",
   "textarea:not([disabled])",
   "[role='tab']:not([disabled])",
@@ -97,6 +100,38 @@ for (const adapter of ADAPTERS) {
       ).toEqual(KNOWN_RING_DEFECTS[`${adapter}/${mode}`] ?? []);
     });
   }
+
+  test(`${adapter}: radio group follows native keyboard behaviour`, async ({ page }) => {
+    await openPlayground(page, adapter, "light");
+    await page.addStyleTag({ content: "*,*::before,*::after{transition:none!important}" });
+    const radios = page.locator("#radio-plan input[type='radio']");
+    await radios.nth(0).focus();
+    await expect(radios.nth(0)).toBeChecked();
+    await page.keyboard.press("ArrowDown");
+    await expect(radios.nth(1)).toBeFocused();
+    await expect(radios.nth(1)).toBeChecked();
+    await expect(radios.nth(0)).not.toBeChecked();
+    await page.keyboard.press("ArrowRight");
+    await expect(radios.nth(2)).toBeChecked();
+    // wraps around
+    await page.keyboard.press("ArrowDown");
+    await expect(radios.nth(0)).toBeChecked();
+    await page.keyboard.press("ArrowUp");
+    await expect(radios.nth(2)).toBeChecked();
+    // one tab stop in the group: Tab leaves it
+    await page.keyboard.press("Tab");
+    const stillInGroup = await page.evaluate(
+      () => !!document.activeElement?.closest("#radio-plan"),
+    );
+    expect(stillInGroup).toBe(false);
+    // Shift+Tab returns to the checked radio, not the first
+    await page.keyboard.press("Shift+Tab");
+    await expect(radios.nth(2)).toBeFocused();
+    // disabled radios are natively unfocusable and announced as disabled
+    const disabled = page.locator("input.ui-radio[disabled]");
+    expect(await disabled.count()).toBeGreaterThan(0);
+    for (const el of await disabled.all()) await expect(el).toBeDisabled();
+  });
 
   test(`${adapter}: busy buttons keep a readable label`, async ({ page }) => {
     await openPlayground(page, adapter, "light");

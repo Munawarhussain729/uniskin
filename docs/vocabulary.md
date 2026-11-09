@@ -1,6 +1,6 @@
 # Vocabulary reference
 
-Every class in Uniskin vocabulary v1, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.1, grouped by component. The prefix is
 `ui-` by default — if you set `prefix: "uk"` in the `@plugin` options,
 read every `ui-*` class below as `uk-*`.
 
@@ -107,6 +107,10 @@ keep the element's own `<option>` children.
 - **Intents / styles / sizes / states:** identical to `ui-input`; the
   size modifiers also adjust the chevron padding.
 - **Native equivalents:** identical to `ui-input`.
+- **Listbox selects:** `<select multiple>` and `<select size="N">` (N > 1)
+  render as a list, so the chevron is dropped and the element grows to
+  fit its rows. `<optgroup>` and `<option>` keep the browser's own
+  styling; Uniskin does not restyle the popup.
 
 ### `ui-checkbox`
 
@@ -128,6 +132,44 @@ drawn with `::after`; no wrapper needed.
 - **Native equivalents:** `:disabled`, `[aria-disabled="true"]`,
   `[aria-busy="true"]`. Checked and indeterminate styling comes from the
   real `:checked` / `:indeterminate` pseudo-classes — no extra classes.
+- **Headless checkboxes:** `<button role="checkbox" aria-checked="true">`
+  (or `"mixed"`) renders checked / indeterminate too, so Radix, Ark and
+  similar libraries work without extra classes. The library owns the
+  click and Space handling.
+- **Indeterminate needs JS:** no HTML attribute sets `:indeterminate`;
+  it only exists as a DOM property, so set it from script:
+  `input.indeterminate = true`. It clears when the user toggles the box
+  and has no effect on the submitted value.
+
+### `ui-radio`
+
+Native radio restyled — `<input type="radio">`. The dot is drawn with
+`::after`; no wrapper needed. Put the class on the **input**, not on a
+`<label>`.
+
+```html
+<fieldset>
+  <legend>Plan</legend>
+  <label><input type="radio" name="plan" class="ui-radio ui-primary" checked /> Free</label>
+  <label><input type="radio" name="plan" class="ui-radio ui-primary" /> Pro</label>
+</fieldset>
+```
+
+- **Intents:** all five; set the checked fill color.
+- **Styles:** `ui-outline` (accent border, dot in the accent color),
+  `ui-ghost` / `ui-soft` (muted circle, soft fill when checked).
+- **Sizes:** `ui-sm`, `ui-lg` (circle size via `--ui-radio-size`, dot
+  size via `--ui-radio-dot-size`, dot color via `--ui-radio-dot`).
+- **States:** `ui-disabled`, `ui-loading`, `ui-active`.
+- **Native equivalents:** `:checked`, `:disabled`,
+  `[aria-disabled="true"]`, `[aria-busy="true"]`, and
+  `[aria-checked="true"]` for `<button role="radio">` from a headless
+  library.
+- **You provide:** a shared `name`, a visible label (wrapping `<label>`
+  or `for`) and a group label (`<fieldset>` + `<legend>`, or
+  `role="radiogroup"` with `aria-labelledby`). Single selection, one tab
+  stop and arrow-key movement are native for same-`name` inputs; for
+  `role="radio"` buttons the library owns roving tabindex and arrows.
 
 ### `ui-card`, `ui-card-header`, `ui-card-body`, `ui-card-footer`
 
@@ -276,6 +318,7 @@ fewer — anything omitted falls back to the default):
 | `ui-textarea`    | ✓ | outline ghost soft | ✓ | disabled loading active |
 | `ui-select`      | ✓ | outline ghost soft | ✓ | disabled loading active |
 | `ui-checkbox`    | ✓ | outline ghost soft | ✓ | disabled loading active |
+| `ui-radio`       | ✓ | outline ghost soft | ✓ | disabled loading active |
 | `ui-card`        | ✓ | outline ghost soft | ✓ | disabled loading active |
 | `ui-card-header` | — | — | — | — |
 | `ui-card-body`   | — | — | — | — |

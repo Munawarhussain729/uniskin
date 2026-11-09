@@ -106,3 +106,20 @@ Measured on the CI Node matrix (20 and 22):
   defineAdapter({…})`); ESM and CJS both work.
 - In dev builds Uniskin warns which vocabulary slots you haven't
   defined — that's normal; they fall back to the default style.
+
+## Per-component hooks
+
+Components read optional `--ui-<component>-*` variables with a built-in
+fallback, so an adapter sets them in `base` or `sizes` and an unset hook
+is harmless:
+
+| Component | Hooks |
+|-----------|-------|
+| `ui-checkbox` | `--ui-check-size`, `--ui-check-mark` |
+| `ui-radio` | `--ui-radio-size` (default `1.125rem`), `--ui-radio-dot` (dot color, default `--ui-on-c`), `--ui-radio-dot-size` (default `0.5em`) |
+
+`ui-radio` and `ui-checkbox` also match `[aria-checked]` (headless
+libraries), so nest your checked-state overrides under the same
+selector the default theme uses, for example
+`'&:checked, &[aria-checked="true"]'`.
+

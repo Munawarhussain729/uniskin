@@ -38,6 +38,7 @@ const COMPONENTS: Record<string, Slots> = {
   textarea: FULL,
   select: FULL,
   checkbox: FULL,
+  radio: FULL,
   card: FULL,
   "card-header": {},
   "card-body": {},
@@ -209,6 +210,7 @@ describe("content scanning", () => {
     "ui-textarea ui-lg",
     "ui-select ui-outline",
     "ui-checkbox ui-success ui-soft",
+    "ui-radio ui-primary ui-outline",
     "ui-card ui-primary ui-outline ui-lg",
     "ui-card-header ui-card-body ui-card-footer",
     "ui-badge ui-warning ui-ghost",
@@ -250,6 +252,63 @@ describe("content scanning", () => {
   it("does not emit unused component css", () => {
     const css = compileWithFiles({ "index.html": '<div class="p-4">x</div>' });
     expect(css).not.toContain(".ui-button");
+  });
+});
+
+describe("radio and checkbox/select gap fixes (decision 003, wave 1)", () => {
+  for (const adapter of ["default", "shadcn", "daisyui"]) {
+    describe(adapter, () => {
+      const css = () => skin(adapter);
+
+      it("ui-radio styles native :checked and headless [aria-checked]", () => {
+        const block = ruleBlock(css(), ".ui-radio");
+        expect(block).toContain("&:checked");
+        expect(block).toContain('&[aria-checked="true"]');
+        expect(block).toContain("border-radius: 50%");
+      });
+
+      it("ui-radio is not scoped to a wrapper and adds no global token", () => {
+        expect(css()).not.toMatch(/--ui-shadow\b/);
+        expect(css()).not.toMatch(/label\.ui-radio/);
+      });
+
+      it("ui-checkbox also keys off [aria-checked] true and mixed", () => {
+        const block = ruleBlock(css(), ".ui-checkbox");
+        expect(block).toContain('&[aria-checked="true"]');
+        expect(block).toContain('&[aria-checked="mixed"]');
+        expect(block).toContain(":indeterminate");
+      });
+
+      it("ui-select drops the chevron on [multiple] and [size]", () => {
+        const block = ruleBlock(css(), ".ui-select");
+        expect(block).toContain('&[multiple], &[size]:not([size="1"])');
+        expect(block).toContain("background-image: none");
+      });
+    });
+  }
+
+  it("radio hooks: shadcn and daisyUI set size, default reads it with a fallback", () => {
+    expect(ruleBlock(skin("default"), ".ui-radio")).toContain("var(--ui-radio-size, 1.125rem)");
+    expect(ruleBlock(skin("default"), ".ui-radio")).toContain("var(--ui-radio-dot-size, 0.5em)");
+    expect(ruleBlock(skin("shadcn"), ".ui-radio")).toContain("--ui-radio-size: 1rem");
+    expect(ruleBlock(skin("daisyui"), ".ui-radio")).toContain("--size-selector");
+  });
+
+  it("radio transitions are disabled under prefers-reduced-motion", () => {
+    const block = ruleBlock(skin("default"), ".ui-radio");
+    expect(block).toMatch(/prefers-reduced-motion: reduce\)\s*\{[^}]*transition: none/);
+  });
+
+  it('prefix: "uk" renames radio classes and keyframes', () => {
+    const css = compileWithFiles(
+      { "index.html": '<input type="radio" class="uk-radio uk-primary uk-loading" />' },
+      'prefix: "uk";',
+    );
+    expect(css).toContain(".uk-radio");
+    expect(css).toContain(".uk-radio.uk-primary");
+    expect(css).toContain(".uk-radio.uk-loading");
+    expect(css).toContain("uk-pulse 1.2s ease-in-out infinite");
+    expect(css).not.toMatch(/\.ui-/);
   });
 });
 
