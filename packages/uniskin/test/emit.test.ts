@@ -132,3 +132,24 @@ describe("prefers-reduced-motion", () => {
     expect(utilities[".ui-badge"][REDUCED_MOTION]).toBeUndefined();
   });
 });
+
+describe("overlay and intent tokens", () => {
+  const { utilities, base } = buildRules(defaultAdapter, "ui", defaultKeyframes);
+  const css = JSON.stringify([utilities, base]);
+
+  it("defines overlay tokens in both colour modes and reads them with a fallback", () => {
+    expect(defaultAdapter.tokens!["--ui-overlay"]).toBeDefined();
+    expect(defaultAdapter.darkTokens!["--ui-overlay-soft"]).toBeDefined();
+    expect(css).toContain("var(--ui-overlay, rgb(0 0 0 / 0.5))");
+    expect(css).toContain("var(--ui-overlay-soft, rgb(255 255 255 / 0.6))");
+  });
+
+  it("lets each intent pin hover, border and soft-hover with today's look as the fallback", () => {
+    const primary = utilities[".ui-button.ui-primary"]!;
+    expect(primary["--ui-c-hover"]).toBe(
+      "var(--ui-primary-hover, color-mix(in oklab, var(--ui-c) 85%, black))",
+    );
+    expect(primary["--ui-c-border"]).toBe("var(--ui-primary-border, var(--ui-c))");
+    expect(primary["--ui-c-soft-hover"]).toBe("var(--ui-primary-soft-hover, var(--ui-c))");
+  });
+});

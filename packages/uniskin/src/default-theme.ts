@@ -13,7 +13,7 @@ const INTENT_MIX: Record<Intent, [number, number]> = {
  *  Only warning is too light to read on a light surface at full strength. */
 const INTENT_TEXT_MIX: Partial<Record<Intent, number>> = { warning: 55 };
 
-/** The five per-element variables an intent sets (see composition model). */
+/** The per-element variables an intent sets (see composition model). */
 function intentVars(intent: Intent): CssRuleObject {
   const [soft, fg] = INTENT_MIX[intent];
   return {
@@ -29,6 +29,11 @@ function intentVars(intent: Intent): CssRuleObject {
     /* adapters can pin exact soft colors with --ui-<intent>-soft / -soft-fg */
     "--ui-c-soft": `var(--ui-${intent}-soft, color-mix(in oklab, var(--ui-${intent}) ${soft}%, var(--ui-surface)))`,
     "--ui-c-soft-fg": `var(--ui-${intent}-soft-fg, color-mix(in oklab, var(--ui-${intent}) ${fg}%, var(--ui-surface-fg)))`,
+    /* optional pins for systems with hand-picked steps (e.g. a 12-step scale);
+       the fallbacks reproduce the derived look, so unset = no change */
+    "--ui-c-hover": `var(--ui-${intent}-hover, color-mix(in oklab, var(--ui-c) 85%, black))`,
+    "--ui-c-border": `var(--ui-${intent}-border, var(--ui-c))`,
+    "--ui-c-soft-hover": `var(--ui-${intent}-soft-hover, var(--ui-c))`,
   };
 }
 
@@ -199,6 +204,8 @@ export const defaultAdapter = defineAdapter({
     "--ui-surface-muted": "oklch(0.96 0.005 265)",
     "--ui-border": "oklch(0.89 0.008 265)",
     "--ui-ring": "oklch(0.62 0.18 262)",
+    "--ui-overlay": "rgb(0 0 0 / 0.5)",
+    "--ui-overlay-soft": "rgb(255 255 255 / 0.6)",
 
     /* shape & type */
     "--ui-radius": "0.5rem",
@@ -228,6 +235,8 @@ export const defaultAdapter = defineAdapter({
     "--ui-surface-muted": "oklch(0.26 0.015 265)",
     "--ui-border": "oklch(0.34 0.015 265)",
     "--ui-ring": "oklch(0.7 0.15 262)",
+    "--ui-overlay": "rgb(0 0 0 / 0.5)",
+    "--ui-overlay-soft": "rgb(255 255 255 / 0.6)",
   },
   components: {
     button: {
@@ -253,7 +262,7 @@ export const defaultAdapter = defineAdapter({
         border: "1px solid transparent",
         "background-color": "var(--ui-c)",
         color: "var(--ui-on-c)",
-        "border-color": "var(--ui-c)",
+        "border-color": "var(--ui-c-border, var(--ui-c))",
         cursor: "pointer",
         "user-select": "none",
         "text-decoration": "none",
@@ -273,7 +282,7 @@ export const defaultAdapter = defineAdapter({
         outline: {
           "background-color": "transparent",
           color: "var(--ui-c-text)",
-          "border-color": "var(--ui-c)",
+          "border-color": "var(--ui-c-border, var(--ui-c))",
           "&:hover": {
             "background-color": "var(--ui-c)",
             "border-color": "var(--ui-c)",
@@ -295,8 +304,8 @@ export const defaultAdapter = defineAdapter({
           "border-color": "transparent",
           color: "var(--ui-c-soft-fg)",
           "&:hover": {
-            "background-color": "var(--ui-c)",
-            "border-color": "var(--ui-c)",
+            "background-color": "var(--ui-c-soft-hover, var(--ui-c))",
+            "border-color": "var(--ui-c-border, var(--ui-c))",
             color: "var(--ui-on-c)",
           },
         },
@@ -837,7 +846,7 @@ export const defaultAdapter = defineAdapter({
         margin: "0",
         padding: "1rem",
         border: "0",
-        "background-color": "rgb(0 0 0 / 0.5)",
+        "background-color": "var(--ui-overlay, rgb(0 0 0 / 0.5))",
         visibility: "hidden",
         opacity: "0",
         "pointer-events": "none",
@@ -854,7 +863,7 @@ export const defaultAdapter = defineAdapter({
       styles: {
         ghost: { "background-color": "transparent" },
         soft: {
-          "background-color": "rgb(255 255 255 / 0.6)",
+          "background-color": "var(--ui-overlay-soft, rgb(255 255 255 / 0.6))",
           "backdrop-filter": "blur(6px)",
         },
       },
