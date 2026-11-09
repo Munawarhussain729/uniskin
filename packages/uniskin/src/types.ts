@@ -89,6 +89,8 @@ export const VOCABULARY = [
   "accordion-trigger",
   "accordion-panel",
   "progress",
+  "tooltip",
+  "tooltip-anchor",
   "modal",
   "modal-box",
   "tabs",

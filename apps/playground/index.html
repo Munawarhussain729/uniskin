@@ -634,6 +634,33 @@
       <progress class="ui-progress ui-primary" id="prog-busy" aria-label="Loading"></progress>
     </div>
 
+    <h2 class="group">Tooltip</h2>
+    <div style="padding:3rem 3rem 1.5rem;display:flex;gap:3rem;flex-wrap:wrap" id="tip-live">
+      <span class="ui-tooltip-anchor"><button class="ui-button" id="tip-live-btn" aria-describedby="tip-live-bubble">Save (hover or focus me)</button><span class="ui-tooltip" id="tip-live-bubble" role="tooltip">Ctrl+S</span></span>
+    </div>
+    <p style="margin:0 3rem">Placement</p>
+    <div style="padding:3rem;display:flex;gap:3rem 12rem;flex-wrap:wrap" id="tip-places">
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-place-top">top</button><span class="ui-tooltip ui-active" id="tip-place-top" role="tooltip" data-placement="top">placement top</span></span>
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-place-bottom">bottom</button><span class="ui-tooltip ui-active" id="tip-place-bottom" role="tooltip" data-placement="bottom">placement bottom</span></span>
+      <span class="ui-tooltip-anchor" style="margin-inline-start:10rem"><button class="ui-button ui-sm" aria-describedby="tip-place-start">start</button><span class="ui-tooltip ui-active" id="tip-place-start" role="tooltip" data-placement="start">placement start</span></span>
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-place-end">end</button><span class="ui-tooltip ui-active" id="tip-place-end" role="tooltip" data-placement="end">placement end</span></span>
+    </div>
+    <p style="margin:0 3rem">Intents, styles and sizes</p>
+    <div style="padding:3rem;display:flex;gap:4.5rem;flex-wrap:wrap" id="tip-variants">
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-5">default</button><span class="ui-tooltip ui-active" id="tip-5" role="tooltip">Ctrl+S</span></span>
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-6">primary</button><span class="ui-tooltip ui-primary ui-active" id="tip-6" role="tooltip">Ctrl+S</span></span>
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-7">secondary</button><span class="ui-tooltip ui-secondary ui-active" id="tip-7" role="tooltip">Ctrl+S</span></span>
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-8">success</button><span class="ui-tooltip ui-success ui-active" id="tip-8" role="tooltip">Ctrl+S</span></span>
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-9">warning</button><span class="ui-tooltip ui-warning ui-active" id="tip-9" role="tooltip">Ctrl+S</span></span>
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-10">danger</button><span class="ui-tooltip ui-danger ui-active" id="tip-10" role="tooltip">Ctrl+S</span></span>
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-11">soft</button><span class="ui-tooltip ui-soft ui-primary ui-active" id="tip-11" role="tooltip">Ctrl+S</span></span>
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-12">soft danger</button><span class="ui-tooltip ui-soft ui-danger ui-active" id="tip-12" role="tooltip">Ctrl+S</span></span>
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-13">outline</button><span class="ui-tooltip ui-outline ui-primary ui-active" id="tip-13" role="tooltip">Ctrl+S</span></span>
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-14">outline ok</button><span class="ui-tooltip ui-outline ui-success ui-active" id="tip-14" role="tooltip">Ctrl+S</span></span>
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-15">sm</button><span class="ui-tooltip ui-sm ui-active" id="tip-15" role="tooltip">Ctrl+S</span></span>
+      <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-16">lg</button><span class="ui-tooltip ui-lg ui-active" id="tip-16" role="tooltip">Ctrl+S</span></span>
+    </div>
+
     </main>
   </body>
 </html>

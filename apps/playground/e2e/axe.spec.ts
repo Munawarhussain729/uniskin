@@ -35,6 +35,14 @@ const ALLOWLIST: AllowEntry[] = [
     why: "shadcn solid destructive button ≈3.6:1 — shadcn's own destructive colour",
   },
   {
+    adapters: ["shadcn"],
+    modes: ["light"],
+    rule: "color-contrast",
+    selector: ".ui-tooltip.ui-danger:not(.ui-outline):not(.ui-soft)",
+    kind: "upstream",
+    why: "shadcn solid destructive fill ≈3.6:1 on the bubble's 12px text — the same destructive colour as the button above; see docs/qa/tooltip-2026-11.md",
+  },
+  {
     adapters: ["daisyui"],
     modes: ["light"],
     rule: "color-contrast",

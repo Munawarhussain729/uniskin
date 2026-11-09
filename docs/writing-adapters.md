@@ -136,6 +136,24 @@ which stays neutral because shadcn/ui has no colored-outline variant).
   match the consumer's `prefix`. Every `animation` is turned off under
   `prefers-reduced-motion` for you.
 
+## Placement convention
+
+Components that sit beside another element (tooltips now; toasts and menus
+later) take a `data-placement` attribute instead of a modifier class:
+
+- Values name a side, `top | bottom | start | end` (`start` and `end` follow
+  the writing direction, so they flip in RTL). Components that also align
+  along the side use a two-part value, for example `bottom-end`.
+- The default placement is the component's own base rule; each other
+  placement is a nested attribute selector in the same slot
+  (`'&[data-placement="bottom"]'`).
+- Use logical properties (`inset-inline-start`, `inset-inline-end`) for
+  `start` and `end`.
+- Why an attribute: a placement modifier kind would need a new adapter slot
+  and would enlarge the vocabulary for something that only positions.
+- Positioning is relative to the anchor and has no collision handling;
+  document that, and point to a positioning library.
+
 ## Runtime notes
 
 Measured on the CI Node matrix (20 and 22):
@@ -174,6 +192,7 @@ is harmless:
 | `ui-table` | `--ui-table-pad-x`, `--ui-table-pad-y` (density), `--ui-table-head-bg`, `--ui-table-head-fg`, `--ui-table-stripe` (zebra under `ui-soft`), `--ui-table-row-hover`, `--ui-table-border` |
 | `ui-accordion` | `--ui-accordion-pad-x`, `--ui-accordion-pad-y` (trigger and panel padding; sizes set them), `--ui-accordion-border`, `--ui-accordion-hover` (trigger hover fill), `--ui-accordion-soft-bg` (list fill under `ui-soft`) |
 | `ui-progress` | `--ui-progress-h` (height; sizes set it), `--ui-progress-track` (track fill), `--ui-progress-bar` (bar colour, default `--ui-c-text` so intents tint it), `--ui-progress-border` (track outline under `ui-outline`) |
+| `ui-tooltip` | `--ui-tooltip-bg`, `--ui-tooltip-fg` (override the intent-driven fill and text), `--ui-tooltip-gap` (distance from the anchor), `--ui-tooltip-arrow` (arrow size, `0` removes it), `--ui-tooltip-max-w`, `--ui-tooltip-fs`, `--ui-tooltip-pad-x`, `--ui-tooltip-pad-y` (sizes set the last three) |
 | `ui-switch` | `--ui-switch-size` (height, default `1.25rem`; width is `1.75x`), `--ui-switch-track` (off colour, default a grey mixed from `--ui-surface-fg`), `--ui-switch-thumb` (thumb colour), `--ui-switch-pad` (thumb inset, default `2px`) |
 | `ui-card` | `--ui-card-pad` (padding shared by header, body and footer, default `1.25rem`), `--ui-card-border` (border colour, default `--ui-border`; intents mix their colour into it) |
 | `ui-modal` | `--ui-modal-w` (width of `ui-modal-box`, default `32rem`; `ui-sm` and `ui-lg` set `24rem` and `48rem`) |

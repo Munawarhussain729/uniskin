@@ -79,6 +79,13 @@ test("loading spin/pulse under prefers-reduced-motion: reduce", async ({ page })
         stillAnimating.push(`${adapter} | ui-progress[${i}] | element`);
     }
 
+    // ui-tooltip: the opacity fade must stop under reduce
+    const bubbles = page.locator(".ui-tooltip");
+    for (let i = 0; i < (await bubbles.count()); i++) {
+      const tp = await bubbles.nth(i).evaluate((el) => getComputedStyle(el).transitionProperty);
+      if (tp !== "none") stillAnimating.push(`${adapter} | ui-tooltip[${i}] | transition`);
+    }
+
     // positive control: the skin does honour reduced-motion for the modal fade
     const modalTransition = await page.locator("dialog.ui-modal").evaluate(
       (el) => getComputedStyle(el).transitionProperty,

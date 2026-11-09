@@ -1162,6 +1162,139 @@ export const defaultAdapter = defineAdapter({
         lg: { "--ui-progress-h": "0.75rem" },
       },
     },
+    /* ui-tooltip: CSS-only hover/focus bubble. The anchor reveals it on
+       :hover and :focus-within, so the bubble stays visible while the
+       pointer is over it (hoverable, WCAG 1.4.13). Dismissing it with
+       Escape needs JavaScript or the Popover API: CSS cannot do it. */
+    "tooltip-anchor": {
+      base: {
+        position: "relative",
+        display: "inline-block",
+        "&:hover > .ui-tooltip, &:focus-within > .ui-tooltip": {
+          visibility: "visible",
+          opacity: "1",
+        },
+      },
+    },
+    tooltip: {
+      base: {
+        /* neutral = the inverted surface; an intent re-points --ui-c */
+        "--ui-c": "var(--ui-surface-fg)",
+        "--ui-c-text": "var(--ui-surface-fg)",
+        "--ui-on-c": "var(--ui-surface)",
+        "--ui-c-soft": "var(--ui-neutral-soft)",
+        "--ui-c-soft-fg": "var(--ui-neutral-soft-fg)",
+
+        position: "absolute",
+        "z-index": "20",
+        width: "max-content",
+        "max-width": "var(--ui-tooltip-max-w, 16rem)",
+        "box-sizing": "border-box",
+        padding: "var(--ui-tooltip-pad-y, 0.375rem) var(--ui-tooltip-pad-x, 0.625rem)",
+        "font-family": "var(--ui-font-sans)",
+        "font-size": "var(--ui-tooltip-fs, 0.8125rem)",
+        "font-weight": "500",
+        "line-height": "1.35",
+        "text-align": "start",
+        "border-radius": "calc(var(--ui-radius) * 0.75)",
+        border: "1px solid transparent",
+        "background-color": "var(--ui-tooltip-bg, var(--ui-c))",
+        color: "var(--ui-tooltip-fg, var(--ui-on-c))",
+        /* hidden until the anchor is hovered or focused */
+        visibility: "hidden",
+        opacity: "0",
+        transition: "opacity 0.12s ease, visibility 0.12s",
+        /* default placement: above, centred */
+        bottom: "calc(100% + var(--ui-tooltip-gap, 0.5rem))",
+        left: "50%",
+        transform: "translateX(-50%)",
+        "&[hidden]": { display: "none" },
+        /* a transparent bridge over the gap keeps the hover unbroken */
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          inset: "calc(var(--ui-tooltip-gap, 0.5rem) * -1)",
+          "z-index": "-1",
+        },
+        /* arrow: a rotated square in the bubble's own fill; size 0 removes it */
+        "&::after": {
+          content: '""',
+          position: "absolute",
+          width: "var(--ui-tooltip-arrow, 0.5rem)",
+          height: "var(--ui-tooltip-arrow, 0.5rem)",
+          "background-color": "inherit",
+          "border-color": "inherit",
+          "border-style": "solid",
+          "border-width": "0",
+          transform: "rotate(45deg)",
+          bottom: "calc(var(--ui-tooltip-arrow, 0.5rem) / -2)",
+          left: "calc(50% - var(--ui-tooltip-arrow, 0.5rem) / 2)",
+        },
+        '&[data-placement="bottom"]': {
+          bottom: "auto",
+          top: "calc(100% + var(--ui-tooltip-gap, 0.5rem))",
+        },
+        '&[data-placement="bottom"]::after': {
+          bottom: "auto",
+          top: "calc(var(--ui-tooltip-arrow, 0.5rem) / -2)",
+        },
+        /* start / end follow the writing direction (left / right in LTR) */
+        '&[data-placement="start"]': {
+          bottom: "auto",
+          left: "auto",
+          top: "50%",
+          "inset-inline-end": "calc(100% + var(--ui-tooltip-gap, 0.5rem))",
+          transform: "translateY(-50%)",
+        },
+        '&[data-placement="start"]::after': {
+          bottom: "auto",
+          left: "auto",
+          top: "calc(50% - var(--ui-tooltip-arrow, 0.5rem) / 2)",
+          "inset-inline-end": "calc(var(--ui-tooltip-arrow, 0.5rem) / -2)",
+        },
+        '&[data-placement="end"]': {
+          bottom: "auto",
+          left: "auto",
+          top: "50%",
+          "inset-inline-start": "calc(100% + var(--ui-tooltip-gap, 0.5rem))",
+          transform: "translateY(-50%)",
+        },
+        '&[data-placement="end"]::after': {
+          bottom: "auto",
+          left: "auto",
+          top: "calc(50% - var(--ui-tooltip-arrow, 0.5rem) / 2)",
+          "inset-inline-start": "calc(var(--ui-tooltip-arrow, 0.5rem) / -2)",
+        },
+        "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+      },
+      intents,
+      styles: {
+        /* tinted fill, the intent's soft foreground */
+        soft: {
+          "background-color": "var(--ui-tooltip-bg, var(--ui-c-soft))",
+          color: "var(--ui-tooltip-fg, var(--ui-c-soft-fg))",
+        },
+        /* surface fill with an accent border */
+        outline: {
+          "background-color": "var(--ui-tooltip-bg, var(--ui-surface))",
+          color: "var(--ui-tooltip-fg, var(--ui-surface-fg))",
+          "border-color": "var(--ui-c-border, var(--ui-c))",
+          /* the arrow carries the border on the two edges that point out */
+          "&::after": { "border-width": "0 1px 1px 0" },
+          '&[data-placement="bottom"]::after': { "border-width": "1px 0 0 1px" },
+          '&[data-placement="start"]::after': { "border-width": "1px 1px 0 0" },
+          '&[data-placement="end"]::after': { "border-width": "0 0 1px 1px" },
+        },
+      },
+      sizes: {
+        sm: { "--ui-tooltip-fs": "0.75rem", "--ui-tooltip-pad-y": "0.25rem", "--ui-tooltip-pad-x": "0.5rem" },
+        lg: { "--ui-tooltip-fs": "0.9375rem", "--ui-tooltip-pad-y": "0.5rem", "--ui-tooltip-pad-x": "0.875rem" },
+      },
+      states: {
+        /* force visible, for JS-driven or headless use */
+        active: { visibility: "visible", opacity: "1" },
+      },
+    },
     modal: {
       base: {
         /* works as a <div>, a <dialog> (open / showModal) or a :target */
