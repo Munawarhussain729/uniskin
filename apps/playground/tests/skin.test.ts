@@ -531,6 +531,31 @@ describe("ui-table (decision 003, component 5)", () => {
   });
 });
 
+describe("alert intents do not compete with styles", () => {
+  /* An intent and a style are same-specificity single-class modifiers; the
+     adapters' intent paints are guarded so the emitted order of the two
+     cannot change the look (it did, when unrelated rules were added). */
+  for (const adapter of ["shadcn", "daisyui"] as const) {
+    it(`${adapter}: intent paints exclude the style classes`, () => {
+      const block = ruleBlock(skin(adapter), ".ui-alert.ui-success");
+      expect(block).toContain(":not(.ui-soft)");
+      expect(block).toContain(":not(.ui-ghost)");
+      // no unguarded paint declared directly in the intent block
+      const direct = block.split("\n").filter((l) => /^ {4}(background-color|border-color|color):/.test(l));
+      expect(direct, "direct paint declarations in the intent rule").toEqual([]);
+    });
+  }
+
+  it('prefix: "uk" keeps the guard on the renamed style classes', () => {
+    const css = compileWithFiles(
+      { "index.html": '<div class="uk-alert uk-success uk-soft" role="alert">x</div>' },
+      'prefix: "uk"; adapter: "daisyui";',
+    );
+    expect(css).toContain(":not(.uk-soft)");
+    expect(css).not.toContain(":not(.ui-soft)");
+  });
+});
+
 describe("custom prefix", () => {
   it('prefix: "uk" namespaces classes, keyframes and animation references', () => {
     const css = compileWithFiles(
