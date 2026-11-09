@@ -65,6 +65,8 @@ const COMPONENTS: Record<string, Slots> = {
   "accordion-panel": {},
   /* native <progress>: no states (indeterminate is the :indeterminate pseudo-class) */
   progress: { intents: true, styles: ["outline", "ghost"], sizes: true },
+  tooltip: { intents: true, styles: ["outline", "soft"], sizes: true, states: ["active"] },
+  "tooltip-anchor": {},
 };
 
 const cssCache = new Map<string, string>();
@@ -689,6 +691,58 @@ describe("ui-progress (roadmap 0.5.0)", () => {
     );
     expect(css).toContain(".uk-progress");
     expect(css).toContain("@keyframes uk-progress-slide");
+    expect(css).not.toMatch(/\.ui-/);
+  });
+});
+
+describe("ui-tooltip (roadmap 0.6.0)", () => {
+  for (const adapter of ADAPTERS) {
+    describe(adapter, () => {
+      it("is hidden until the anchor is hovered or focused", () => {
+        const bubble = ruleBlock(skin(adapter), ".ui-tooltip");
+        expect(bubble).toContain("visibility: hidden");
+        expect(bubble).toContain("opacity: 0");
+        const anchor = ruleBlock(skin(adapter), ".ui-tooltip-anchor");
+        expect(anchor).toContain("&:hover > .ui-tooltip");
+        expect(anchor).toContain("&:focus-within > .ui-tooltip");
+      });
+
+      it("places by data-placement, with logical properties for start and end", () => {
+        const bubble = ruleBlock(skin(adapter), ".ui-tooltip");
+        for (const p of ["bottom", "start", "end"]) expect(bubble).toContain(`[data-placement="${p}"]`);
+        expect(bubble).toContain("inset-inline-end");
+        expect(bubble).toContain("inset-inline-start");
+      });
+    });
+  }
+
+  it("reads its hooks with fallbacks", () => {
+    const bubble = ruleBlock(skin("default"), ".ui-tooltip");
+    for (const hook of ["--ui-tooltip-gap", "--ui-tooltip-arrow", "--ui-tooltip-max-w"])
+      expect(bubble).toContain(`var(${hook},`);
+    expect(bubble).toContain("var(--ui-tooltip-bg, var(--ui-c))");
+    expect(bubble).toContain("var(--ui-tooltip-fg, var(--ui-on-c))");
+  });
+
+  it("ui-active forces the bubble visible and [hidden] hides it", () => {
+    const css = skin("default");
+    expect(ruleBlock(css, ".ui-tooltip")).toContain("&.ui-active");
+    expect(ruleBlock(css, ".ui-tooltip")).toContain("&[hidden]");
+  });
+
+  it("the fade is disabled under reduced motion", () => {
+    expect(ruleBlock(skin("default"), ".ui-tooltip")).toMatch(
+      /prefers-reduced-motion: reduce\)\s*\{[^}]*transition: none/,
+    );
+  });
+
+  it('prefix: "uk" renames the anchor, bubble and the nested anchor selectors', () => {
+    const css = compileWithFiles(
+      { "index.html": '<span class="uk-tooltip-anchor"><button>x</button><span class="uk-tooltip uk-soft" role="tooltip">t</span></span>' },
+      'prefix: "uk";',
+    );
+    expect(css).toContain(".uk-tooltip-anchor");
+    expect(css).toContain("&:hover > .uk-tooltip");
     expect(css).not.toMatch(/\.ui-/);
   });
 });

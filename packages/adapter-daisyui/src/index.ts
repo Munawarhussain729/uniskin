@@ -172,6 +172,18 @@ export default defineAdapter({
       },
     },
     "table-wrap": { base: { "border-radius": "var(--radius-box, 1rem)" } },
+    tooltip: {
+      base: {
+        /* daisy tooltip-content: neutral fill, neutral-content text, rounded-field */
+        "--ui-c": "var(--ui-neutral)",
+        "--ui-on-c": "var(--ui-neutral-fg)",
+        "--ui-tooltip-fs": "0.875rem",
+        "--ui-tooltip-pad-y": "0.25rem",
+        "--ui-tooltip-pad-x": "0.5rem",
+        "border-radius": "var(--radius-field, 0.5rem)",
+        "font-weight": "400",
+      },
+    },
     progress: {
       base: {
         /* daisy progress: base-content bar on a faint base-content track */

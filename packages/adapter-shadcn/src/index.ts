@@ -229,6 +229,19 @@ export default defineAdapter({
       },
     },
     "table-wrap": { base: { border: "0", "border-radius": "0" } },
+    tooltip: {
+      base: {
+        /* shadcn TooltipContent: bg-primary text-primary-foreground
+           rounded-md px-3 py-1.5 text-xs */
+        "--ui-c": "hsl(var(--primary))",
+        "--ui-on-c": "hsl(var(--primary-foreground))",
+        "--ui-tooltip-fs": "0.75rem",
+        "--ui-tooltip-pad-y": "0.375rem",
+        "--ui-tooltip-pad-x": "0.75rem",
+        "border-radius": "calc(var(--ui-radius) - 2px)",
+        "font-weight": "400",
+      },
+    },
     progress: {
       base: {
         /* shadcn Progress: bg-primary/20 track, bg-primary bar, h-2 */

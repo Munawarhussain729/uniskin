@@ -1,6 +1,6 @@
 # Vocabulary reference
 
-Every class in Uniskin vocabulary v1.6, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.7, grouped by component. The prefix is
 `ui-` by default — if you set `prefix: "uk"` in the `@plugin` options,
 read every `ui-*` class below as `uk-*`.
 
@@ -493,6 +493,51 @@ the value to assistive technology; Uniskin only paints it.
 - **Consumer provides:** an accessible name (`aria-label` or
   `aria-labelledby`) and `value`/`max`. It does not style `<meter>`.
 
+### `ui-tooltip`, `ui-tooltip-anchor`
+
+A small text bubble shown on hover and keyboard focus, in CSS only.
+`ui-tooltip-anchor` wraps the trigger and the bubble and reveals the
+bubble on `:hover` and `:focus-within`; the bubble is a child of the
+anchor, so it stays visible while the pointer moves onto it.
+
+```html
+<span class="ui-tooltip-anchor">
+  <button class="ui-button" aria-describedby="tip-1">Save</button>
+  <span class="ui-tooltip" id="tip-1" role="tooltip" data-placement="top">Ctrl+S</span>
+</span>
+```
+
+- **Intents:** the bubble fill and its content colour. With no intent it
+  is the inverted surface (`--ui-surface-fg` on `--ui-surface`).
+- **Styles:** `ui-soft` (tinted) and `ui-outline` (surface fill, accent
+  border). Default = solid.
+- **Sizes:** `ui-sm`, `ui-lg` (font size and padding).
+- **State:** `ui-active` forces the bubble visible, for JavaScript-driven
+  or headless use. There is no disabled or loading state.
+- **Placement:** `data-placement="top|bottom|start|end"` on the bubble
+  (default `top`). `start` and `end` follow the writing direction. This is
+  an attribute, not a modifier class, so it adds nothing to the
+  vocabulary.
+- **Hooks:** `--ui-tooltip-bg`, `--ui-tooltip-fg`, `--ui-tooltip-gap`,
+  `--ui-tooltip-arrow` (arrow size; `0` removes it), `--ui-tooltip-max-w`
+  (default `16rem`).
+- **Consumer provides:** `role="tooltip"` on the bubble and
+  `aria-describedby` from the trigger to it. Never put the text only in a
+  `data-*` attribute or `content: attr()`: pseudo-element text is
+  unreliably announced. **The trigger must be focusable** (a button or a
+  link); a bare `<span>` cannot be reached by keyboard. A tooltip must not
+  contain interactive content: use a popover or menu for that.
+- **Limits you should know about:**
+  - **Escape does not dismiss it.** WCAG 1.4.13 requires content shown on
+    hover or focus to be dismissible without moving the pointer or focus.
+    CSS cannot listen for Escape, so the CSS-only tooltip does not meet
+    that requirement on its own. Add a small keydown handler that sets the
+    `hidden` attribute on the bubble (it is hidden with `[hidden]`), or
+    use the Popover API (`popover="hint"`) where you can.
+  - **No collision handling.** The bubble is positioned relative to its
+    anchor, so near a viewport edge it can be clipped. Pick another
+    `data-placement`, or use a positioning library.
+
 ## Coverage matrix
 
 Supported modifiers in the built-in default skin (adapters may cover
@@ -528,6 +573,8 @@ fewer — anything omitted falls back to the default):
 | `ui-accordion-trigger` | — | — | — | — |
 | `ui-accordion-panel` | — | — | — | — |
 | `ui-progress`    | ✓ | outline ghost | ✓ | — |
+| `ui-tooltip`     | ✓ | outline soft | ✓ | active |
+| `ui-tooltip-anchor` | — | — | — | — |
 
 ## Accessibility
 
