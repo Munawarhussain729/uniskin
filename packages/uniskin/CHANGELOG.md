@@ -1,5 +1,13 @@
 # uniskin
 
+## 0.5.0
+
+### Minor Changes
+
+- be46bbe: Add `ui-progress` (vocabulary v1.6): a progress bar styled on the native `<progress>` element, with intents, `ui-outline` and `ui-ghost` styles and `ui-sm`/`ui-lg` sizes. An indeterminate `<progress>` shows a sliding bar, replaced by a dim full-width bar under `prefers-reduced-motion`. The bar keeps at least 3:1 against its track in all three skins in light and dark. Component-scoped hooks `--ui-progress-*` are documented in `docs/writing-adapters.md`; shadcn maps to `Progress` and daisyUI to `progress`.
+- 416b1d7: Add `ui-accordion` and its parts `ui-accordion-item`, `ui-accordion-trigger` and `ui-accordion-panel` (vocabulary v1.5): a disclosure list built on native `<details>`/`<summary>`, so open/close, Enter/Space and the expanded state need no JavaScript. Intents tint the open trigger, `ui-outline`, `ui-ghost` and `ui-soft` change the list style, `ui-sm`/`ui-lg` set density, and the chevron and the panel reveal are CSS only (the reveal and transitions stop under reduced motion). Component-scoped hooks `--ui-accordion-*` are documented in `docs/writing-adapters.md`. shadcn maps to `Accordion` (borderless, `border-b` per item, hover underline) and daisyUI to `collapse`.
+- 5f1e5ca: `ui-badge`, `ui-alert` and `ui-card.ui-outline` now read their border colour from `--ui-c-border`, so an adapter can pin it per intent with `--ui-<intent>-border`. The fallback is the accent colour, so nothing changes unless a pin is set.
+
 ## 0.4.0
 
 ### Minor Changes
