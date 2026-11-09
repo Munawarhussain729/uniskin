@@ -115,6 +115,23 @@ export interface Adapter {
    */
   darkTokens?: Record<string, string>;
   /**
+   * Selector `darkTokens` are emitted under. Defaults to
+   * `'.dark, [data-theme="dark"]'`. Set it when the design system you are
+   * porting has its own dark scope, e.g.
+   * `'.radix-themes[data-appearance="dark"]'`. How dark mode is *activated*
+   * (the `prefers-color-scheme` media query, or class only) stays the
+   * consumer's `dark` plugin option.
+   */
+  darkRootSelector?: string;
+  /**
+   * Extra `@keyframes`, keyed by name and merged over the built-in
+   * `spin`/`pulse`. Emitted as `@keyframes <prefix>-<name>`; reference them
+   * from a slot as `animation: "ui-<name> …"` (re-prefixed to match the
+   * consumer's `prefix`). Any `animation` is switched off under
+   * `prefers-reduced-motion` automatically.
+   */
+  keyframes?: Record<string, CssRuleObject>;
+  /**
    * Per-component overrides, deep-merged over the default theme.
    * Only define what your style changes — everything else falls back.
    */

@@ -132,3 +132,56 @@ describe("prefers-reduced-motion", () => {
     expect(utilities[".ui-badge"][REDUCED_MOTION]).toBeUndefined();
   });
 });
+
+describe("adapter keyframes", () => {
+  const shimmer = { from: { opacity: "0.4" }, to: { opacity: "1" } };
+  const adapter = defineAdapter({
+    name: "shim",
+    keyframes: { shimmer },
+    components: { badge: { base: { animation: "ui-shimmer 1s linear infinite" } } },
+  });
+
+  it("emits adapter keyframes next to the built-in ones", () => {
+    const { base } = buildRules(adapter, "ui", defaultKeyframes);
+    expect(base["@keyframes ui-shimmer"]).toEqual(shimmer);
+    expect(base["@keyframes ui-spin"]).toEqual(defaultKeyframes.spin);
+  });
+
+  it("lets an adapter keyframe replace a built-in of the same name", () => {
+    const custom = { to: { transform: "rotate(180deg)" } };
+    const { base } = buildRules(defineAdapter({ name: "x", keyframes: { spin: custom } }), "ui", defaultKeyframes);
+    expect(base["@keyframes ui-spin"]).toEqual(custom);
+  });
+
+  it("re-prefixes adapter keyframes and their animation references", () => {
+    const { base, utilities } = buildRules(adapter, "uk", defaultKeyframes);
+    expect(base["@keyframes uk-shimmer"]).toEqual(shimmer);
+    expect(utilities[".uk-badge"]!.animation).toBe("uk-shimmer 1s linear infinite");
+  });
+
+  it("switches an adapter animation off under reduced motion", () => {
+    const { utilities } = buildRules(adapter, "ui", defaultKeyframes);
+    expect(utilities[".ui-badge"]![REDUCED_MOTION]).toEqual({ animation: "none" });
+  });
+});
+
+describe("darkRootSelector", () => {
+  const darkTokens = { "--ui-surface": "black" };
+
+  it("defaults to .dark / [data-theme=dark]", () => {
+    const { base } = buildRules(defineAdapter({ name: "x", darkTokens }), "ui", defaultKeyframes);
+    expect(base['.dark, [data-theme="dark"]']).toEqual(darkTokens);
+  });
+
+  it("emits dark tokens under the adapter's own selector", () => {
+    const sel = '.radix-themes[data-appearance="dark"]';
+    const { base } = buildRules(
+      defineAdapter({ name: "x", darkTokens, darkRootSelector: sel }),
+      "ui",
+      defaultKeyframes,
+      "class",
+    );
+    expect(base[sel]).toEqual(darkTokens);
+    expect(base['.dark, [data-theme="dark"]']).toBeUndefined();
+  });
+});

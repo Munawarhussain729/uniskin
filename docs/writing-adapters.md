@@ -84,6 +84,22 @@ You can still override a component's `&:`-level states or repaint a
 whole slot when tokens aren't enough (see `@uniskin/shadcn`'s outline,
 which stays neutral because shadcn/ui has no colored-outline variant).
 
+## Dark mode and animation
+
+- **`darkTokens`** are emitted under `.dark, [data-theme="dark"]`. If the
+  system you are porting has its own dark scope, set
+  `darkRootSelector` (for example `'.radix-themes[data-appearance="dark"]'`).
+  When the consumer uses the default `dark: "media"` strategy, the
+  `prefers-color-scheme` fallback still targets `:root`, so keep the
+  adapter's `rootSelector` at `:root` (or use `dark: "class"`) when you
+  also set `darkRootSelector`.
+- **`keyframes`** declares extra `@keyframes`, merged over the built-in
+  `spin` and `pulse`. They are emitted as `@keyframes <prefix>-<name>`;
+  write the reference as `ui-<name>` in a slot
+  (`animation: "ui-shimmer 1s linear infinite"`) and it is re-prefixed to
+  match the consumer's `prefix`. Every `animation` is turned off under
+  `prefers-reduced-motion` for you.
+
 ## Runtime notes
 
 Measured on the CI Node matrix (20 and 22):
