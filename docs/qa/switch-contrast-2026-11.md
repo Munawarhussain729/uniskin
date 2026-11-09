@@ -15,9 +15,12 @@ dark (WCAG 1.4.11, non-text >= 3:1). Screenshots of every skin and mode are in
   asserted >= 3:1 in all six combinations.
 - Focus ring: covered by the existing keyboard spec (every switch is reached
   with Tab) plus a dedicated ring >= 3:1 assertion.
-- Intent colours below 3:1 on the surface come from the upstream palettes,
-  not from the component, so the extra `ui-success` / `ui-danger` assertions
-  are skipped there (shadcn dark, daisyUI light), as for `ui-radio`.
+- Extra `ui-success` / `ui-danger` on-state assertions (thumb vs track and
+  track vs surface) are enforced in all six combinations except one: on
+  daisyUI light the success and danger on-tracks measure 1.88:1 and 2.74:1
+  against the surface, so only the track-vs-surface check is skipped there
+  (thumb vs track is still asserted). shadcn dark now passes and is enforced.
+  The fix belongs with the palette work, not this component.
 - Known palette limit: shadcn light `ui-secondary` (`--secondary` is
   `210 40% 96%`, almost the page colour) renders an on-track that is not
   distinguishable from the surface (visibly far below 3:1 in the screenshot;
