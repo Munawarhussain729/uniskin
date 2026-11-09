@@ -63,6 +63,8 @@ const COMPONENTS: Record<string, Slots> = {
   "accordion-item": {},
   "accordion-trigger": {},
   "accordion-panel": {},
+  /* native <progress>: no states (indeterminate is the :indeterminate pseudo-class) */
+  progress: { intents: true, styles: ["outline", "ghost"], sizes: true },
 };
 
 const cssCache = new Map<string, string>();
@@ -623,6 +625,56 @@ describe("ui-accordion (roadmap 0.5.0)", () => {
     expect(css).toContain(".uk-accordion");
     expect(css).toContain(".uk-accordion-item[open] > .uk-accordion-trigger");
     expect(css).toContain("@keyframes uk-accordion-reveal");
+    expect(css).not.toMatch(/\.ui-/);
+  });
+});
+
+describe("ui-progress (roadmap 0.5.0)", () => {
+  for (const adapter of ADAPTERS) {
+    describe(adapter, () => {
+      it("styles the native progress pseudo-elements", () => {
+        const block = ruleBlock(skin(adapter), ".ui-progress");
+        expect(block).toContain("appearance: none");
+        expect(block).toContain("&::-webkit-progress-bar");
+        expect(block).toContain("&::-webkit-progress-value");
+        expect(block).toContain("&::-moz-progress-bar");
+      });
+
+      it("slides a bar for :indeterminate", () => {
+        const block = ruleBlock(skin(adapter), ".ui-progress");
+        expect(block).toContain("&:indeterminate");
+        expect(block).toContain("ui-progress-slide");
+      });
+    });
+  }
+
+  it("reads its hooks with fallbacks and stays visible with no intent", () => {
+    const block = ruleBlock(skin("default"), ".ui-progress");
+    expect(block).toContain("var(--ui-progress-h,");
+    expect(block).toContain("var(--ui-progress-track,");
+    expect(block).toContain("var(--ui-progress-bar, var(--ui-c-text))");
+  });
+
+  it("the shadcn and daisyUI tracks follow the intent colour", () => {
+    expect(ruleBlock(skin("shadcn"), ".ui-progress")).toContain("--ui-progress-track");
+    expect(ruleBlock(skin("daisyui"), ".ui-progress")).toContain("--ui-progress-track");
+  });
+
+  it("indeterminate motion is replaced under reduced motion", () => {
+    const css = skin("default");
+    expect(css).toMatch(/@keyframes ui-progress-slide/);
+    const block = ruleBlock(css, ".ui-progress");
+    expect(block).toMatch(/prefers-reduced-motion: reduce\)\s*\{[^}]*transition: none/);
+    expect(block).toMatch(/animation: none/);
+  });
+
+  it('prefix: "uk" renames the class and the slide keyframes', () => {
+    const css = compileWithFiles(
+      { "index.html": '<progress class="uk-progress uk-primary" aria-label="x"></progress>' },
+      'prefix: "uk";',
+    );
+    expect(css).toContain(".uk-progress");
+    expect(css).toContain("@keyframes uk-progress-slide");
     expect(css).not.toMatch(/\.ui-/);
   });
 });

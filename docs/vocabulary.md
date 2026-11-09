@@ -1,6 +1,6 @@
 # Vocabulary reference
 
-Every class in Uniskin vocabulary v1.5, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.6, grouped by component. The prefix is
 `ui-` by default — if you set `prefix: "uk"` in the `@plugin` options,
 read every `ui-*` class below as `uk-*`.
 
@@ -468,6 +468,31 @@ classes are parts.
   where the browser supports it; browser support is partial, so treat
   it as an enhancement.
 
+### `ui-progress`
+
+A progress bar on the native `<progress>` element. The browser exposes
+the value to assistive technology; Uniskin only paints it.
+
+```html
+<progress class="ui-progress ui-primary" value="60" max="100" aria-label="Upload"></progress>
+<progress class="ui-progress ui-sm" aria-label="Loading"></progress>
+```
+
+- **Intents:** all five; tint the bar. With no intent the bar uses the
+  surface text colour, so it is always visible.
+- **Styles:** `ui-outline` (outlined track), `ui-ghost` (no track fill,
+  just the bar).
+- **Sizes:** `ui-sm` (0.25rem) and `ui-lg` (0.75rem); the default is
+  0.5rem.
+- **Indeterminate:** a `<progress>` with no `value` shows a bar sliding
+  across the track. Under `prefers-reduced-motion` it becomes a dim,
+  full-width bar instead, which signals "working" without implying a
+  percentage.
+- **Hooks:** `--ui-progress-h` (height), `--ui-progress-track`,
+  `--ui-progress-bar`, `--ui-progress-border`.
+- **Consumer provides:** an accessible name (`aria-label` or
+  `aria-labelledby`) and `value`/`max`. It does not style `<meter>`.
+
 ## Coverage matrix
 
 Supported modifiers in the built-in default skin (adapters may cover
@@ -502,6 +527,7 @@ fewer — anything omitted falls back to the default):
 | `ui-accordion-item` | — | — | — | — |
 | `ui-accordion-trigger` | — | — | — | — |
 | `ui-accordion-panel` | — | — | — | — |
+| `ui-progress`    | ✓ | outline ghost | ✓ | — |
 
 ## Accessibility
 

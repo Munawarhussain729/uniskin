@@ -56,4 +56,5 @@ export const COVERAGE: Record<ComponentName, Coverage> = {
   "accordion-item": NONE,
   "accordion-trigger": NONE,
   "accordion-panel": NONE,
+  progress: { ...NONE, intents: INTENTS, styles: ["outline", "ghost"], sizes: SIZES },
 };
