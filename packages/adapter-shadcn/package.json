@@ -1,6 +1,6 @@
 {
   "name": "@uniskin/shadcn",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "shadcn/ui visual style adapter for Uniskin (pure CSS, no React/Radix)",
   "type": "module",
   "main": "./dist/index.js",
