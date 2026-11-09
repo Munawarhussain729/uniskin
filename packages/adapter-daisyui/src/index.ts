@@ -172,6 +172,20 @@ export default defineAdapter({
       },
     },
     "table-wrap": { base: { "border-radius": "var(--radius-box, 1rem)" } },
+    progress: {
+      base: {
+        /* daisy progress: base-content bar on a faint base-content track */
+        "--ui-c-text": "var(--color-base-content, oklch(21% 0.006 285))",
+        /* upstream's track is 20% base-content; a fainter track plus a small
+           share of base-content in the bar keeps the bar >= 3:1 on dark
+           themes, where daisyUI's own primary is only ~2:1 against it */
+        "--ui-progress-bar":
+          "color-mix(in oklab, var(--ui-c-text) 85%, var(--color-base-content, oklch(21% 0.006 285)))",
+        "--ui-progress-track":
+          "color-mix(in oklab, var(--color-base-content, oklch(21% 0.006 285)) 10%, var(--color-base-100, oklch(100% 0 0)))",
+        "border-radius": "var(--radius-box, 1rem)",
+      },
+    },
     accordion: {
       base: {
         /* daisy collapse: base-300 border, rounded-box, semibold title */

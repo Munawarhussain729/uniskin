@@ -1097,6 +1097,71 @@ export const defaultAdapter = defineAdapter({
         color: "color-mix(in oklab, var(--ui-surface-fg) 78%, var(--ui-surface))",
       },
     },
+    /* ui-progress: native <progress>. The element is the track (so `color`
+       is the bar); the value pseudo-elements paint with currentColor. The
+       consumer provides the accessible name and value/max. */
+    progress: {
+      base: {
+        /* neutral intent vars; the bar uses --ui-c-text, so it stays
+           visible with no intent class and an intent tints it */
+        "--ui-c": "var(--ui-neutral)",
+        "--ui-c-text": "var(--ui-surface-fg)",
+        "--ui-on-c": "var(--ui-neutral-fg)",
+        "--ui-c-soft": "var(--ui-neutral-soft)",
+        "--ui-c-soft-fg": "var(--ui-neutral-soft-fg)",
+
+        appearance: "none",
+        "-webkit-appearance": "none",
+        display: "block",
+        width: "100%",
+        height: "var(--ui-progress-h, 0.5rem)",
+        border: "0",
+        "border-radius": "9999px",
+        overflow: "hidden",
+        "background-color": "var(--ui-progress-track, var(--ui-surface-muted))",
+        color: "var(--ui-progress-bar, var(--ui-c-text))",
+        "&::-webkit-progress-bar": { "background-color": "transparent" },
+        "&::-webkit-progress-value": {
+          "background-color": "currentColor",
+          "border-radius": "inherit",
+          transition: "width 0.2s ease",
+        },
+        "&::-moz-progress-bar": {
+          "background-color": "currentColor",
+          "border-radius": "inherit",
+        },
+        /* no value: a bar slides across the track (Chromium paints nothing
+           for an indeterminate progress once the native look is removed) */
+        "&:indeterminate": {
+          "background-image":
+            "linear-gradient(90deg, transparent 0, currentColor 50%, transparent 100%)",
+          "background-size": "40% 100%",
+          "background-repeat": "no-repeat",
+          animation: "ui-progress-slide 1.4s ease-in-out infinite alternate",
+        },
+        "@media (prefers-reduced-motion: reduce)": {
+          "&::-webkit-progress-value": { transition: "none" },
+          /* no motion: a dim, full-width bar says "working" without
+             implying a percentage */
+          "&:indeterminate": {
+            "background-image": "none",
+            "background-color":
+              "color-mix(in oklab, currentColor 35%, var(--ui-progress-track, var(--ui-surface-muted)))",
+          },
+        },
+      },
+      intents,
+      styles: {
+        /* outlined track */
+        outline: { "box-shadow": "inset 0 0 0 1px var(--ui-progress-border, var(--ui-border))" },
+        /* no track fill: just the bar */
+        ghost: { "background-color": "transparent" },
+      },
+      sizes: {
+        sm: { "--ui-progress-h": "0.25rem" },
+        lg: { "--ui-progress-h": "0.75rem" },
+      },
+    },
     modal: {
       base: {
         /* works as a <div>, a <dialog> (open / showModal) or a :target */
@@ -1267,6 +1332,10 @@ export const defaultAdapter = defineAdapter({
 export const defaultKeyframes: Record<string, CssRuleObject> = {
   spin: { to: { transform: "rotate(360deg)" } },
   pulse: { "50%": { opacity: "0.55" } },
+  "progress-slide": {
+    from: { "background-position": "0% 0" },
+    to: { "background-position": "100% 0" },
+  },
   "accordion-reveal": {
     from: { opacity: "0", transform: "translateY(-0.25rem)" },
     to: { opacity: "1", transform: "none" },

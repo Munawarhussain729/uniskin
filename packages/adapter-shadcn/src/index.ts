@@ -229,6 +229,16 @@ export default defineAdapter({
       },
     },
     "table-wrap": { base: { border: "0", "border-radius": "0" } },
+    progress: {
+      base: {
+        /* shadcn Progress: bg-primary/20 track, bg-primary bar, h-2 */
+        "--ui-c-text": "hsl(var(--primary))",
+        "--ui-progress-track": "color-mix(in oklab, var(--ui-c-text) 20%, hsl(var(--background)))",
+      },
+      /* shadcn's secondary is a near-white surface grey with no progress
+         variant upstream; its foreground colour keeps the bar visible */
+      intents: { secondary: { "--ui-c-text": "hsl(var(--secondary-foreground))" } },
+    },
     accordion: {
       base: {
         /* shadcn Accordion: borderless list, border-b per item, py-4 trigger */

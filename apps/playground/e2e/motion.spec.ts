@@ -68,6 +68,17 @@ test("loading spin/pulse under prefers-reduced-motion: reduce", async ({ page })
       if (t.after !== "none") stillAnimating.push(`${adapter} | ui-accordion-trigger[${i}] | ::after transition`);
     }
 
+    // ui-progress: the indeterminate slide must stop under reduce
+    const indeterminate = page.locator(".ui-progress:indeterminate");
+    for (let i = 0; i < (await indeterminate.count()); i++) {
+      const info = await indeterminate.nth(i).evaluate((el) => ({
+        name: getComputedStyle(el).animationName,
+        dur: getComputedStyle(el).animationDuration,
+      }));
+      if (running(info.name, info.dur))
+        stillAnimating.push(`${adapter} | ui-progress[${i}] | element`);
+    }
+
     // positive control: the skin does honour reduced-motion for the modal fade
     const modalTransition = await page.locator("dialog.ui-modal").evaluate(
       (el) => getComputedStyle(el).transitionProperty,
