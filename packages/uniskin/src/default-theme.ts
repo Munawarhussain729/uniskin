@@ -829,6 +829,141 @@ export const defaultAdapter = defineAdapter({
       states: statusStates,
     },
 
+    /* ui-table styles native th/td/tr/caption through nested selectors
+       (decision 003) — no row/cell classes. tr-level states live here;
+       the emitted states slot only covers table-level ui-loading. */
+    table: {
+      base: {
+        /* neutral intent vars — a table with no intent class still needs
+           --ui-c for the header underline and --ui-c-soft for selected rows */
+        "--ui-c": "var(--ui-neutral)",
+        "--ui-c-text": "var(--ui-neutral-text, var(--ui-neutral))",
+        "--ui-on-c": "var(--ui-neutral-fg)",
+        "--ui-c-soft": "var(--ui-neutral-soft)",
+        "--ui-c-soft-fg": "var(--ui-neutral-soft-fg)",
+
+        width: "100%",
+        "border-collapse": "collapse",
+        "font-family": "var(--ui-font-sans)",
+        "font-size": "var(--ui-text-md)",
+        "line-height": "1.25",
+        color: "var(--ui-surface-fg)",
+        "& caption": {
+          "caption-side": "bottom",
+          "font-size": "var(--ui-text-sm)",
+          color: "color-mix(in oklab, var(--ui-surface-fg) 65%, var(--ui-surface))",
+          "padding-block": "0.5rem",
+          "text-align": "start",
+        },
+        "& th, & td": {
+          padding:
+            "var(--ui-table-pad-y, 0.5rem) var(--ui-table-pad-x, 0.75rem)",
+          "text-align": "start",
+          "vertical-align": "top",
+        },
+        "& thead th": {
+          "font-weight": "600",
+          "font-size": "var(--ui-text-sm)",
+          color: "var(--ui-table-head-fg, var(--ui-surface-fg))",
+          "background-color": "var(--ui-table-head-bg, var(--ui-surface))",
+          /* intent-tinted but deepened so it stays >= 3:1 (a bright intent
+             alone would not) */
+          "border-bottom":
+            "2px solid color-mix(in oklab, var(--ui-c) 55%, var(--ui-surface-fg))",
+          position: "sticky",
+          top: "0",
+        },
+        "& th[aria-sort]": { cursor: "pointer" },
+        '& th[aria-sort="ascending"]::after, & th[aria-sort="descending"]::after': {
+          content: '""',
+          display: "inline-block",
+          "margin-inline-start": "0.4em",
+          "border-inline": "0.3em solid transparent",
+        },
+        '& th[aria-sort="ascending"]::after': {
+          "border-bottom": "0.35em solid currentColor",
+        },
+        '& th[aria-sort="descending"]::after': {
+          "border-top": "0.35em solid currentColor",
+        },
+        "& tbody tr": {
+          "border-bottom": "1px solid var(--ui-table-border, var(--ui-border))",
+          transition: "background-color 0.15s ease",
+        },
+        "& tbody tr:last-child": { "border-bottom": "0" },
+        "& tbody tr:hover": {
+          "background-color": "var(--ui-table-row-hover, var(--ui-surface-muted))",
+        },
+        "& tbody tr.ui-active, & tbody tr[aria-selected='true']": {
+          "background-color": "var(--ui-c-soft)",
+          color: "var(--ui-c-soft-fg)",
+        },
+        "& tbody tr.ui-disabled, & tbody tr[aria-disabled='true']": {
+          opacity: "0.5",
+        },
+        "@media (prefers-reduced-motion: reduce)": {
+          "& tbody tr": { transition: "none" },
+        },
+      },
+      intents,
+      styles: {
+        /* zebra stripes — decision 5 in ADR-003 */
+        soft: {
+          "& tbody tr:nth-of-type(even)": {
+            "background-color": "var(--ui-table-stripe, var(--ui-surface-muted))",
+          },
+          "& tbody tr.ui-active, & tbody tr[aria-selected='true']": {
+            "background-color": "var(--ui-c-soft)",
+          },
+        },
+        /* full cell grid */
+        outline: {
+          "& th, & td": {
+            border: "1px solid var(--ui-table-border, var(--ui-border))",
+          },
+        },
+        /* no lines at all */
+        ghost: {
+          "& tbody tr": { "border-bottom-color": "transparent" },
+          "& thead th": {
+            "border-bottom-color":
+              "color-mix(in oklab, var(--ui-c) 55%, var(--ui-surface-fg))",
+          },
+        },
+      },
+      sizes: {
+        sm: {
+          "font-size": "var(--ui-text-sm)",
+          "--ui-table-pad-y": "0.25rem",
+          "--ui-table-pad-x": "0.5rem",
+        },
+        lg: {
+          "font-size": "var(--ui-text-lg)",
+          "--ui-table-pad-y": "0.75rem",
+          "--ui-table-pad-x": "1rem",
+        },
+      },
+      states: {
+        /* pulsing body while the table is busy — ui-loading / aria-busy
+           on the table element itself */
+        loading: {
+          "& tbody": { animation: "ui-pulse 1.2s ease-in-out infinite" },
+        },
+      },
+    },
+    /* scroll container part — bounded height enables the sticky header;
+       consumers add role=region + label + tabindex=0 when it scrolls. */
+    "table-wrap": {
+      base: {
+        "overflow-x": "auto",
+        border: "1px solid var(--ui-table-border, var(--ui-border))",
+        "border-radius": "var(--ui-radius)",
+        "&:focus-visible": {
+          outline: "2px solid var(--ui-ring)",
+          "outline-offset": "2px",
+        },
+      },
+    },
     modal: {
       base: {
         /* works as a <div>, a <dialog> (open / showModal) or a :target */

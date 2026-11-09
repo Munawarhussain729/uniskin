@@ -12,6 +12,8 @@ const FOCUSABLE = [
   "textarea:not([disabled])",
   "[role='tab']:not([disabled])",
   "[role='switch']:not([disabled]):not([aria-disabled='true'])",
+  // scrollable ui-table-wrap (decision 003 §4): consumers add tabindex=0
+  "[tabindex='0']:not([disabled]):not([aria-disabled='true'])",
 ].join(",");
 
 const DISABLED_LOOKING = '.ui-disabled, :disabled, [aria-disabled="true"]';

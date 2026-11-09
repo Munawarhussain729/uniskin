@@ -15,6 +15,9 @@ const STATE_NATIVES: Record<StateModifier, string[]> = {
   active: ['[aria-selected="true"]', '[aria-pressed="true"]'],
 };
 
+/** Where dark tokens go unless the adapter sets `darkRootSelector`. */
+export const DEFAULT_DARK_SELECTOR = '.dark, [data-theme="dark"]';
+
 /** Default class/keyframes prefix — themes reference keyframes as `ui-<name>`. */
 export const DEFAULT_PREFIX = "ui";
 
@@ -41,6 +44,20 @@ function rePrefixKeyframes(
   return out;
 }
 
+/** Re-point `.ui-<class>` references in nested selector keys at `replacement`. */
+function rePrefixClassSelectors(
+  rule: CssRuleObject,
+  ref: RegExp,
+  replacement: string,
+): CssRuleObject {
+  const out: CssRuleObject = {};
+  for (const [key, value] of Object.entries(rule)) {
+    out[key.replace(ref, replacement)] =
+      value && typeof value === "object" ? rePrefixClassSelectors(value, ref, replacement) : value;
+  }
+  return out;
+}
+
 /**
  * Turn a merged adapter into Tailwind plugin rules for a given prefix.
  *
@@ -48,7 +65,7 @@ function rePrefixKeyframes(
  * (`.ui-button.ui-primary`) so the same modifier can mean different
  * things on different components.
  *
- * `keyframes` (the default theme's spin/pulse) are emitted as
+ * Keyframes (the built-in spin/pulse plus any the adapter declares) are emitted as
  * `@keyframes <prefix>-<name>`. `animation:` values in the theme
  * reference them as `ui-<name>` and are re-prefixed to match.
  */
@@ -57,10 +74,12 @@ export type DarkStrategy = "media" | "class" | false;
 export function buildRules(
   adapter: Adapter,
   prefix: string,
-  keyframes?: Record<string, CssRuleObject>,
+  builtinKeyframes?: Record<string, CssRuleObject>,
   dark: DarkStrategy = "media",
 ): EmittedRules {
   const p = `${prefix}-`;
+  // Adapter keyframes win over the built-ins of the same name.
+  const keyframes = { ...builtinKeyframes, ...adapter.keyframes };
   const utilities: Record<string, CssRuleObject> = {};
   const base: Record<string, unknown> = {};
 
@@ -68,7 +87,7 @@ export function buildRules(
     base[adapter.rootSelector ?? ":root"] = adapter.tokens;
   }
   if (dark && adapter.darkTokens && Object.keys(adapter.darkTokens).length > 0) {
-    base['.dark, [data-theme="dark"]'] = adapter.darkTokens;
+    base[adapter.darkRootSelector ?? DEFAULT_DARK_SELECTOR] = adapter.darkTokens;
     if (dark === "media") {
       // OS preference, unless the page explicitly opts into light.
       base["@media (prefers-color-scheme: dark)"] = {
@@ -113,6 +132,16 @@ export function buildRules(
     const ref = new RegExp(`(?<![-\\w])${DEFAULT_PREFIX}-(${kfNames.join("|")})\\b`, "g");
     for (const sel of Object.keys(utilities)) {
       utilities[sel] = rePrefixKeyframes(utilities[sel], ref, `${p}$1`);
+    }
+  }
+
+  if (prefix !== DEFAULT_PREFIX) {
+    // Nested selectors can reference vocabulary classes too (e.g. the
+    // table's `& tbody tr.ui-active`) — re-prefix them like the emitted
+    // class selectors.
+    const clsRef = new RegExp(`\\.${DEFAULT_PREFIX}-([a-zA-Z][\\w-]*)`, "g");
+    for (const sel of Object.keys(utilities)) {
+      utilities[sel] = rePrefixClassSelectors(utilities[sel], clsRef, `.${p}$1`);
     }
   }
 

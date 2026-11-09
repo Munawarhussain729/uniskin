@@ -385,3 +385,21 @@ describe("unsupported-slot notice", () => {
     expect(() => uniskin({ adapter: "./nope.cjs" })).toThrowError(/Could not resolve adapter/);
   });
 });
+
+describe("mergeAdapter keyframes and dark selector", () => {
+  it("carries both through and layers keyframes by name", () => {
+    const base = defineAdapter({ name: "b", keyframes: { a: { to: { opacity: "1" } }, b: { to: { opacity: "0" } } } });
+    const over = defineAdapter({
+      name: "o",
+      darkRootSelector: "[data-mode=dark]",
+      keyframes: { b: { to: { opacity: "0.5" } }, c: { to: { opacity: "0.2" } } },
+    });
+    const merged = mergeAdapter(base, over);
+    expect(merged.darkRootSelector).toBe("[data-mode=dark]");
+    expect(merged.keyframes).toEqual({
+      a: { to: { opacity: "1" } },
+      b: { to: { opacity: "0.5" } },
+      c: { to: { opacity: "0.2" } },
+    });
+  });
+});

@@ -36,6 +36,17 @@ test("loading spin/pulse under prefers-reduced-motion: reduce", async ({ page })
         stillAnimating.push(`${adapter} | ${labels[i] ?? i} | ::after`);
     }
 
+    // ui-table.ui-loading pulses its tbody — must stop under reduce
+    const busyTbody = page.locator(".ui-table.ui-loading tbody, .ui-table[aria-busy='true'] tbody");
+    for (let i = 0; i < (await busyTbody.count()); i++) {
+      const info = await busyTbody.nth(i).evaluate((el) => ({
+        name: getComputedStyle(el).animationName,
+        dur: getComputedStyle(el).animationDuration,
+      }));
+      if (running(info.name, info.dur))
+        stillAnimating.push(`${adapter} | ui-table tbody[${i}] | element`);
+    }
+
     // positive control: the skin does honour reduced-motion for the modal fade
     const modalTransition = await page.locator("dialog.ui-modal").evaluate(
       (el) => getComputedStyle(el).transitionProperty,
