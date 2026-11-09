@@ -67,8 +67,11 @@ Intents and styles combine without combinatorial rules because the
 default theme separates *which color* from *how it's applied*:
 
 - **Intents set five variables on the element:**
-  `--ui-c` (the accent color), `--ui-on-c` (content color on top of it),
-  `--ui-c-hover`, `--ui-c-soft`, `--ui-c-soft-fg`.
+  `--ui-c` (the accent color), `--ui-c-text` (the accent when used as
+  *text* or a thin border on the surface), `--ui-on-c` (content color on
+  top of the accent), `--ui-c-soft` and `--ui-c-soft-fg` (the soft tint and
+  its text). `--ui-c-hover` is not an intent variable: `ui-button` declares
+  it in its `base` and nothing else reads it.
 - **Styles map those variables to real properties** — e.g. `outline`
   paints `color: var(--ui-c)` and `border-color: var(--ui-c)` on a
   transparent background.
@@ -79,6 +82,23 @@ your palette. Hover shades and soft tints are derived with
 `color-mix()`, so they follow automatically. That's how
 `@uniskin/daisyui` works — it points `--ui-*` at daisyUI's own
 `--color-*` variables.
+
+### Pinning derived colours
+
+`--ui-c-text`, `--ui-c-soft` and `--ui-c-soft-fg` are derived with
+`color-mix()` from the intent colour. When the derivation does not suit
+your palette (a light warning colour, a design system with hand-picked
+tints), pin the result by setting a per-intent token in `tokens` (and
+`darkTokens`); no component rule needs to change:
+
+| Token | Pins |
+|-------|------|
+| `--ui-<intent>-text` | `--ui-c-text`, the accent used as text and thin borders |
+| `--ui-<intent>-soft` | `--ui-c-soft`, the `ui-soft` background |
+| `--ui-<intent>-soft-fg` | `--ui-c-soft-fg`, text on that background |
+
+`<intent>` is one of `primary secondary success warning danger`.
+`@uniskin/shadcn` and `@uniskin/daisyui` both use these.
 
 You can still override a component's `&:`-level states or repaint a
 whole slot when tokens aren't enough (see `@uniskin/shadcn`'s outline,
@@ -120,6 +140,9 @@ is harmless:
 | `ui-checkbox` | `--ui-check-size`, `--ui-check-mark` |
 | `ui-radio` | `--ui-radio-size` (default `1.125rem`), `--ui-radio-dot` (dot color, default `--ui-on-c`), `--ui-radio-dot-size` (default `0.5em`) |
 | `ui-switch` | `--ui-switch-size` (height, default `1.25rem`; width is `1.75x`), `--ui-switch-track` (off colour, default a grey mixed from `--ui-surface-fg`), `--ui-switch-thumb` (thumb colour), `--ui-switch-pad` (thumb inset, default `2px`) |
+| `ui-card` | `--ui-card-pad` (padding shared by header, body and footer, default `1.25rem`), `--ui-card-border` (border colour, default `--ui-border`; intents mix their colour into it) |
+| `ui-modal` | `--ui-modal-w` (width of `ui-modal-box`, default `32rem`; `ui-sm` and `ui-lg` set `24rem` and `48rem`) |
+| `ui-tab` | `--ui-tab-py`, `--ui-tab-px`, `--ui-tab-fs`, `--ui-tab-radius` (shape); `--ui-tab-hover-bg`, `--ui-tab-active-fg`, `--ui-tab-active-bg`, `--ui-tab-active-line`, `--ui-tab-active-shadow` (the active tab) |
 | `ui-field` | `--ui-field-gap` (stack gap, default `0.375rem`), `--ui-field-label`, `--ui-field-hint`, `--ui-field-error` (text colours; the error falls back to `--ui-danger-text`, then `--ui-danger`) |
 
 `ui-radio` and `ui-checkbox` also match `[aria-checked]` (headless
@@ -137,3 +160,18 @@ their `base` (it sets `--ui-field-c` and `border-color` to `--ui-danger`); if
 your adapter replaces `border-color` there, keep reading `--ui-field-c`. Pin
 `--ui-danger-text` when your danger colour is too light or too dark to read as
 text (the daisyUI adapter does).
+
+## Overriding means repainting
+
+Adapter rules are deep-merged over the default theme, and the merge can
+only add or replace values. It cannot delete them: an empty rule such as
+`"&:hover": {}` does **not** clear the default theme's hover rule.
+
+To remove an inherited effect, repaint the property to its neutral value
+instead: `"border-bottom": "0"`, `"border-color": "transparent"`,
+`"box-shadow": "none"`, `"background-color": "transparent"`. The shadcn
+tabs do this.
+
+The same applies to the solid look. "No style class" *is* the solid
+variant, so a system whose canonical variant is soft should repaint
+`base`; true solid then becomes unreachable for that component.
