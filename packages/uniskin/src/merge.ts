@@ -83,6 +83,8 @@ export function mergeAdapter(base: Adapter, override: Adapter): Adapter {
     name: override.name,
     rootSelector: override.rootSelector ?? base.rootSelector,
     darkTokens: override.darkTokens ?? base.darkTokens,
+    darkRootSelector: override.darkRootSelector ?? base.darkRootSelector,
+    keyframes: { ...base.keyframes, ...override.keyframes },
     tokens: { ...base.tokens, ...override.tokens },
     components,
   };

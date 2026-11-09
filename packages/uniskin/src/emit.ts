@@ -15,6 +15,9 @@ const STATE_NATIVES: Record<StateModifier, string[]> = {
   active: ['[aria-selected="true"]', '[aria-pressed="true"]'],
 };
 
+/** Where dark tokens go unless the adapter sets `darkRootSelector`. */
+export const DEFAULT_DARK_SELECTOR = '.dark, [data-theme="dark"]';
+
 /** Default class/keyframes prefix — themes reference keyframes as `ui-<name>`. */
 export const DEFAULT_PREFIX = "ui";
 
@@ -62,7 +65,7 @@ function rePrefixClassSelectors(
  * (`.ui-button.ui-primary`) so the same modifier can mean different
  * things on different components.
  *
- * `keyframes` (the default theme's spin/pulse) are emitted as
+ * Keyframes (the built-in spin/pulse plus any the adapter declares) are emitted as
  * `@keyframes <prefix>-<name>`. `animation:` values in the theme
  * reference them as `ui-<name>` and are re-prefixed to match.
  */
@@ -71,10 +74,12 @@ export type DarkStrategy = "media" | "class" | false;
 export function buildRules(
   adapter: Adapter,
   prefix: string,
-  keyframes?: Record<string, CssRuleObject>,
+  builtinKeyframes?: Record<string, CssRuleObject>,
   dark: DarkStrategy = "media",
 ): EmittedRules {
   const p = `${prefix}-`;
+  // Adapter keyframes win over the built-ins of the same name.
+  const keyframes = { ...builtinKeyframes, ...adapter.keyframes };
   const utilities: Record<string, CssRuleObject> = {};
   const base: Record<string, unknown> = {};
 
@@ -82,7 +87,7 @@ export function buildRules(
     base[adapter.rootSelector ?? ":root"] = adapter.tokens;
   }
   if (dark && adapter.darkTokens && Object.keys(adapter.darkTokens).length > 0) {
-    base['.dark, [data-theme="dark"]'] = adapter.darkTokens;
+    base[adapter.darkRootSelector ?? DEFAULT_DARK_SELECTOR] = adapter.darkTokens;
     if (dark === "media") {
       // OS preference, unless the page explicitly opts into light.
       base["@media (prefers-color-scheme: dark)"] = {
