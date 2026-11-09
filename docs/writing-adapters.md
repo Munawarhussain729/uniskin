@@ -173,6 +173,7 @@ is harmless:
 | `ui-radio` | `--ui-radio-size` (default `1.125rem`), `--ui-radio-dot` (dot color, default `--ui-on-c`), `--ui-radio-dot-size` (default `0.5em`) |
 | `ui-table` | `--ui-table-pad-x`, `--ui-table-pad-y` (density), `--ui-table-head-bg`, `--ui-table-head-fg`, `--ui-table-stripe` (zebra under `ui-soft`), `--ui-table-row-hover`, `--ui-table-border` |
 | `ui-accordion` | `--ui-accordion-pad-x`, `--ui-accordion-pad-y` (trigger and panel padding; sizes set them), `--ui-accordion-border`, `--ui-accordion-hover` (trigger hover fill), `--ui-accordion-soft-bg` (list fill under `ui-soft`) |
+| `ui-progress` | `--ui-progress-h` (height; sizes set it), `--ui-progress-track` (track fill), `--ui-progress-bar` (bar colour, default `--ui-c-text` so intents tint it), `--ui-progress-border` (track outline under `ui-outline`) |
 | `ui-switch` | `--ui-switch-size` (height, default `1.25rem`; width is `1.75x`), `--ui-switch-track` (off colour, default a grey mixed from `--ui-surface-fg`), `--ui-switch-thumb` (thumb colour), `--ui-switch-pad` (thumb inset, default `2px`) |
 | `ui-card` | `--ui-card-pad` (padding shared by header, body and footer, default `1.25rem`), `--ui-card-border` (border colour, default `--ui-border`; intents mix their colour into it) |
 | `ui-modal` | `--ui-modal-w` (width of `ui-modal-box`, default `32rem`; `ui-sm` and `ui-lg` set `24rem` and `48rem`) |
