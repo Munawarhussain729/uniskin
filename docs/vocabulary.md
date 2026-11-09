@@ -1,6 +1,6 @@
 # Vocabulary reference
 
-Every class in Uniskin vocabulary v1.2, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.3, grouped by component. The prefix is
 `ui-` by default — if you set `prefix: "uk"` in the `@plugin` options,
 read every `ui-*` class below as `uk-*`.
 
@@ -208,6 +208,44 @@ drawn with `::after`; no wrapper needed. Put the class on the **input**
   components and never share an element. In forced-colors mode the track
   and thumb use system colors (`Canvas`, `ButtonText`, `Highlight`).
 
+### `ui-field`, `ui-field-label`, `ui-field-hint`, `ui-field-error`
+
+Form-field layout: a vertical stack of label, control, help text and error
+message. CSS only; it supplies spacing, type and colour, **you** supply the
+wiring that makes it accessible.
+
+```html
+<div class="ui-field">
+  <label class="ui-field-label" for="email">Email</label>
+  <input class="ui-input" id="email" type="email" value="oops"
+         aria-invalid="true" aria-describedby="email-hint email-error" />
+  <p class="ui-field-hint" id="email-hint">We only use it for receipts.</p>
+  <p class="ui-field-error" id="email-error">Enter an email like name@example.com.</p>
+</div>
+```
+
+- **Parts:** `ui-field` (the stack), `ui-field-label` (put it on a
+  `<label for>`), `ui-field-hint` (help text), `ui-field-error` (error
+  message). None take intents, styles, sizes or states.
+- **`aria-invalid`:** `ui-input`, `ui-textarea` and `ui-select` with
+  `aria-invalid="true"` get the `ui-danger` border, also with `ui-outline`,
+  `ui-ghost` and `ui-soft`. No class needed; the attribute is both the
+  styling hook and the accessible state. Set it only after validation, and
+  remove it (or set `"false"`) when the value becomes valid.
+- **You provide:** `for`/`id` on the label, `aria-describedby` on the control
+  listing the hint and error ids (space separated), `aria-invalid`, and
+  `role="alert"` (or `aria-live`) on the error if it appears while the user is
+  typing. An empty `ui-field-hint` / `ui-field-error` is hidden
+  (`:empty`), so you can keep a live slot in the DOM.
+- **Hooks:** `--ui-field-gap` (default `0.375rem`), `--ui-field-label`,
+  `--ui-field-hint`, `--ui-field-error` (text colours).
+- **Notes:** error text uses the danger text colour (`--ui-danger-text`,
+  falling back to `--ui-danger`), at least 4.5:1 in every shipped skin; never
+  rely on colour alone, the message itself says what is wrong. Spacing and
+  alignment use logical properties, so fields flip in right-to-left layouts.
+  For a checkbox, radio or switch row, keep the `<label>` wrapping the
+  control inside the field and use the hint and error parts below it.
+
 ### `ui-card`, `ui-card-header`, `ui-card-body`, `ui-card-footer`
 
 Content container with optional header/body/footer parts. `ui-card` is
@@ -357,6 +395,10 @@ fewer — anything omitted falls back to the default):
 | `ui-checkbox`    | ✓ | outline ghost soft | ✓ | disabled loading active |
 | `ui-radio`       | ✓ | outline ghost soft | ✓ | disabled loading active |
 | `ui-switch`      | ✓ | outline ghost soft | ✓ | disabled loading active |
+| `ui-field`       | — | — | — | — |
+| `ui-field-label` | — | — | — | — |
+| `ui-field-hint`  | — | — | — | — |
+| `ui-field-error` | — | — | — | — |
 | `ui-card`        | ✓ | outline ghost soft | ✓ | disabled loading active |
 | `ui-card-header` | — | — | — | — |
 | `ui-card-body`   | — | — | — | — |
