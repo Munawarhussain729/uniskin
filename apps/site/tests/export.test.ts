@@ -231,7 +231,17 @@ describe("generated adapter loads through the uniskin plugin", () => {
   const { css, stderr } = compile(state);
 
   it("compiles without warnings", () => {
-    expect(stderr).not.toMatch(/warn|error|could not resolve/i);
+    // Match diagnostics, not component names: a class such as `field-error`
+    // may legitimately appear in plugin output. A custom adapter that only
+    // overrides tokens gets one informational "fall back to the default
+    // style" line from the plugin; that is expected, anything else is not.
+    // eslint-disable-next-line no-control-regex
+    const plain = stderr.replace(/\u001b\[[0-9;]*m/g, "");
+    const unexpected = plain
+      .split("\n")
+      .filter((line) => !/modifier combinations fall back to the default style/.test(line))
+      .join("\n");
+    expect(unexpected).not.toMatch(/\[uniskin\]|^\s*(error|warn(ing)?)\b|could not resolve/im);
   });
 
   it("emits the chosen tokens on :root", () => {
