@@ -86,6 +86,9 @@ run `npm publish` or `pnpm publish` from a contribution branch.
   compatibility matrix. Keep it green; routine PRs shouldn't add CI jobs.
 - Don't merge your own PR — a maintainer reviews and merges.
 
+What is planned for each release up to 1.0.0 is in
+[docs/roadmap.md](docs/roadmap.md).
+
 ## Writing an adapter
 
 The fastest start is the CLI scaffold:
