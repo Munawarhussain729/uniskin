@@ -117,9 +117,14 @@ is harmless:
 |-----------|-------|
 | `ui-checkbox` | `--ui-check-size`, `--ui-check-mark` |
 | `ui-radio` | `--ui-radio-size` (default `1.125rem`), `--ui-radio-dot` (dot color, default `--ui-on-c`), `--ui-radio-dot-size` (default `0.5em`) |
+| `ui-switch` | `--ui-switch-size` (height, default `1.25rem`; width is `1.75x`), `--ui-switch-track` (off colour, default a grey mixed from `--ui-surface-fg`), `--ui-switch-thumb` (thumb colour), `--ui-switch-pad` (thumb inset, default `2px`) |
 
 `ui-radio` and `ui-checkbox` also match `[aria-checked]` (headless
 libraries), so nest your checked-state overrides under the same
 selector the default theme uses, for example
 `'&:checked, &[aria-checked="true"]'`.
 
+`ui-switch` also matches `[aria-checked="true"]` (for `<button role="switch">`);
+nest checked overrides under `'&:checked, &[aria-checked="true"]'`. The thumb
+travels with `margin-inline-start`, so keep any new positioning logical
+(RTL-safe).

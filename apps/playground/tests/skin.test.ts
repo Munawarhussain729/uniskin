@@ -39,6 +39,7 @@ const COMPONENTS: Record<string, Slots> = {
   select: FULL,
   checkbox: FULL,
   radio: FULL,
+  switch: FULL,
   card: FULL,
   "card-header": {},
   "card-body": {},
@@ -211,6 +212,7 @@ describe("content scanning", () => {
     "ui-select ui-outline",
     "ui-checkbox ui-success ui-soft",
     "ui-radio ui-primary ui-outline",
+    "ui-switch ui-success ui-soft",
     "ui-card ui-primary ui-outline ui-lg",
     "ui-card-header ui-card-body ui-card-footer",
     "ui-badge ui-warning ui-ghost",
@@ -307,6 +309,62 @@ describe("radio and checkbox/select gap fixes (decision 003, wave 1)", () => {
     expect(css).toContain(".uk-radio");
     expect(css).toContain(".uk-radio.uk-primary");
     expect(css).toContain(".uk-radio.uk-loading");
+    expect(css).toContain("uk-pulse 1.2s ease-in-out infinite");
+    expect(css).not.toMatch(/\.ui-/);
+  });
+});
+
+describe("ui-switch (decision 003, component 3)", () => {
+  for (const adapter of ["default", "shadcn", "daisyui"]) {
+    describe(adapter, () => {
+      const css = () => skin(adapter);
+
+      it("styles native :checked and headless [aria-checked]", () => {
+        const block = ruleBlock(css(), ".ui-switch");
+        expect(block).toContain("&:checked");
+        expect(block).toContain('&[aria-checked="true"]');
+        expect(block).toContain("border-radius: 9999px");
+      });
+
+      it("uses logical properties for the thumb and adds no global token", () => {
+        const block = ruleBlock(css(), ".ui-switch");
+        expect(block).toContain("margin-inline-start");
+        expect(block).not.toMatch(/translateX|margin-left|margin-right/);
+        expect(css()).not.toMatch(/--ui-shadow\b/);
+        expect(css()).not.toMatch(/label\.ui-switch/);
+      });
+
+      it("keeps forced-colors working with system colours", () => {
+        const block = ruleBlock(css(), ".ui-switch");
+        expect(block).toContain("forced-colors: active");
+        expect(block).toContain("Highlight");
+      });
+    });
+  }
+
+  it("hooks are read with fallbacks in the default theme", () => {
+    const block = ruleBlock(skin("default"), ".ui-switch");
+    expect(block).toContain("var(--ui-switch-size, 1.25rem)");
+    expect(block).toContain("var(--ui-switch-track,");
+    expect(block).toContain("var(--ui-switch-thumb,");
+    expect(block).toContain("var(--ui-switch-pad, 2px)");
+    expect(ruleBlock(skin("shadcn"), ".ui-switch")).toContain("--ui-switch-size: 1.25rem");
+    expect(ruleBlock(skin("daisyui"), ".ui-switch")).toContain("--size-selector");
+  });
+
+  it("transitions are disabled under prefers-reduced-motion", () => {
+    const block = ruleBlock(skin("default"), ".ui-switch");
+    expect(block).toMatch(/prefers-reduced-motion: reduce\)\s*\{[^}]*transition: none/);
+  });
+
+  it('prefix: "uk" renames switch classes and the loading keyframes', () => {
+    const css = compileWithFiles(
+      { "index.html": '<input type="checkbox" role="switch" class="uk-switch uk-primary uk-loading" />' },
+      'prefix: "uk";',
+    );
+    expect(css).toContain(".uk-switch");
+    expect(css).toContain(".uk-switch.uk-primary");
+    expect(css).toContain(".uk-switch.uk-loading");
     expect(css).toContain("uk-pulse 1.2s ease-in-out infinite");
     expect(css).not.toMatch(/\.ui-/);
   });

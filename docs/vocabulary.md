@@ -1,6 +1,6 @@
 # Vocabulary reference
 
-Every class in Uniskin vocabulary v1.1, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.2, grouped by component. The prefix is
 `ui-` by default — if you set `prefix: "uk"` in the `@plugin` options,
 read every `ui-*` class below as `uk-*`.
 
@@ -171,6 +171,43 @@ Native radio restyled — `<input type="radio">`. The dot is drawn with
   stop and arrow-key movement are native for same-`name` inputs; for
   `role="radio"` buttons the library owns roving tabindex and arrows.
 
+### `ui-switch`
+
+On/off toggle. The track is the element's own background and the thumb is
+drawn with `::after`; no wrapper needed. Put the class on the **input**
+(or the `<button>`), not on a `<label>`.
+
+```html
+<label>
+  <input type="checkbox" role="switch" class="ui-switch ui-success" checked />
+  Notifications
+</label>
+<!-- headless / non-native -->
+<button type="button" role="switch" aria-checked="true" aria-label="Wi-Fi" class="ui-switch"></button>
+```
+
+- **Intents:** all five; set the on-state track color. The off track is a
+  neutral grey that keeps at least 3:1 against the page surface.
+- **Styles:** `ui-outline` (transparent track, accent border and thumb),
+  `ui-ghost` / `ui-soft` (muted or tinted track, soft fill when on).
+- **Sizes:** `ui-sm`, `ui-lg` (height via `--ui-switch-size`, width is
+  1.75 times the height; thumb inset via `--ui-switch-pad`, off track via
+  `--ui-switch-track`, thumb via `--ui-switch-thumb`).
+- **States:** `ui-disabled`, `ui-loading` (the thumb pulses), `ui-active`.
+- **Native equivalents:** `:checked`, `:disabled`,
+  `[aria-disabled="true"]`, `[aria-busy="true"]`, and
+  `[aria-checked="true"]` for `<button role="switch">` from a headless
+  library. Use `aria-checked`, not `aria-pressed` / `ui-active`: a
+  `ui-button ui-active` is a toggle button, a switch is a different role.
+- **You provide:** an accessible name (visible label, `aria-label` or
+  `aria-labelledby`); for `<button role="switch">` also the click and
+  Space handling and the `aria-checked` value. The native checkbox
+  version toggles with Space and submits with its form.
+- **Notes:** the thumb moves with `margin-inline-start`, so it flips in
+  right-to-left layouts. `ui-switch` and `ui-checkbox` are different
+  components and never share an element. In forced-colors mode the track
+  and thumb use system colors (`Canvas`, `ButtonText`, `Highlight`).
+
 ### `ui-card`, `ui-card-header`, `ui-card-body`, `ui-card-footer`
 
 Content container with optional header/body/footer parts. `ui-card` is
@@ -319,6 +356,7 @@ fewer — anything omitted falls back to the default):
 | `ui-select`      | ✓ | outline ghost soft | ✓ | disabled loading active |
 | `ui-checkbox`    | ✓ | outline ghost soft | ✓ | disabled loading active |
 | `ui-radio`       | ✓ | outline ghost soft | ✓ | disabled loading active |
+| `ui-switch`      | ✓ | outline ghost soft | ✓ | disabled loading active |
 | `ui-card`        | ✓ | outline ghost soft | ✓ | disabled loading active |
 | `ui-card-header` | — | — | — | — |
 | `ui-card-body`   | — | — | — | — |

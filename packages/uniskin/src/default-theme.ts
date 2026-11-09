@@ -523,6 +523,108 @@ export const defaultAdapter = defineAdapter({
       },
     },
 
+    switch: {
+      base: {
+        ...neutralVars,
+        appearance: "none",
+        display: "inline-grid",
+        "align-items": "center",
+        "flex-shrink": "0",
+        "box-sizing": "border-box",
+        width: "calc(var(--ui-switch-size, 1.25rem) * 1.75)",
+        height: "var(--ui-switch-size, 1.25rem)",
+        margin: "0",
+        padding: "0",
+        "vertical-align": "middle",
+        cursor: "pointer",
+        /* off track: a mid grey mixed from the page text, >= 3:1 on the surface */
+        "background-color":
+          "var(--ui-switch-track, color-mix(in oklab, var(--ui-surface-fg) 55%, var(--ui-surface)))",
+        border:
+          "1px solid var(--ui-switch-track, color-mix(in oklab, var(--ui-surface-fg) 55%, var(--ui-surface)))",
+        "border-radius": "9999px",
+        transition: transition(["background-color", "border-color", "box-shadow"]),
+        "&::after": {
+          content: '""',
+          "box-sizing": "border-box",
+          width: "calc(var(--ui-switch-size, 1.25rem) - 2px - 2 * var(--ui-switch-pad, 2px))",
+          height: "calc(var(--ui-switch-size, 1.25rem) - 2px - 2 * var(--ui-switch-pad, 2px))",
+          "border-radius": "9999px",
+          "background-color": "var(--ui-switch-thumb, var(--ui-surface))",
+          "margin-inline-start": "var(--ui-switch-pad, 2px)",
+          transition: "margin-inline-start 0.15s ease, background-color 0.15s ease",
+          "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+        },
+        '&:checked, &[aria-checked="true"]': {
+          "background-color": "var(--ui-c)",
+          "border-color": "var(--ui-c)",
+        },
+        '&:checked::after, &[aria-checked="true"]::after': {
+          "background-color": "var(--ui-switch-thumb, var(--ui-on-c))",
+          "margin-inline-start":
+            "calc(var(--ui-switch-size, 1.25rem) * 0.75 + var(--ui-switch-pad, 2px))",
+        },
+        "&:focus-visible": focusRing,
+        "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+        /* Windows high contrast: system colours, so the thumb and the on/off
+           state stay visible without relying on background colours. */
+        "@media (forced-colors: active)": {
+          "forced-color-adjust": "none",
+          "background-color": "Canvas !important",
+          "border-color": "ButtonText !important",
+          "&::after": { "background-color": "ButtonText !important" },
+          '&:checked, &[aria-checked="true"]': {
+            "background-color": "Highlight !important",
+            "border-color": "Highlight !important",
+          },
+          '&:checked::after, &[aria-checked="true"]::after': {
+            "background-color": "HighlightText !important",
+          },
+          '&:disabled, &[aria-disabled="true"]': {
+            "border-color": "GrayText !important",
+            "&::after": { "background-color": "GrayText !important" },
+          },
+          "&:focus-visible": { outline: "2px solid Highlight !important" },
+        },
+      },
+      intents,
+      styles: {
+        outline: {
+          "background-color": "transparent",
+          "border-color": "var(--ui-c)",
+          "--ui-switch-thumb": "var(--ui-c)",
+        },
+        ghost: {
+          "background-color": "var(--ui-surface-muted)",
+          "--ui-switch-thumb": "var(--ui-surface-fg)",
+          '&:checked, &[aria-checked="true"]': {
+            "background-color": "var(--ui-c-soft)",
+            "--ui-switch-thumb": "var(--ui-c-soft-fg)",
+          },
+        },
+        soft: {
+          "background-color": "var(--ui-c-soft)",
+          "--ui-switch-thumb": "var(--ui-c-soft-fg)",
+          '&:checked, &[aria-checked="true"]': {
+            "background-color": "var(--ui-c-soft)",
+            "border-color": "var(--ui-c)",
+          },
+        },
+      },
+      sizes: {
+        sm: { "--ui-switch-size": "1rem" },
+        lg: { "--ui-switch-size": "1.5rem" },
+      },
+      states: {
+        disabled: { opacity: "0.5", cursor: "not-allowed" },
+        loading: {
+          cursor: "progress",
+          "&::after": { animation: "ui-pulse 1.2s ease-in-out infinite" },
+        },
+        active: { "box-shadow": "0 0 0 3px color-mix(in oklab, var(--ui-c) 30%, transparent)" },
+      },
+    },
+
     card: {
       base: {
         ...neutralVars,

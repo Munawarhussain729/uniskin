@@ -11,6 +11,7 @@ const FOCUSABLE = [
   "select:not([disabled])",
   "textarea:not([disabled])",
   "[role='tab']:not([disabled])",
+  "[role='switch']:not([disabled]):not([aria-disabled='true'])",
 ].join(",");
 
 const DISABLED_LOOKING = '.ui-disabled, :disabled, [aria-disabled="true"]';

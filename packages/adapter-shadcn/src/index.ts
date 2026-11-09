@@ -152,6 +152,26 @@ export default defineAdapter({
         },
       },
     },
+    switch: {
+      base: {
+        "--ui-switch-size": "1.25rem",
+        "--ui-switch-pad": "2px",
+        /* shadcn Switch: primary when on. The off track is deliberately
+           stronger than upstream's very light --input so it keeps 3:1. */
+        "box-shadow": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        "&::after": { "box-shadow": "0 1px 3px 0 rgb(0 0 0 / 0.25)" },
+        "&:focus-visible": {
+          outline: "none",
+          "box-shadow": "0 0 0 3px hsl(var(--ring) / 0.5)",
+        },
+      },
+      states: {
+        /* the default active halo would otherwise out-rank the focus ring */
+        active: {
+          "&:focus-visible": { "box-shadow": "0 0 0 3px hsl(var(--ring) / 0.5)" },
+        },
+      },
+    },
     card: {
       base: {
         "border-radius": "calc(var(--radius) + 4px)",

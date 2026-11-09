@@ -216,7 +216,59 @@
           <button type="button" role="radio" class="ui-radio ui-primary" aria-checked="false" aria-label="aria-checked off"></button>
         </div>
       </div>
+      <div class="fields" id="switch-section">
+        <h2>switch</h2>
+        <div class="fields" id="switch-native">
+          <label class="check"><input type="checkbox" role="switch" class="ui-switch ui-success" checked /> Notifications</label>
+          <label class="check"><input type="checkbox" role="switch" class="ui-switch" /> Airplane mode</label>
+          <label class="check"><input type="checkbox" role="switch" class="ui-switch ui-primary" /> Auto-save</label>
+        </div>
+        <div class="row" role="group" aria-label="Intents">
+          <input type="checkbox" role="switch" class="ui-switch ui-primary" checked aria-label="primary" />
+          <input type="checkbox" role="switch" class="ui-switch ui-secondary" checked aria-label="secondary" />
+          <input type="checkbox" role="switch" class="ui-switch ui-success" checked aria-label="success" />
+          <input type="checkbox" role="switch" class="ui-switch ui-warning" checked aria-label="warning" />
+          <input type="checkbox" role="switch" class="ui-switch ui-danger" checked aria-label="danger" />
+        </div>
+        <div class="row" role="group" aria-label="Styles">
+          <input type="checkbox" role="switch" class="ui-switch ui-primary ui-outline" checked aria-label="outline on" />
+          <input type="checkbox" role="switch" class="ui-switch ui-primary ui-outline" aria-label="outline off" />
+          <input type="checkbox" role="switch" class="ui-switch ui-primary ui-soft" checked aria-label="soft on" />
+          <input type="checkbox" role="switch" class="ui-switch ui-primary ui-soft" aria-label="soft off" />
+          <input type="checkbox" role="switch" class="ui-switch ui-primary ui-ghost" checked aria-label="ghost on" />
+          <input type="checkbox" role="switch" class="ui-switch ui-primary ui-ghost" aria-label="ghost off" />
+        </div>
+        <div class="row" role="group" aria-label="Sizes">
+          <input type="checkbox" role="switch" class="ui-switch ui-sm ui-primary" checked aria-label="sm" />
+          <input type="checkbox" role="switch" class="ui-switch ui-primary" checked aria-label="md" />
+          <input type="checkbox" role="switch" class="ui-switch ui-lg ui-primary" checked aria-label="lg" />
+        </div>
+        <div class="row" role="group" aria-label="States">
+          <input type="checkbox" role="switch" class="ui-switch" checked disabled aria-label="disabled on" />
+          <input type="checkbox" role="switch" class="ui-switch" disabled aria-label="disabled off" />
+          <input type="checkbox" role="switch" class="ui-switch ui-primary ui-loading" checked aria-busy="true" aria-label="loading" />
+          <input type="checkbox" role="switch" class="ui-switch ui-primary ui-active" aria-label="active" />
+        </div>
+        <div class="row" id="switch-headless">
+          <button type="button" role="switch" class="ui-switch ui-primary" aria-checked="true" aria-label="Headless on"></button>
+          <button type="button" role="switch" class="ui-switch ui-primary" aria-checked="false" aria-label="Headless off"></button>
+          <button type="button" role="switch" class="ui-switch" aria-checked="false" aria-disabled="true" aria-label="Headless disabled"></button>
+        </div>
+        <div class="row" dir="rtl" id="switch-rtl">
+          <input type="checkbox" role="switch" class="ui-switch ui-primary" checked aria-label="RTL on" />
+          <input type="checkbox" role="switch" class="ui-switch ui-primary" aria-label="RTL off" />
+        </div>
+      </div>
     </div>
+    <script>
+      /* headless demo: the "library" owns click handling and aria-checked */
+      document.querySelectorAll('#switch-headless [role="switch"]').forEach(function (el) {
+        el.addEventListener("click", function () {
+          if (el.getAttribute("aria-disabled") === "true") return;
+          el.setAttribute("aria-checked", el.getAttribute("aria-checked") === "true" ? "false" : "true");
+        });
+      });
+    </script>
 
     <h2 class="group">Feedback</h2>
     <h2>badge</h2>
