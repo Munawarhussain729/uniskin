@@ -132,3 +132,5 @@ pnpm -r build
 pnpm -r test
 cd apps/playground && pnpm dev
 ```
+
+Contributing: see [CONTRIBUTING.md](CONTRIBUTING.md).

@@ -22,6 +22,21 @@ export interface UniskinOptions {
    * `[data-theme="dark"]`. `false`: no dark tokens.
    */
   dark?: DarkStrategy;
+  /**
+   * Print the full list of vocabulary slots the adapter leaves to the
+   * default style (also enabled by env `UNISKIN_DEBUG=1`). By default
+   * built-in adapters are silent and other adapters get a one-line summary.
+   */
+  debug?: boolean;
+}
+
+const BUILTIN_ADAPTERS = new Set(["default", "shadcn", "daisyui"]);
+
+function isDebug(option: unknown): boolean {
+  if (option === true || option === "true") return true;
+  if (option === false || option === "false") return false;
+  const env = process.env.UNISKIN_DEBUG;
+  return env === "1" || env === "true";
 }
 
 type CssInJs = Record<string, unknown>;
@@ -76,7 +91,10 @@ function uniskin(this: unknown, options: UniskinOptions = {}) {
   });
   const merged =
     adapter.name === "default" ? defaultAdapter : mergeAdapter(defaultAdapter, adapter);
-  warnUnsupported(adapter);
+  warnUnsupported(adapter, {
+    debug: isDebug(options.debug),
+    builtin: BUILTIN_ADAPTERS.has(options.adapter ?? "default"),
+  });
 
   return {
     handler({ addBase, addUtilities }: PluginApi) {

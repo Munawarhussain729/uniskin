@@ -169,13 +169,25 @@ function isAdapter(value: unknown): value is Adapter {
   return isPlainObject(value) && typeof value.name === "string";
 }
 
+export interface WarnOptions {
+  /** Print the full detailed list, even for built-in adapters. */
+  debug?: boolean;
+  /** The adapter ships with uniskin; its fallbacks are intentional. */
+  builtin?: boolean;
+}
+
 /**
- * Dev-mode warning: list the vocabulary slots an adapter does not define
- * itself. Everything listed falls back to the default style silently.
+ * Dev-mode notice about vocabulary slots an adapter does not define itself
+ * (they fall back to the default style). Quiet for built-in adapters; one
+ * summary line for third-party adapters; the full list with `debug`.
  */
-export function warnUnsupported(adapter: Adapter): void {
-  if (adapter.name === "default") return;
-  if (process.env.NODE_ENV === "production") return;
+export function warnUnsupported(adapter: Adapter, opts: WarnOptions = {}): void {
+  const debug = opts.debug === true;
+  if (!debug) {
+    if (opts.builtin) return;
+    if (adapter.name === "default") return;
+    if (process.env.NODE_ENV === "production") return;
+  }
 
   const missing: string[] = [];
   const comps = adapter.components ?? {};
@@ -196,10 +208,16 @@ export function warnUnsupported(adapter: Adapter): void {
     if (slots.length > 0) missing.push(`${name} (${slots.join(", ")})`);
   }
 
-  if (missing.length > 0) {
+  if (missing.length === 0) return;
+  if (debug) {
     console.warn(
       `[uniskin] adapter "${adapter.name}" does not define: ${missing.join(", ")}\n` +
         `          → falling back to the default style for these.`,
     );
+    return;
   }
+  const count = missing.reduce((n, m) => n + (m.includes("(") ? m.split(",").length : 1), 0);
+  console.warn(
+    `[uniskin] adapter "${adapter.name}": ${count} modifier combinations fall back to the default style (set debug: true to list them)`,
+  );
 }

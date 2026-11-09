@@ -60,6 +60,7 @@ If your templates live in a file type Tailwind doesn't scan, add an explicit
   adapter: "daisyui";
   prefix: "uk";        /* uk-button, uk-input, … */
   dark: "media";       /* "media" (default) | "class" | false */
+  debug: false;        /* true: list every default-style fallback */
 }
 ```
 
@@ -68,6 +69,7 @@ If your templates live in a file type Tailwind doesn't scan, add an explicit
 | `adapter` | `"default"`, package name, or path | Which skin to use; everything the adapter omits falls back to the default theme. |
 | `prefix` | string, default `"ui"` | Namespaces every class: `prefix: "uk"` → `uk-button`. |
 | `dark` | `"media"` (default), `"class"`, `false` | How dark-mode tokens are emitted (below). |
+| `debug` | `true`, `false` (default) | Print the full list of modifier combinations an adapter leaves to the default style. Also enabled by `UNISKIN_DEBUG=1`. Built-in adapters are otherwise silent; other adapters print one summary line. |
 
 ### Dark mode
 

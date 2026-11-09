@@ -1,0 +1,29 @@
+name: Feature request
+description: Propose a new component, modifier, adapter capability or tool
+title: "feat: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: The use case you can't express with the current vocabulary or adapters.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: |
+        For vocabulary ideas, sketch the class names and markup — keep in mind
+        uniskin is CSS-only with a single `ui-*` vocabulary shared by all
+        adapters. Vocabulary changes are decided in docs/decisions/ first.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Existing classes, adapters, or pairing with a headless library.
+    validations:
+      required: false

@@ -104,8 +104,10 @@ Measured on the CI Node matrix (20 and 22):
 - Package it as anything resolvable (`@scope/name`, `uniskin-adapter-x`).
 - Ship the compiled JS as the default export (`export default
   defineAdapter({…})`); ESM and CJS both work.
-- In dev builds Uniskin warns which vocabulary slots you haven't
-  defined — that's normal; they fall back to the default style.
+- In dev builds Uniskin prints one summary line with how many modifier
+  combinations you haven't defined — that's normal; they fall back to the
+  default style. Set `debug: true` (or `UNISKIN_DEBUG=1`) to list them all.
+  Built-in adapters are silent unless debug is on.
 
 ## Per-component hooks
 

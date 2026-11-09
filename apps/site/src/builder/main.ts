@@ -1,6 +1,9 @@
 import "../site.css";
 import "./builder.css";
 import { parseColor } from "./color";
+import { highlight } from "./highlight";
+import { parseAdapterFile } from "./importer";
+import { decodeHash, encodeHash } from "./share";
 import {
   adapterFileName,
   coerceHex,
@@ -80,6 +83,29 @@ function load(): void {
     state = p.apply(state);
     preset = p.id;
   }
+  /* a share hash is the most specific source — it beats storage and query */
+  applySharedHash(decodeHash(location.hash));
+}
+
+/** Applies a decoded share hash; broken ones reset to defaults + a notice. */
+function applySharedHash(h: ReturnType<typeof decodeHash>): void {
+  if (h.kind === "ok") {
+    state = h.state;
+    mode = h.mode;
+    preset = null;
+  } else if (h.kind === "stale") {
+    state = defaultState();
+    preset = "default";
+    mode = "light";
+    showNotice(
+      "That link was made by a different version of the builder — the default skin was loaded instead.",
+    );
+  } else if (h.kind === "invalid") {
+    state = defaultState();
+    preset = "default";
+    mode = "light";
+    showNotice("The skin in that link couldn't be read — the default skin was loaded instead.");
+  }
 }
 
 function persist(): void {
@@ -87,6 +113,15 @@ function persist(): void {
     localStorage.setItem(STORE_KEY, JSON.stringify({ state, mode, preset }));
   } catch {
     /* per-viewer convenience only */
+  }
+}
+
+/* The URL hash always mirrors the state, so Copy link needs no extra work. */
+function writeHash(): void {
+  try {
+    history.replaceState(null, "", encodeHash(state, mode));
+  } catch {
+    /* sandboxed/file: context — sharing just stays unavailable */
   }
 }
 
@@ -439,7 +474,7 @@ function currentOutput(): { text: string; file: string; use: string } {
   const file = adapterFileName(state, fmt);
   const node = fmt === "mjs" ? "Node 20.19+ / 22.12+" : "Node 22.18+";
   return {
-    text: renderAdapterFile(state, fmt),
+    text: renderAdapterFile(state, fmt, mode),
     file,
     use: `Save as <code>${esc(file)}</code>, then <code>@plugin "uniskin" { adapter: "./${esc(file)}"; }</code>. Needs <code>uniskin</code> installed; loads on ${node}.`,
   };
@@ -457,7 +492,7 @@ function syncExport(): void {
     if (on) $("#panel-x").setAttribute("aria-labelledby", t.id);
   }
   const out = currentOutput();
-  $("#out").textContent = out.text;
+  $("#out").innerHTML = highlight(out.text, fmt === "css" ? "css" : "js");
   $("#use").innerHTML = out.use;
 }
 
@@ -470,6 +505,7 @@ function syncAll(): void {
   syncExport();
   syncPreview();
   persist();
+  writeHash();
 }
 
 /* ------------------------------------------------------------------ events */
@@ -640,6 +676,62 @@ $("#copy").addEventListener("click", async () => {
   setTimeout(() => (btn.textContent = "Copy"), 1800);
 });
 
+/* The hash already mirrors the state — the address bar IS the share link. */
+$("#copy-link").addEventListener("click", async () => {
+  const btn = $("#copy-link");
+  try {
+    await navigator.clipboard.writeText(location.href);
+    btn.textContent = "Link copied";
+    setTimeout(() => (btn.textContent = "Copy link"), 1800);
+  } catch {
+    window.prompt("Copy this link:", location.href);
+  }
+});
+
+/* ------------------------------------------------------------ notices */
+
+const notice = $("#notice");
+function showNotice(msg: string): void {
+  $("#notice-text").textContent = msg;
+  notice.hidden = false;
+}
+$("#notice-dismiss").addEventListener("click", () => {
+  notice.hidden = true;
+});
+
+/* --------------------------------------------------- adapter file import */
+
+const impStatus = $("#imp-status");
+
+function applyImport(text: string): void {
+  const r = parseAdapterFile(text);
+  if (!r.ok) {
+    impStatus.dataset.state = "fail";
+    impStatus.textContent = r.error;
+    return;
+  }
+  state = r.state;
+  mode = r.mode;
+  preset = null;
+  nameInput.value = state.name;
+  syncAll();
+  impStatus.dataset.state = r.warning ? "warn" : "pass";
+  impStatus.textContent =
+    r.warning ?? `Imported “${state.name}” — the controls above now match the file.`;
+  if (!r.warning) $<HTMLTextAreaElement>("#imp-paste").value = "";
+}
+
+$("#imp-apply").addEventListener("click", () => {
+  applyImport($<HTMLTextAreaElement>("#imp-paste").value);
+});
+
+$("#imp-file").addEventListener("change", async (e) => {
+  const input = e.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (file) applyImport(await file.text());
+  input.value = "";
+});
+
 $("#download").addEventListener("click", () => {
   const out = currentOutput();
   const url = URL.createObjectURL(new Blob([out.text], { type: "text/plain" }));
@@ -669,6 +761,16 @@ appearance.addEventListener("click", () => {
 });
 
 frame.addEventListener("load", syncPreview);
+
+/* Pasting a share link over the current tab, or back/forward between
+   links, applies it without a reload. replaceState never fires this. */
+window.addEventListener("hashchange", () => {
+  const h = decodeHash(location.hash);
+  if (h.kind === "none") return;
+  applySharedHash(h);
+  nameInput.value = state.name;
+  syncAll();
+});
 
 /* ------------------------------------------------------------------- boot */
 

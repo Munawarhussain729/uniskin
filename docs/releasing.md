@@ -45,6 +45,9 @@ change published behaviour.
 4. **Tag the release** if you want git tags (`git tag uniskin@x.y.z &&
    git push --tags`) — changesets does not create tags in this repo's
    workflow.
+5. **Smoke-test the published packages** with
+   `scripts/release-smoke.sh <version>` — see
+   [smoke-test.md](smoke-test.md).
 
 ## Dependency order
 

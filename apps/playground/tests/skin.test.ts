@@ -196,8 +196,12 @@ describe("fallback to the default theme", () => {
 });
 
 describe("adapter coverage warnings", () => {
-  it("warns about slots an adapter does not define (dev)", () => {
-    expect(compileAdapterStderr("shadcn")).toContain(
+  it("is quiet for built-in adapters by default", () => {
+    expect(compileAdapterStderr("shadcn")).not.toContain("[uniskin]");
+  });
+
+  it("lists undefined slots for built-in adapters with UNISKIN_DEBUG=1", () => {
+    expect(compileAdapterStderr("shadcn", { UNISKIN_DEBUG: "1" })).toContain(
       '[uniskin] adapter "shadcn" does not define:',
     );
   });
