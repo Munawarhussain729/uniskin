@@ -1,4 +1,4 @@
-# 003 — Third-adapter spike findings (Radix Themes-like)
+# 005 — Third-adapter spike findings (Radix Themes-like)
 
 Status: spike — findings for discussion, **not implemented**
 Date: 2026-11-09
@@ -11,7 +11,7 @@ stress-test whether the `ui-*` vocabulary and the adapter contract
 shaped around shadcn and daisyUI.
 
 Built: `packages/adapter-spike/` (`uniskin-adapter-spike`, `private`,
-not published, not in the changeset config). The style is "Radix
+not published, excluded via .changeset/config.json ignore). The style is "Radix
 Themes-like": every component is painted from a generated **12-step
 colour scale per hue** (1–2 backgrounds, 3–5 component bg, 6–8 borders,
 9–10 solids, 11–12 text) — a different colour model from both existing
@@ -23,6 +23,16 @@ Result: **the vocabulary ports** — every component and documented slot
 renders in a recognisably Radix-ish way in light and dark (screenshots:
 `docs/qa/img/spike-*.png`). The friction is in the adapter contract,
 not the class names.
+
+> **Update after rebasing onto main (2026-11-09):** this file was
+> renumbered 003 → 005 because `003-vocabulary-expansion.md` (the next
+> component wave) was *accepted* and `004-skin-builder-tokens.md` also
+> landed while the spike was open. Since then `ui-radio` has shipped in
+> the default skin and `select`/`checkbox` gaps were fixed — the
+> vocabulary the spike tested against is now bigger, which strengthens
+> the conclusion that the contract, not the class list, is where the
+> friction is. The §6 `ui-invalid` proposal is still unproposed; the §1
+> `warnUnsupported`-vs-coverage-matrix mismatch still applies.
 
 ## What worked well
 
