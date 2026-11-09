@@ -24,7 +24,7 @@ exports[`compiled skins > daisyui > .ui-button base rule matches snapshot 1`] = 
     border: 1px solid transparent;
     background-color: var(--ui-c);
     color: var(--ui-on-c);
-    border-color: var(--ui-c);
+    border-color: var(--ui-c-border, var(--ui-c));
     cursor: pointer;
     user-select: none;
     text-decoration: none;
@@ -74,7 +74,7 @@ exports[`compiled skins > default > .ui-button base rule matches snapshot 1`] = 
     border: 1px solid transparent;
     background-color: var(--ui-c);
     color: var(--ui-on-c);
-    border-color: var(--ui-c);
+    border-color: var(--ui-c-border, var(--ui-c));
     cursor: pointer;
     user-select: none;
     text-decoration: none;
@@ -114,7 +114,7 @@ exports[`compiled skins > shadcn > .ui-button base rule matches snapshot 1`] = `
     border: 1px solid transparent;
     background-color: var(--ui-c);
     color: var(--ui-on-c);
-    border-color: var(--ui-c);
+    border-color: var(--ui-c-border, var(--ui-c));
     cursor: pointer;
     user-select: none;
     text-decoration: none;
