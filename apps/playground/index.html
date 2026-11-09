@@ -475,6 +475,72 @@
       });
       setTheme(theme, false);
     </script>
+    <h2 class="group">Table</h2>
+    <div class="ui-table-wrap" role="region" aria-label="Invoices" tabindex="0">
+      <table class="ui-table">
+        <caption>Invoices</caption>
+        <thead>
+          <tr><th scope="col" aria-sort="ascending">Date</th><th scope="col">Status</th><th scope="col" style="text-align:end">Amount</th></tr>
+        </thead>
+        <tbody>
+          <tr aria-selected="true"><td>2026-11-01</td><td><span class="ui-badge ui-success">Paid</span></td><td style="text-align:end">$12</td></tr>
+          <tr><td>2026-11-02</td><td><span class="ui-badge ui-warning">Pending</span></td><td style="text-align:end">$18</td></tr>
+          <tr aria-disabled="true"><td>2026-11-03</td><td><span class="ui-badge">Void</span></td><td style="text-align:end">$7</td></tr>
+          <tr><td>2026-11-04</td><td><span class="ui-badge ui-danger ui-outline">Overdue</span></td><td style="text-align:end">$21</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row" style="margin-top:.75rem">
+      <div class="ui-table-wrap" style="max-width:22rem">
+        <table class="ui-table ui-soft">
+          <thead><tr><th scope="col">soft</th><th scope="col">zebra</th></tr></thead>
+          <tbody><tr><td>Alpha</td><td>One</td></tr><tr><td>Beta</td><td>Two</td></tr><tr><td>Gamma</td><td>Three</td></tr></tbody>
+        </table>
+      </div>
+      <div class="ui-table-wrap" style="max-width:22rem">
+        <table class="ui-table ui-outline">
+          <thead><tr><th scope="col">outline</th><th scope="col">grid</th></tr></thead>
+          <tbody><tr><td>Alpha</td><td>One</td></tr><tr><td>Beta</td><td>Two</td></tr></tbody>
+        </table>
+      </div>
+      <div class="ui-table-wrap" style="max-width:22rem">
+        <table class="ui-table ui-ghost">
+          <thead><tr><th scope="col">ghost</th><th scope="col">no lines</th></tr></thead>
+          <tbody><tr><td>Alpha</td><td>One</td></tr><tr><td>Beta</td><td>Two</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row" style="margin-top:.75rem">
+      <div class="ui-table-wrap" style="max-width:22rem">
+        <table class="ui-table ui-primary ui-sm">
+          <thead><tr><th scope="col">primary sm</th><th scope="col">dense</th></tr></thead>
+          <tbody><tr aria-selected="true"><td>Alpha</td><td>One</td></tr><tr><td>Beta</td><td>Two</td></tr></tbody>
+        </table>
+      </div>
+      <div class="ui-table-wrap" style="max-width:22rem">
+        <table class="ui-table ui-danger ui-lg">
+          <thead><tr><th scope="col">danger lg</th><th scope="col">roomy</th></tr></thead>
+          <tbody><tr aria-selected="true"><td>Alpha</td><td>One</td></tr><tr><td>Beta</td><td>Two</td></tr></tbody>
+        </table>
+      </div>
+      <div class="ui-table-wrap" style="max-width:22rem">
+        <table class="ui-table ui-success ui-soft">
+          <thead><tr><th scope="col">success soft</th><th scope="col">zebra</th></tr></thead>
+          <tbody><tr aria-selected="true"><td>Alpha</td><td>One</td></tr><tr><td>Beta</td><td>Two</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ui-table-wrap" style="max-width:22rem; margin-top:.75rem">
+      <table class="ui-table ui-loading">
+        <thead><tr><th scope="col">loading</th><th scope="col">aria-busy</th></tr></thead>
+        <tbody><tr><td>Alpha</td><td>One</td></tr><tr><td>Beta</td><td>Two</td></tr></tbody>
+      </table>
+    </div>
+    <table class="ui-table ui-warning" aria-busy="true" style="max-width:22rem">
+      <thead><tr><th scope="col">warning</th><th scope="col">busy</th></tr></thead>
+      <tbody><tr><td>Alpha</td><td>One</td></tr></tbody>
+    </table>
+
     </main>
   </body>
 </html>

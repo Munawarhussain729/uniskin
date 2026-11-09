@@ -211,6 +211,23 @@ export default defineAdapter({
         ghost: { color: "hsl(var(--foreground))" },
       },
     },
+    table: {
+      base: {
+        /* shadcn Table: h-10 th, p-2 td, muted-foreground header,
+           hover:bg-muted/50, selected row = --muted */
+        "--ui-table-head-fg": "hsl(var(--muted-foreground))",
+        "--ui-table-head-bg": "transparent",
+        "--ui-table-row-hover": "hsl(var(--muted) / 0.5)",
+        "--ui-table-pad-x": "0.5rem",
+        "--ui-table-border": "hsl(var(--border))",
+        "& thead th": { "font-weight": "500" },
+        "& tbody tr.ui-active, & tbody tr[aria-selected='true']": {
+          "background-color": "hsl(var(--muted))",
+          color: "var(--ui-surface-fg)",
+        },
+      },
+    },
+    "table-wrap": { base: { border: "0", "border-radius": "0" } },
     alert: {
       base: {
         "--ui-c": "hsl(var(--card))",

@@ -119,6 +119,7 @@ is harmless:
 |-----------|-------|
 | `ui-checkbox` | `--ui-check-size`, `--ui-check-mark` |
 | `ui-radio` | `--ui-radio-size` (default `1.125rem`), `--ui-radio-dot` (dot color, default `--ui-on-c`), `--ui-radio-dot-size` (default `0.5em`) |
+| `ui-table` | `--ui-table-pad-x`, `--ui-table-pad-y` (density), `--ui-table-head-bg`, `--ui-table-head-fg`, `--ui-table-stripe` (zebra under `ui-soft`), `--ui-table-row-hover`, `--ui-table-border` |
 | `ui-switch` | `--ui-switch-size` (height, default `1.25rem`; width is `1.75x`), `--ui-switch-track` (off colour, default a grey mixed from `--ui-surface-fg`), `--ui-switch-thumb` (thumb colour), `--ui-switch-pad` (thumb inset, default `2px`) |
 | `ui-field` | `--ui-field-gap` (stack gap, default `0.375rem`), `--ui-field-label`, `--ui-field-hint`, `--ui-field-error` (text colours; the error falls back to `--ui-danger-text`, then `--ui-danger`) |
 

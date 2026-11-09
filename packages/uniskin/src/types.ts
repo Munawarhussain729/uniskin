@@ -82,6 +82,8 @@ export const VOCABULARY = [
   "card-footer",
   "badge",
   "alert",
+  "table",
+  "table-wrap",
   "modal",
   "modal-box",
   "tabs",

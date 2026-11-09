@@ -1,6 +1,6 @@
 # Vocabulary reference
 
-Every class in Uniskin vocabulary v1.3, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.4, grouped by component. The prefix is
 `ui-` by default — if you set `prefix: "uk"` in the `@plugin` options,
 read every `ui-*` class below as `uk-*`.
 
@@ -381,6 +381,51 @@ driven entirely by the `ui-active` state selectors, so
 - See [Accessibility → `ui-tabs`](#ui-tabs-1) — CSS does not give you
   tab semantics or arrow-key navigation.
 
+### `ui-table`, `ui-table-wrap`
+
+Data table — `ui-table` goes on a real `<table>` and styles `th`, `td`,
+`tr` and `caption` through nested element selectors, so no row/cell
+classes exist. `ui-table-wrap` on the surrounding `<div>` gives a
+scroll container; give the table a bounded height to get a sticky
+header (`thead th` is `position: sticky`).
+
+```html
+<div class="ui-table-wrap" role="region" aria-label="Invoices" tabindex="0">
+  <table class="ui-table ui-soft">
+    <caption>Invoices</caption>
+    <thead>
+      <tr><th scope="col" aria-sort="ascending">Date</th><th scope="col">Amount</th></tr>
+    </thead>
+    <tbody>
+      <tr aria-selected="true"><td>2026-11-01</td><td>$12</td></tr>
+      <tr><td>2026-11-02</td><td>$18</td></tr>
+    </tbody>
+  </table>
+</div>
+```
+
+- **Intents:** all five; tint the header underline and the selected-row
+  fill via `--ui-c` / `--ui-c-soft`.
+- **Styles:** `ui-soft` (zebra stripes), `ui-outline` (full cell grid),
+  `ui-ghost` (no lines). Default = row dividers.
+- **Sizes:** `ui-sm`, `ui-lg` — row density via `--ui-table-pad-y/-x`
+  and font size.
+- **States** on `<tr>`: `ui-active` / `[aria-selected="true"]` =
+  selected row; `ui-disabled` / `[aria-disabled="true"]` = dimmed.
+  `ui-loading` / `[aria-busy="true"]` on the **table** = pulsing body.
+- **Hooks:** `--ui-table-pad-x`, `--ui-table-pad-y`,
+  `--ui-table-head-bg`, `--ui-table-head-fg`, `--ui-table-stripe`,
+  `--ui-table-row-hover`, `--ui-table-border`.
+- **Sorting:** `[aria-sort]` on `<th>` draws a CSS arrow (`::after`) —
+  CSS does not sort; consumers do. `role="grid"` and cell-level arrow
+  keys are out of scope; use a headless library.
+- **Consumer provides:** real `<th scope>`, `<caption>` or
+  `aria-label`, selection behaviour, `aria-sort` on the sorted header,
+  and `tabindex="0"` + `role="region"` + label on `ui-table-wrap` when
+  it scrolls.
+- Nested tables inherit `ui-table` styling — put `ui-table` on the
+  inner table too, or accept the inherit.
+
 ## Coverage matrix
 
 Supported modifiers in the built-in default skin (adapters may cover
@@ -409,6 +454,8 @@ fewer — anything omitted falls back to the default):
 | `ui-modal-box`   | ✓ | — | ✓ | — |
 | `ui-tabs`        | ✓ | outline ghost soft | ✓ | — |
 | `ui-tab`         | ✓ | — | ✓ | disabled loading active |
+| `ui-table`       | ✓ | outline ghost soft | ✓ | loading (table); disabled active (`<tr>`) |
+| `ui-table-wrap`  | — | — | — | — |
 
 ## Accessibility
 

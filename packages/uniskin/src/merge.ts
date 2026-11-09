@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
 import path from "node:path";
+import { COVERAGE } from "./coverage.js";
 import {
   INTENTS,
   SIZES,
@@ -183,6 +184,7 @@ export interface WarnOptions {
  */
 export function warnUnsupported(adapter: Adapter, opts: WarnOptions = {}): void {
   const debug = opts.debug === true;
+  warnUnknownSlots(adapter);
   if (!debug) {
     if (opts.builtin) return;
     if (adapter.name === "default") return;
@@ -197,14 +199,17 @@ export function warnUnsupported(adapter: Adapter, opts: WarnOptions = {}): void 
       missing.push(name);
       continue;
     }
+    // Only modifiers the vocabulary documents for this component count
+    // (see COVERAGE); undocumented combinations are never expected.
+    const cov = COVERAGE[name];
     const slots: string[] = [];
     // An intent also counts as covered when the adapter remaps its token
     // (--ui-primary …) — the default intent rule picks the var up.
-    for (const intent of INTENTS)
+    for (const intent of cov.intents)
       if (!def.intents?.[intent] && !adapter.tokens?.[`--ui-${intent}`]) slots.push(intent);
-    for (const style of STYLES) if (!def.styles?.[style]) slots.push(style);
-    for (const size of SIZES) if (!def.sizes?.[size]) slots.push(size);
-    for (const state of STATES) if (!def.states?.[state]) slots.push(state);
+    for (const style of cov.styles) if (!def.styles?.[style]) slots.push(style);
+    for (const size of cov.sizes) if (!def.sizes?.[size]) slots.push(size);
+    for (const state of cov.states) if (!def.states?.[state]) slots.push(state);
     if (slots.length > 0) missing.push(`${name} (${slots.join(", ")})`);
   }
 
@@ -219,5 +224,47 @@ export function warnUnsupported(adapter: Adapter, opts: WarnOptions = {}): void 
   const count = missing.reduce((n, m) => n + (m.includes("(") ? m.split(",").length : 1), 0);
   console.warn(
     `[uniskin] adapter "${adapter.name}": ${count} modifier combinations fall back to the default style (set debug: true to list them)`,
+  );
+}
+
+const SLOT_KEYS: Record<string, readonly string[]> = {
+  intents: INTENTS,
+  styles: STYLES,
+  sizes: SIZES,
+  states: STATES,
+};
+
+/**
+ * Slot keys outside the closed modifier sets (`styles: { classic: … }`,
+ * `states: { invalid: … }`, a misspelt `intent:`) are never emitted. List
+ * them so the silent drop is visible. Skipped in production builds.
+ */
+export function unknownSlots(adapter: Adapter): string[] {
+  const out: string[] = [];
+  for (const [name, def] of Object.entries(adapter.components ?? {})) {
+    if (!def) continue;
+    for (const [group, value] of Object.entries(def)) {
+      if (group === "base") continue;
+      const allowed = SLOT_KEYS[group];
+      if (!allowed) {
+        out.push(`${name}.${group}`);
+        continue;
+      }
+      if (!isPlainObject(value)) continue;
+      for (const key of Object.keys(value))
+        if (!allowed.includes(key)) out.push(`${name}.${group}.${key}`);
+    }
+  }
+  return out;
+}
+
+function warnUnknownSlots(adapter: Adapter): void {
+  if (process.env.NODE_ENV === "production") return;
+  const unknown = unknownSlots(adapter);
+  if (unknown.length === 0) return;
+  console.warn(
+    `[uniskin] adapter "${adapter.name}" defines slots that are never emitted: ${unknown.join(", ")}\n` +
+      `          → valid modifiers: intents ${INTENTS.join("/")}; styles ${STYLES.join("/")}; ` +
+      `sizes ${SIZES.join("/")}; states ${STATES.join("/")}.`,
   );
 }
