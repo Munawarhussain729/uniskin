@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Skin builder — Uniskin</title>
+    <meta
+      name="description"
+      content="Tune Uniskin design tokens — colours, radius, borders, density, type — against live ui-* components, check WCAG contrast, and export a ready-to-use adapter file."
+    />
+    <script>
+      /* Page chrome follows the stored/OS appearance (same key as the landing page). */
+      (() => {
+        const q = new URLSearchParams(location.search);
+        let stored = null;
+        try { stored = localStorage.getItem("uniskin-appearance"); } catch {}
+        const dark = q.has("dark")
+          ? q.get("dark") === "1"
+          : stored
+            ? stored === "dark"
+            : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+      })();
+    </script>
+  </head>
+  <body class="builder">
+    <a class="skip" href="#workbench">Skip to the builder</a>
+    <header class="site-head">
+      <div class="wrap head-row">
+        <a class="wordmark" href="/" aria-label="Uniskin home">
+          uniskin<span class="wordmark-dot">.</span><span class="wordmark-tld">dev</span>
+        </a>
+        <nav class="head-nav" aria-label="Site">
+          <a href="/#how">How it works</a>
+          <a href="/#adapters">Adapters</a>
+          <a href="/builder/" aria-current="page">Skin builder</a>
+        </nav>
+        <button class="switch" id="page-appearance" type="button" role="switch" aria-checked="false">
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+          <span class="switch-label">Dark page</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="b-intro">
+        <div class="wrap">
+          <p class="eyebrow">Skin builder</p>
+          <h1 class="b-title">Tune a skin.<em> Ship the adapter.</em></h1>
+          <p class="b-lede">
+            Change tokens on the left, watch the real <code>ui-*</code> components on the right,
+            then export a file that drops straight into
+            <code>@plugin "uniskin" { adapter: "./my-skin.mjs"; }</code>. Contrast is checked as you
+            go — light and dark.
+          </p>
+        </div>
+      </section>
+
+      <div class="wrap workbench" id="workbench" tabindex="-1">
+        <section class="pv" aria-labelledby="pv-h">
+          <div class="pv-bar">
+            <h2 class="b-h" id="pv-h">Live preview</h2>
+            <div class="seg" id="mode" role="radiogroup" aria-label="Mode being edited and previewed">
+              <button type="button" role="radio" aria-checked="true" data-mode="light">Light</button>
+              <button type="button" role="radio" aria-checked="false" tabindex="-1" data-mode="dark">Dark</button>
+            </div>
+          </div>
+          <iframe
+            class="pv-frame"
+            id="preview"
+            src="/frames/builder-preview.html"
+            title="Live preview of the ui-* components wearing your tokens"
+          ></iframe>
+          <p class="pv-note">
+            Real default-theme CSS with your tokens injected — what you see is what the export
+            produces.
+          </p>
+        </section>
+
+        <div class="ctl" id="controls">
+          <section class="grp" aria-labelledby="g-start">
+            <h2 class="b-h" id="g-start"><span class="b-num">01</span> Start from</h2>
+            <div class="presets" id="presets" role="radiogroup" aria-label="Starting point"></div>
+            <label class="fld">
+              <span class="fld-l">Adapter name</span>
+              <input class="txt" id="name" type="text" maxlength="40" spellcheck="false" autocomplete="off" />
+            </label>
+          </section>
+
+          <section class="grp" aria-labelledby="g-colour">
+            <div class="grp-head">
+              <h2 class="b-h" id="g-colour"><span class="b-num">02</span> Colour</h2>
+              <p class="mode-tag" id="mode-tag"></p>
+            </div>
+            <div class="audit" id="audit" role="status"></div>
+            <div id="rows"></div>
+          </section>
+
+          <section class="grp" aria-labelledby="g-shape">
+            <h2 class="b-h" id="g-shape"><span class="b-num">03</span> Shape &amp; density</h2>
+            <div id="shape" class="shape"></div>
+          </section>
+
+          <section class="grp" aria-labelledby="g-type">
+            <h2 class="b-h" id="g-type"><span class="b-num">04</span> Type</h2>
+            <div id="type"></div>
+          </section>
+        </div>
+      </div>
+
+      <section class="export" aria-labelledby="g-export">
+        <div class="wrap">
+          <div class="grp-head">
+            <h2 class="b-h" id="g-export"><span class="b-num">05</span> Export</h2>
+            <p class="export-status" id="export-status" role="status"></p>
+          </div>
+          <div class="tabs-x" role="tablist" aria-label="Export format">
+            <button type="button" role="tab" id="tab-mjs" aria-controls="panel-x" aria-selected="true" data-fmt="mjs"></button>
+            <button type="button" role="tab" id="tab-ts" aria-controls="panel-x" aria-selected="false" tabindex="-1" data-fmt="ts"></button>
+            <button type="button" role="tab" id="tab-css" aria-controls="panel-x" aria-selected="false" tabindex="-1" data-fmt="css"></button>
+          </div>
+          <div class="panel-x" id="panel-x" role="tabpanel" aria-labelledby="tab-mjs">
+            <p class="use" id="use"></p>
+            <div class="code-wrap">
+              <pre class="code" tabindex="0" aria-label="Generated file"><code id="out"></code></pre>
+              <div class="code-actions">
+                <button class="act" type="button" id="copy">Copy</button>
+                <button class="act act-solid" type="button" id="download">Download</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-foot">
+      <div class="wrap foot-row">
+        <div>
+          <p class="foot-tag">One vocabulary. Any skin. CSS only.</p>
+        </div>
+        <nav class="foot-nav" aria-label="Footer">
+          <a href="/">Home</a>
+          <a href="https://github.com/Munawarhussain729/uniskin/blob/main/docs/writing-adapters.md"
+            >Writing adapters</a
+          >
+          <a href="https://github.com/Munawarhussain729/uniskin">GitHub</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/builder/main.ts"></script>
+  </body>
+</html>

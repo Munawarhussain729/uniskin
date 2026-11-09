@@ -7,9 +7,11 @@
     "css": "node scripts/build-css.mjs",
     "dev": "node scripts/dev.mjs",
     "build": "node scripts/build-css.mjs && vite build",
-    "pretest": "pnpm --filter uniskin build",
-    "test": "vitest run",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run && pnpm run test:e2e",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright install chromium --only-shell || playwright install chromium; playwright test",
+    "pretest": "pnpm --filter uniskin --filter @uniskin/shadcn --filter @uniskin/daisyui build"
   },
   "dependencies": {
     "@uniskin/daisyui": "workspace:*",
@@ -23,6 +25,8 @@
     "tailwindcss": "^4.3.5",
     "typescript": "^5.9.3",
     "vite": "^7.2.4",
+    "@playwright/test": "~1.64.1",
+    "@types/node": "~22.20.5",
     "vitest": "^3.2.4"
   }
 }
