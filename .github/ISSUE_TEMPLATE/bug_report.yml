@@ -1,0 +1,45 @@
+name: Bug report
+description: Something in uniskin or an adapter behaves wrong
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. For security problems please use a
+        [private advisory](https://github.com/Munawarhussain729/uniskin/security/advisories/new)
+        instead of an issue.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, what you got instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: |
+        Minimal CSS/HTML that shows the problem, or a link to a repo.
+        For CLI bugs, the exact command and its output.
+      placeholder: |
+        @import "tailwindcss";
+        @plugin "uniskin" { adapter: "shadcn"; }
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: uniskin, adapter, tailwindcss, Node — e.g. `uniskin 0.2.0, @uniskin/shadcn 0.2.0, tailwindcss 4.3.5, Node 22`
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Output / logs
+      description: Compiler warnings, `[uniskin]` fallback notices, stack traces.
+      render: text
+    validations:
+      required: false
