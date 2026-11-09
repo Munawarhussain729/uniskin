@@ -1,6 +1,6 @@
 # 003 — Vocabulary expansion: the next wave of components
 
-Status: proposed (no code changes; nothing here is decided until the owner answers the [open questions](#open-questions))
+Status: accepted on 2026-11-09 (see [Decisions](#decisions)). Implementation lands one component per PR.
 Date: 2026-11-09
 
 Class names are public API. This document proposes names and contracts
@@ -588,7 +588,25 @@ on 3 adapters x 2 modes):
 `<input type=range>` is a good later S item), `ui-spinner` (loading is
 already a state of existing components).
 
-## Open questions
+## Decisions
+
+Owner answers to the open questions below, accepted 2026-11-09. Where an
+answer matches the proposal in this document, the proposal stands as written.
+
+1. Extend the shipped `select` and `checkbox` (section 1); no custom select.
+2. Toast is its own `ui-toast` plus `ui-toast-region`.
+3. Placement uses a `data-placement` attribute; no new modifier kind.
+4. `ui-table` styles native elements and adds a `ui-table-wrap` part.
+5. Tables reuse `ui-soft` (zebra) and `ui-outline` (grid); revisit if it reads badly.
+6. No global `--ui-shadow` token; per-component hooks only.
+7. The menu may honour `data-highlighted` / `data-state`, for the menu only and documented as optional.
+8. New components use logical properties (RTL-safe); existing ones are unchanged for now.
+9. A custom combobox/listbox is out of scope; the name `ui-listbox` is reserved.
+10. `STATE_NATIVES` is unchanged (decision 002 stands); components use nested selectors.
+11. Tooltip ships CSS hover/focus-within; the WCAG 1.4.13 Escape limitation without JS is documented, with the Popover API as an upgrade path.
+12. Labelled "vocabulary v1.1", shipped in the same package as minor bumps; no separate packs.
+
+## Open questions (resolved above)
 
 1. **`select`/`checkbox` were already shipped.** Is the intent to
    *extend* them (section 1) or was a different, custom
