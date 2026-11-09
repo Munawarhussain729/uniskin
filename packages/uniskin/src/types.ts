@@ -91,6 +91,8 @@ export const VOCABULARY = [
   "progress",
   "tooltip",
   "tooltip-anchor",
+  "toast",
+  "toast-region",
   "modal",
   "modal-box",
   "tabs",

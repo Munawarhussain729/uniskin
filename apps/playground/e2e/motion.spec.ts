@@ -86,6 +86,19 @@ test("loading spin/pulse under prefers-reduced-motion: reduce", async ({ page })
       if (tp !== "none") stillAnimating.push(`${adapter} | ui-tooltip[${i}] | transition`);
     }
 
+    // ui-toast: the enter transition must stop under reduce, and a loading
+    // toast must stop pulsing
+    const toasts = page.locator(".ui-toast");
+    for (let i = 0; i < (await toasts.count()); i++) {
+      const t = await toasts.nth(i).evaluate((el) => ({
+        tp: getComputedStyle(el).transitionProperty,
+        name: getComputedStyle(el).animationName,
+        dur: getComputedStyle(el).animationDuration,
+      }));
+      if (t.tp !== "none") stillAnimating.push(`${adapter} | ui-toast[${i}] | transition`);
+      if (running(t.name, t.dur)) stillAnimating.push(`${adapter} | ui-toast[${i}] | animation`);
+    }
+
     // positive control: the skin does honour reduced-motion for the modal fade
     const modalTransition = await page.locator("dialog.ui-modal").evaluate(
       (el) => getComputedStyle(el).transitionProperty,

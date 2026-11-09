@@ -67,6 +67,8 @@ const COMPONENTS: Record<string, Slots> = {
   progress: { intents: true, styles: ["outline", "ghost"], sizes: true },
   tooltip: { intents: true, styles: ["outline", "soft"], sizes: true, states: ["active"] },
   "tooltip-anchor": {},
+  toast: { intents: true, styles: ["outline", "soft"], sizes: true, states: ["loading"] },
+  "toast-region": {},
 };
 
 const cssCache = new Map<string, string>();
@@ -78,8 +80,11 @@ function skin(adapter: string): string {
 
 /** Extract a rule block (`selector { … }`) via balanced-brace matching. */
 function ruleBlock(css: string, selector: string): string {
-  const start = css.indexOf(`${selector} {`);
-  if (start < 0) throw new Error(`${selector} rule not found`);
+  // a rule that starts its line: a nested `& .ui-x {` inside another rule
+  // would otherwise match `.ui-x {` as a substring
+  const m = new RegExp(`^[ \\t]*${selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")} \\{`, "m").exec(css);
+  if (!m) throw new Error(`${selector} rule not found`);
+  const start = m.index + m[0].indexOf(selector);
   let depth = 0;
   for (let i = start; i < css.length; i++) {
     if (css[i] === "{") depth++;
@@ -743,6 +748,69 @@ describe("ui-tooltip (roadmap 0.6.0)", () => {
     );
     expect(css).toContain(".uk-tooltip-anchor");
     expect(css).toContain("&:hover > .uk-tooltip");
+    expect(css).not.toMatch(/\.ui-/);
+  });
+});
+
+describe("ui-toast (roadmap 0.6.0)", () => {
+  for (const adapter of ADAPTERS) {
+    describe(adapter, () => {
+      it("the region is fixed, stacks, and never blocks the page", () => {
+        const region = ruleBlock(skin(adapter), ".ui-toast-region");
+        expect(region).toContain("position: fixed");
+        expect(region).toContain("pointer-events: none");
+        expect(region).toContain("env(safe-area-inset-bottom");
+        for (const p of ['^="top"', '$="start"', '$="center"'])
+          expect(region).toContain(`[data-placement${p}]`);
+      });
+
+      it("the toast takes the pointer and enters with @starting-style", () => {
+        const toast = ruleBlock(skin(adapter), ".ui-toast");
+        expect(toast).toContain("pointer-events: auto");
+        expect(toast).toContain("@starting-style");
+        expect(toast).toContain("transition: opacity");
+      });
+
+      it("intents set variables only, so they cannot compete with the styles", () => {
+        const block = ruleBlock(skin(adapter), ".ui-toast.ui-success");
+        const paints = block.split("\n").filter((l) => /^ {4}(background-color|border-color|color):/.test(l));
+        expect(paints, "paint declarations in the intent rule").toEqual([]);
+        expect(block).toContain("--ui-toast-edge");
+      });
+    });
+  }
+
+  it("reads its hooks with fallbacks", () => {
+    const css = skin("default");
+    expect(ruleBlock(css, ".ui-toast-region")).toContain("var(--ui-toast-gap,");
+    expect(ruleBlock(css, ".ui-toast-region")).toContain("var(--ui-toast-offset,");
+    expect(ruleBlock(css, ".ui-toast")).toContain("var(--ui-toast-shadow,");
+  });
+
+  it("the neutral toast has an edge, because a shadow vanishes on dark surfaces", () => {
+    expect(ruleBlock(skin("default"), ".ui-toast")).toContain("border: 1px solid var(--ui-toast-edge)");
+  });
+
+  it("has no ghost style, and [hidden] removes a toast", () => {
+    const css = skin("default");
+    expect(css).not.toContain(".ui-toast.ui-ghost");
+    expect(ruleBlock(css, ".ui-toast")).toContain("&[hidden]");
+  });
+
+  it("the enter transition is disabled under reduced motion", () => {
+    expect(ruleBlock(skin("default"), ".ui-toast")).toMatch(
+      /prefers-reduced-motion: reduce\)\s*\{[^}]*transition: none/,
+    );
+  });
+
+  it('prefix: "uk" renames the toast, the region and the pulse keyframes', () => {
+    const css = compileWithFiles(
+      { "index.html": '<div class="uk-toast-region"><div class="uk-toast uk-loading">x</div></div>' },
+      'prefix: "uk";',
+    );
+    expect(css).toContain(".uk-toast-region");
+    expect(css).toContain(".uk-toast");
+    expect(css).toContain("uk-pulse");
     expect(css).not.toMatch(/\.ui-/);
   });
 });

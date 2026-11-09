@@ -229,6 +229,17 @@ export default defineAdapter({
       },
     },
     "table-wrap": { base: { border: "0", "border-radius": "0" } },
+    toast: {
+      base: {
+        /* shadcn Toast: bordered card, shadow-lg, destructive variant */
+        "--ui-c": "hsl(var(--background))",
+        "--ui-on-c": "hsl(var(--foreground))",
+        "--ui-toast-edge": "hsl(var(--border))",
+        "--ui-toast-shadow": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+        "border-radius": "calc(var(--ui-radius) - 2px)",
+        "font-size": "0.875rem",
+      },
+    },
     tooltip: {
       base: {
         /* shadcn TooltipContent: bg-primary text-primary-foreground

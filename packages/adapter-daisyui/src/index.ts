@@ -172,6 +172,17 @@ export default defineAdapter({
       },
     },
     "table-wrap": { base: { "border-radius": "var(--radius-box, 1rem)" } },
+    toast: {
+      base: {
+        /* daisy toast is only the container; the message is an alert, so the
+           toast takes the alert look: rounded-box on a base-200 fill */
+        "--ui-c": "var(--color-base-200, oklch(98% 0 0))",
+        "--ui-on-c": "var(--color-base-content, oklch(21% 0.006 285))",
+        "--ui-toast-edge": "var(--color-base-300, oklch(95% 0 0))",
+        "border-radius": "var(--radius-box, 1rem)",
+        "font-size": "0.875rem",
+      },
+    },
     tooltip: {
       base: {
         /* daisy tooltip-content: neutral fill, neutral-content text, rounded-field */

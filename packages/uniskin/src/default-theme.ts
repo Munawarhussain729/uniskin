@@ -1295,6 +1295,120 @@ export const defaultAdapter = defineAdapter({
         active: { visibility: "visible", opacity: "1" },
       },
     },
+    /* ui-toast-region / ui-toast: CSS for position, stacking, elevation and
+       the enter transition. Everything dynamic is the consumer's: inserting
+       and removing toasts, timers, the live region (it must already exist
+       in the DOM before a toast is inserted, or screen readers drop the
+       announcement) and a visible dismiss control. */
+    "toast-region": {
+      base: {
+        position: "fixed",
+        "z-index": "60",
+        display: "flex",
+        "flex-direction": "column",
+        gap: "var(--ui-toast-gap, 0.5rem)",
+        "box-sizing": "border-box",
+        width: "min(100%, calc(var(--ui-toast-w, 22rem) + 2 * var(--ui-toast-offset, 1rem)))",
+        padding:
+          "calc(var(--ui-toast-offset, 1rem) + env(safe-area-inset-top, 0px)) calc(var(--ui-toast-offset, 1rem) + env(safe-area-inset-right, 0px)) calc(var(--ui-toast-offset, 1rem) + env(safe-area-inset-bottom, 0px)) calc(var(--ui-toast-offset, 1rem) + env(safe-area-inset-left, 0px))",
+        /* the region never blocks the page; only the toasts take the pointer */
+        "pointer-events": "none",
+        /* default placement: bottom-end */
+        "inset-block-end": "0",
+        "inset-inline-end": "0",
+        '&[data-placement^="top"]': { "inset-block-start": "0", "inset-block-end": "auto" },
+        '&[data-placement$="start"]': { "inset-inline-start": "0", "inset-inline-end": "auto" },
+        '&[data-placement$="center"]': {
+          left: "50%",
+          right: "auto",
+          "inset-inline-start": "50%",
+          "inset-inline-end": "auto",
+          transform: "translateX(-50%)",
+        },
+      },
+    },
+    toast: {
+      base: {
+        /* neutral = a surface card; an intent re-points --ui-c / --ui-on-c
+           and the edge, so intents only set variables and never compete
+           with the style rules */
+        "--ui-c": "var(--ui-surface)",
+        "--ui-c-text": "var(--ui-surface-fg)",
+        "--ui-on-c": "var(--ui-surface-fg)",
+        "--ui-c-soft": "var(--ui-neutral-soft)",
+        "--ui-c-soft-fg": "var(--ui-neutral-soft-fg)",
+        "--ui-toast-edge": "var(--ui-border)",
+
+        display: "flex",
+        "align-items": "center",
+        "justify-content": "space-between",
+        gap: "0.75rem",
+        "box-sizing": "border-box",
+        width: "100%",
+        padding: "var(--ui-toast-pad-y, 0.75rem) var(--ui-toast-pad-x, 1rem)",
+        "font-family": "var(--ui-font-sans)",
+        "font-size": "var(--ui-toast-fs, 0.9375rem)",
+        "line-height": "1.4",
+        "border-radius": "var(--ui-radius)",
+        border: "1px solid var(--ui-toast-edge)",
+        "background-color": "var(--ui-c)",
+        /* the toast's text colour as a variable, so controls inside it (a
+           dismiss button) can follow it on any fill */
+        "--ui-toast-fg": "var(--ui-on-c)",
+        color: "var(--ui-toast-fg)",
+        /* the 1px edge keeps the card visible on dark surfaces, where a
+           shadow does not */
+        "box-shadow": "var(--ui-toast-shadow, 0 10px 24px -10px rgb(0 0 0 / 0.35))",
+        "pointer-events": "auto",
+        opacity: "1",
+        transform: "none",
+        transition: "opacity 0.2s ease, transform 0.2s ease",
+        "&[hidden]": { display: "none" },
+        /* a button inside (typically a ghost dismiss) takes the toast's text
+           colour for its label, hover tint and focus ring, so it stays legible
+           and focusable on a solid fill */
+        "& .ui-button": {
+          "--ui-c-text": "var(--ui-toast-fg)",
+          "--ui-c-soft": "color-mix(in oklab, var(--ui-toast-fg) 16%, transparent)",
+          "--ui-c-soft-fg": "var(--ui-toast-fg)",
+        },
+        /* set explicitly as well: an adapter may paint its ghost button's
+           colour directly instead of through the variables */
+        "& .ui-button.ui-ghost, & .ui-button.ui-ghost:hover": {
+          color: "var(--ui-toast-fg)",
+        },
+        "& .ui-button.ui-ghost:hover": {
+          "background-color": "color-mix(in oklab, var(--ui-toast-fg) 16%, transparent)",
+        },
+        "& .ui-button:focus-visible": { "outline-color": "var(--ui-toast-fg)" },
+        /* enter: fade and rise in when the node is inserted */
+        "@starting-style": { opacity: "0", transform: "translateY(0.5rem)" },
+        "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+      },
+      intents: intentMap(() => ({ "--ui-toast-edge": "var(--ui-c-border, var(--ui-c))" })),
+      styles: {
+        /* tinted fill; the edge is a faint accent */
+        soft: {
+          "background-color": "var(--ui-c-soft)",
+          "--ui-toast-fg": "var(--ui-c-soft-fg)",
+          "border-color": "color-mix(in oklab, var(--ui-c-border, var(--ui-c)) 28%, transparent)",
+        },
+        /* surface fill with an accent edge */
+        outline: {
+          "background-color": "var(--ui-surface)",
+          "--ui-toast-fg": "var(--ui-surface-fg)",
+          "border-color": "var(--ui-c-border, var(--ui-c))",
+        },
+      },
+      sizes: {
+        sm: { "--ui-toast-fs": "0.8125rem", "--ui-toast-pad-y": "0.5rem", "--ui-toast-pad-x": "0.75rem" },
+        lg: { "--ui-toast-fs": "1.0625rem", "--ui-toast-pad-y": "1rem", "--ui-toast-pad-x": "1.25rem" },
+      },
+      states: {
+        /* e.g. "uploading" */
+        loading: { animation: "ui-pulse 1.2s ease-in-out infinite" },
+      },
+    },
     modal: {
       base: {
         /* works as a <div>, a <dialog> (open / showModal) or a :target */
