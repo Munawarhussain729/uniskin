@@ -91,6 +91,9 @@ export default defineAdapter({
     "--ui-danger-soft": "color-mix(in oklab, hsl(0 72% 51%) 22%, hsl(var(--card)))",
     "--ui-danger-soft-fg": "hsl(0 90% 78%)",
     ...uiMap,
+    /* shadcn dark destructive (30.6% lightness) is only ~1.8:1 against the page as a
+       border or indicator: lift ui-danger to >= 3.4:1 on any surface (the light label stays >= 6:1) */
+    "--ui-danger": "hsl(0 62.8% 48%)",
   },
   tokens: {
     /* shadcn/ui canonical variables (light theme, HSL channels) */
@@ -141,7 +144,7 @@ export default defineAdapter({
       base: {
         "--ui-radio-size": "1rem",
         "--ui-radio-dot-size": "0.5em",
-        "--ui-radio-dot": "var(--ui-c)",
+        "--ui-radio-dot": "var(--ui-c-text)",
         "border-color": "hsl(var(--primary))",
         /* shadcn: ring stays transparent, a primary dot marks the choice */
         '&:checked, &[aria-checked="true"]': { "background-color": "transparent" },

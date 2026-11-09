@@ -91,7 +91,7 @@ const fieldBase: CssRuleObject = {
   },
 };
 
-const fieldIntents = intentMap((i) => ({ "--ui-field-c": `var(--ui-${i})` }));
+const fieldIntents = intentMap(() => ({ "--ui-field-c": "var(--ui-c-text)" }));
 
 const fieldStyles: Record<"outline" | "ghost" | "soft", CssRuleObject> = {
   outline: {
@@ -402,7 +402,7 @@ export const defaultAdapter = defineAdapter({
         "&:hover": { "border-color": "var(--ui-c)" },
         '&:checked, &:indeterminate, &[aria-checked="true"], &[aria-checked="mixed"]': {
           "background-color": "var(--ui-c)",
-          "border-color": "var(--ui-c)",
+          "border-color": "var(--ui-c-text)",
         },
         '&:checked::after, &[aria-checked="true"]::after': {
           transform: "translateY(-8%) rotate(45deg) scale(1)",
@@ -419,8 +419,8 @@ export const defaultAdapter = defineAdapter({
       intents,
       styles: {
         outline: {
-          "--ui-check-mark": "var(--ui-c)",
-          "border-color": "var(--ui-c)",
+          "--ui-check-mark": "var(--ui-c-text)",
+          "border-color": "var(--ui-c-text)",
           '&:checked, &:indeterminate, &[aria-checked="true"], &[aria-checked="mixed"]': { "background-color": "transparent" },
         },
         ghost: {
@@ -436,7 +436,7 @@ export const defaultAdapter = defineAdapter({
           "--ui-check-mark": "var(--ui-c-soft-fg)",
           '&:checked, &:indeterminate, &[aria-checked="true"], &[aria-checked="mixed"]': {
             "background-color": "var(--ui-c-soft)",
-            "border-color": "var(--ui-c)",
+            "border-color": "var(--ui-c-text)",
           },
         },
       },
@@ -482,7 +482,7 @@ export const defaultAdapter = defineAdapter({
         "&:hover": { "border-color": "var(--ui-c)" },
         '&:checked, &[aria-checked="true"]': {
           "background-color": "var(--ui-c)",
-          "border-color": "var(--ui-c)",
+          "border-color": "var(--ui-c-text)",
         },
         '&:checked::after, &[aria-checked="true"]::after': { transform: "scale(1)" },
         "&:focus-visible": focusRing,
@@ -491,8 +491,8 @@ export const defaultAdapter = defineAdapter({
       intents,
       styles: {
         outline: {
-          "--ui-radio-dot": "var(--ui-c)",
-          "border-color": "var(--ui-c)",
+          "--ui-radio-dot": "var(--ui-c-text)",
+          "border-color": "var(--ui-c-text)",
           '&:checked, &[aria-checked="true"]': { "background-color": "transparent" },
         },
         ghost: {
@@ -508,7 +508,7 @@ export const defaultAdapter = defineAdapter({
           "--ui-radio-dot": "var(--ui-c-soft-fg)",
           '&:checked, &[aria-checked="true"]': {
             "background-color": "var(--ui-c-soft)",
-            "border-color": "var(--ui-c)",
+            "border-color": "var(--ui-c-text)",
           },
         },
       },
