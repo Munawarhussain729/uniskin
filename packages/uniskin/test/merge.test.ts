@@ -340,3 +340,48 @@ describe("uniskin plugin adapter base", () => {
     }
   });
 });
+
+describe("unsupported-slot notice", () => {
+  const run = (opts: Record<string, unknown>) => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      uniskin(opts);
+      return warn.mock.calls.map((c) => String(c[0]));
+    } finally {
+      warn.mockRestore();
+    }
+  };
+  const third = "./test/fixtures/css/adapters/local-adapter.cjs";
+
+  it("is silent for built-in adapters", () => {
+    expect(run({ adapter: "shadcn" })).toEqual([]);
+    expect(run({ adapter: "daisyui" })).toEqual([]);
+    expect(run({})).toEqual([]);
+  });
+
+  it("emits exactly one short line for a third-party adapter", () => {
+    const lines = run({ adapter: third });
+    expect(lines).toHaveLength(1);
+    expect(lines[0]).toMatch(
+      /^\[uniskin\] adapter ".+": \d+ modifier combinations fall back to the default style \(set debug: true to list them\)$/,
+    );
+  });
+
+  it("lists everything with debug, for built-in and third-party adapters", () => {
+    expect(run({ adapter: "shadcn", debug: true })[0]).toMatch(/does not define: .*button \(/);
+    expect(run({ adapter: third, debug: true })[0]).toMatch(/does not define: /);
+  });
+
+  it("honours UNISKIN_DEBUG=1", () => {
+    vi.stubEnv("UNISKIN_DEBUG", "1");
+    try {
+      expect(run({ adapter: "shadcn" })[0]).toMatch(/does not define: /);
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("still throws on resolution failures", () => {
+    expect(() => uniskin({ adapter: "./nope.cjs" })).toThrowError(/Could not resolve adapter/);
+  });
+});
