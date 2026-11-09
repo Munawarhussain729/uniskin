@@ -110,6 +110,10 @@ export const DEFAULT_DARK_OKLCH = {
   "--ui-surface-muted": "oklch(0.26 0.015 265)",
   "--ui-border": "oklch(0.34 0.015 265)",
   "--ui-ring": "oklch(0.7 0.15 262)",
+  /* not part of the palette editor: translucent layers, carried through so
+     an exported darkTokens (which replaces the defaults) keeps them */
+  "--ui-overlay": "rgb(0 0 0 / 0.5)",
+  "--ui-overlay-soft": "rgb(255 255 255 / 0.6)",
 } as const;
 
 export const DEFAULT_FONT =

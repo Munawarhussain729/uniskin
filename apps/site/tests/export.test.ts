@@ -111,7 +111,9 @@ describe("token exporter", () => {
       expect(delta(a.tokens[k], v), k).toBeLessThanOrEqual(1);
     }
     for (const [k, v] of Object.entries(DEFAULT_DARK_OKLCH)) {
-      expect(delta(a.darkTokens[k], v), k).toBeLessThanOrEqual(1);
+      // translucent overlays are passed through verbatim, not colour-converted
+      if (k.startsWith("--ui-overlay")) expect(a.darkTokens[k], k).toBe(v);
+      else expect(delta(a.darkTokens[k], v), k).toBeLessThanOrEqual(1);
     }
     expect(a.tokens["--ui-radius"]).toBe("0.5rem");
     expect(a.components).toBeUndefined();

@@ -13,6 +13,7 @@
 import { toHex, parseColor } from "./color";
 import { encodePayload, STATE_HEADER } from "./share";
 import {
+  DEFAULT_DARK_OKLCH,
   INTENT_KEYS,
   resolveFg,
   type IntentKey,
@@ -135,12 +136,18 @@ export function componentOverrides(s: SkinState): Record<string, Rule> | undefin
   return Object.keys(out).length ? out : undefined;
 }
 
+/** Translucent layers the builder does not edit; `darkTokens` replaces the defaults, so keep them. */
+const OVERLAY_TOKENS: TokenMap = {
+  "--ui-overlay": DEFAULT_DARK_OKLCH["--ui-overlay"],
+  "--ui-overlay-soft": DEFAULT_DARK_OKLCH["--ui-overlay-soft"],
+};
+
 export function toAdapter(s: SkinState): ExportedAdapter {
   const components = componentOverrides(s);
   return {
     name: slug(s.name),
     tokens: { ...shapeTokens(s), ...paletteTokens(s.light) },
-    darkTokens: paletteTokens(s.dark),
+    darkTokens: { ...paletteTokens(s.dark), ...OVERLAY_TOKENS },
     ...(components ? { components } : {}),
   };
 }
