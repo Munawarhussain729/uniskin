@@ -40,6 +40,10 @@ const COMPONENTS: Record<string, Slots> = {
   checkbox: FULL,
   radio: FULL,
   switch: FULL,
+  field: {},
+  "field-label": {},
+  "field-hint": {},
+  "field-error": {},
   card: FULL,
   "card-header": {},
   "card-body": {},
@@ -213,6 +217,7 @@ describe("content scanning", () => {
     "ui-checkbox ui-success ui-soft",
     "ui-radio ui-primary ui-outline",
     "ui-switch ui-success ui-soft",
+    "ui-field ui-field-label ui-field-hint ui-field-error",
     "ui-card ui-primary ui-outline ui-lg",
     "ui-card-header ui-card-body ui-card-footer",
     "ui-badge ui-warning ui-ghost",
@@ -366,6 +371,67 @@ describe("ui-switch (decision 003, component 3)", () => {
     expect(css).toContain(".uk-switch.uk-primary");
     expect(css).toContain(".uk-switch.uk-loading");
     expect(css).toContain("uk-pulse 1.2s ease-in-out infinite");
+    expect(css).not.toMatch(/\.ui-/);
+  });
+});
+
+describe("ui-field (decision 003, component 4)", () => {
+  for (const adapter of ["default", "shadcn", "daisyui"]) {
+    describe(adapter, () => {
+      const css = () => skin(adapter);
+
+      it("emits the four parts, with no modifier selectors and no global token", () => {
+        for (const part of ["field", "field-label", "field-hint", "field-error"]) {
+          expect(css()).toContain(`.ui-${part} {`);
+          expect(css()).not.toContain(`.ui-${part}.ui-`);
+        }
+        expect(css()).not.toMatch(/--ui-shadow\b/);
+      });
+
+      it("uses logical properties only", () => {
+        for (const part of ["field", "field-label", "field-hint", "field-error"]) {
+          expect(ruleBlock(css(), `.ui-${part}`)).not.toMatch(
+            /margin-left|margin-right|padding-left|padding-right|text-align:\s*(left|right)|\bleft:|\bright:/,
+          );
+        }
+      });
+
+      for (const component of ["input", "textarea", "select"]) {
+        it(`${component} styles [aria-invalid="true"] as danger`, () => {
+          const block = ruleBlock(css(), `.ui-${component}`);
+          expect(block).toContain('[aria-invalid="true"]');
+          expect(block).toContain("--ui-field-c: var(--ui-danger-text, var(--ui-danger))");
+        });
+      }
+    });
+  }
+
+  it("hooks are read with fallbacks in the default theme", () => {
+    expect(ruleBlock(skin("default"), ".ui-field")).toContain("var(--ui-field-gap, 0.375rem)");
+    expect(ruleBlock(skin("default"), ".ui-field-label")).toContain("var(--ui-field-label,");
+    expect(ruleBlock(skin("default"), ".ui-field-hint")).toContain("var(--ui-field-hint,");
+    expect(ruleBlock(skin("default"), ".ui-field-error")).toContain(
+      "var(--ui-field-error, var(--ui-danger-text, var(--ui-danger)))",
+    );
+  });
+
+  it("adapters set their own gap", () => {
+    expect(ruleBlock(skin("shadcn"), ".ui-field")).toContain("--ui-field-gap: 0.5rem");
+    expect(ruleBlock(skin("daisyui"), ".ui-field")).toContain("--ui-field-gap: 0.25rem");
+  });
+
+  it('prefix: "uk" renames field classes and the invalid selector', () => {
+    const css = compileWithFiles(
+      {
+        "index.html":
+          '<div class="uk-field"><label class="uk-field-label"></label><input class="uk-input" aria-invalid="true" /><p class="uk-field-hint"></p><p class="uk-field-error"></p></div>',
+      },
+      'prefix: "uk";',
+    );
+    for (const part of ["field", "field-label", "field-hint", "field-error"]) {
+      expect(css).toContain(`.uk-${part}`);
+    }
+    expect(css).toContain('[aria-invalid="true"]');
     expect(css).not.toMatch(/\.ui-/);
   });
 });

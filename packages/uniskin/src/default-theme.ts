@@ -89,6 +89,15 @@ const fieldBase: CssRuleObject = {
     "border-color": "var(--ui-c)",
     "box-shadow": "none",
   },
+  "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+  /* aria-invalid renders like ui-danger without the class. The extra :not()
+     lifts specificity so it also wins over intent, style and hover rules;
+     the danger text colour doubles as the boundary colour (>= 3:1 in every skin). */
+  '&[aria-invalid="true"]:not([aria-invalid="false"])': {
+    "--ui-field-c": "var(--ui-danger-text, var(--ui-danger))",
+    "border-color": "var(--ui-danger-text, var(--ui-danger))",
+    "&:hover": { "border-color": "var(--ui-danger-text, var(--ui-danger))" },
+  },
 };
 
 const fieldIntents = intentMap(() => ({ "--ui-field-c": "var(--ui-c-text)" }));
@@ -622,6 +631,47 @@ export const defaultAdapter = defineAdapter({
           "&::after": { animation: "ui-pulse 1.2s ease-in-out infinite" },
         },
         active: { "box-shadow": "0 0 0 3px color-mix(in oklab, var(--ui-c) 30%, transparent)" },
+      },
+    },
+
+    /* ui-field: label + control + hint/error stack. Hooks: --ui-field-gap,
+       --ui-field-label / -hint / -error (text colours). Logical properties only. */
+    field: {
+      base: {
+        display: "flex",
+        "flex-direction": "column",
+        "align-items": "stretch",
+        gap: "var(--ui-field-gap, 0.375rem)",
+        "min-inline-size": "0",
+        "font-family": "var(--ui-font-sans)",
+      },
+    },
+    "field-label": {
+      base: {
+        display: "block",
+        "font-size": "var(--ui-text-sm)",
+        "font-weight": "500",
+        "line-height": "1.25",
+        color: "var(--ui-field-label, var(--ui-surface-fg))",
+      },
+    },
+    "field-hint": {
+      base: {
+        margin: "0",
+        "font-size": "var(--ui-text-sm)",
+        "line-height": "1.4",
+        color: "var(--ui-field-hint, color-mix(in oklab, var(--ui-surface-fg) 72%, var(--ui-surface)))",
+        "&:empty": { display: "none" },
+      },
+    },
+    "field-error": {
+      base: {
+        margin: "0",
+        "font-size": "var(--ui-text-sm)",
+        "font-weight": "500",
+        "line-height": "1.4",
+        color: "var(--ui-field-error, var(--ui-danger-text, var(--ui-danger)))",
+        "&:empty": { display: "none" },
       },
     },
 

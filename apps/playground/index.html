@@ -259,6 +259,55 @@
           <input type="checkbox" role="switch" class="ui-switch ui-primary" aria-label="RTL off" />
         </div>
       </div>
+      <div class="fields" id="field-section">
+        <h2>field</h2>
+        <form class="fields" id="field-form" novalidate>
+          <div class="ui-field">
+            <label class="ui-field-label" for="f-name">Full name</label>
+            <input class="ui-input" id="f-name" autocomplete="name" aria-describedby="f-name-hint" />
+            <p class="ui-field-hint" id="f-name-hint">As shown on your ID.</p>
+          </div>
+          <div class="ui-field">
+            <label class="ui-field-label" for="f-email">Email</label>
+            <input class="ui-input" id="f-email" type="email" value="not-an-email" aria-invalid="true" aria-describedby="f-email-hint f-email-error" />
+            <p class="ui-field-hint" id="f-email-hint">We only use it for receipts.</p>
+            <p class="ui-field-error" id="f-email-error">Enter an email address like name@example.com.</p>
+          </div>
+          <div class="ui-field">
+            <label class="ui-field-label" for="f-plan">Plan</label>
+            <select class="ui-select" id="f-plan" aria-invalid="true" aria-describedby="f-plan-error">
+              <option value="">Choose a plan</option><option>Pro</option>
+            </select>
+            <p class="ui-field-error" id="f-plan-error">Choose a plan to continue.</p>
+          </div>
+          <div class="ui-field">
+            <label class="ui-field-label" for="f-msg">Message</label>
+            <textarea class="ui-textarea" id="f-msg" aria-invalid="true" aria-describedby="f-msg-error"></textarea>
+            <p class="ui-field-error" id="f-msg-error">Message is required.</p>
+          </div>
+          <div class="ui-field">
+            <label class="ui-field-label" for="f-ghost">Ghost invalid</label>
+            <input class="ui-input ui-ghost" id="f-ghost" aria-invalid="true" aria-describedby="f-ghost-error" />
+            <p class="ui-field-error" id="f-ghost-error">Ghost inputs keep a visible error border.</p>
+          </div>
+          <div class="ui-field">
+            <label class="ui-field-label" for="f-off">Disabled</label>
+            <input class="ui-input" id="f-off" disabled value="Locked" aria-describedby="f-off-hint" />
+            <p class="ui-field-hint" id="f-off-hint">Contact support to change this.</p>
+          </div>
+          <div class="ui-field" id="field-empty">
+            <label class="ui-field-label" for="f-live">Live error slot</label>
+            <input class="ui-input" id="f-live" aria-describedby="f-live-error" />
+            <p class="ui-field-error" id="f-live-error" role="alert"></p>
+          </div>
+          <div class="ui-field" dir="rtl" id="field-rtl">
+            <label class="ui-field-label" for="f-rtl">الاسم</label>
+            <input class="ui-input" id="f-rtl" aria-invalid="true" aria-describedby="f-rtl-hint f-rtl-error" />
+            <p class="ui-field-hint" id="f-rtl-hint">كما يظهر في الهوية.</p>
+            <p class="ui-field-error" id="f-rtl-error">هذا الحقل مطلوب.</p>
+          </div>
+        </form>
+      </div>
     </div>
     <script>
       /* headless demo: the "library" owns click handling and aria-checked */

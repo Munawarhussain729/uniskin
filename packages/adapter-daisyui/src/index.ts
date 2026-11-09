@@ -118,6 +118,9 @@ export default defineAdapter({
         lg: { "--ui-switch-size": "calc(var(--size-selector, 0.25rem) * 7)" },
       },
     },
+    /* daisyUI fieldset: tighter gap, semibold label, hint in softened base-content */
+    field: { base: { "--ui-field-gap": "0.25rem" } },
+    "field-label": { base: { "font-weight": "600" } },
     card: {
       base: {
         "border-radius": "var(--radius-box, 1rem)",

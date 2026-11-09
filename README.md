@@ -48,8 +48,8 @@ Prefix is `ui-` by default; change it with `prefix: "uk"` → `uk-button`.
 
 | Kind       | Classes |
 |------------|---------|
-| Components | `ui-button`, `ui-input`, `ui-textarea`, `ui-select`, `ui-checkbox`, `ui-radio`, `ui-switch`, `ui-card`, `ui-badge`, `ui-alert`, `ui-modal`, `ui-tabs` |
-| Parts      | `ui-card-header`, `ui-card-body`, `ui-card-footer`, `ui-modal-box`, `ui-tab` |
+| Components | `ui-button`, `ui-input`, `ui-textarea`, `ui-select`, `ui-checkbox`, `ui-radio`, `ui-switch`, `ui-field`, `ui-card`, `ui-badge`, `ui-alert`, `ui-modal`, `ui-tabs` |
+| Parts      | `ui-field-label`, `ui-field-hint`, `ui-field-error`, `ui-card-header`, `ui-card-body`, `ui-card-footer`, `ui-modal-box`, `ui-tab` |
 | Intent     | `ui-primary`, `ui-secondary`, `ui-success`, `ui-warning`, `ui-danger` |
 | Style      | `ui-outline`, `ui-ghost`, `ui-soft` (`solid` is the default) |
 | Size       | `ui-sm`, `ui-lg` (`md` is the default) |

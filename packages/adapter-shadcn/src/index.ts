@@ -50,6 +50,9 @@ const uiMap = {
      as the soft look so ui-secondary ui-soft stays above WCAG AA */
   "--ui-secondary-soft": "hsl(var(--secondary))",
   "--ui-secondary-soft-fg": "hsl(var(--secondary-foreground))",
+  /* shadcn's destructive is ~3.6:1 as text on white: error messages and
+     invalid borders use a deeper red (>= 4.5:1; dark mode pins a lighter one) */
+  "--ui-danger-text": "hsl(0 72% 42%)",
 };
 
 /**
@@ -94,6 +97,7 @@ export default defineAdapter({
     /* shadcn dark destructive (30.6% lightness) is only ~1.8:1 against the page as a
        border or indicator: lift ui-danger to >= 3.4:1 on any surface (the light label stays >= 6:1) */
     "--ui-danger": "hsl(0 62.8% 48%)",
+    "--ui-danger-text": "hsl(0 90% 72%)",
   },
   tokens: {
     /* shadcn/ui canonical variables (light theme, HSL channels) */
@@ -175,6 +179,8 @@ export default defineAdapter({
         },
       },
     },
+    field: { base: { "--ui-field-gap": "0.5rem" } },
+    "field-hint": { base: { "--ui-field-hint": "hsl(var(--muted-foreground))" } },
     card: {
       base: {
         "border-radius": "calc(var(--radius) + 4px)",
