@@ -25,7 +25,10 @@ pnpm add @uniskin/shadcn    # optional adapter
 pnpm add @uniskin/daisyui   # optional adapter
 ```
 
-Then in your Tailwind v4 entry CSS, add the `@plugin` line shown above.
+Then in your Tailwind v4 entry CSS, add the `@plugin` line shown above — or let
+the CLI do both steps: `npx uniskin init` (see [docs/cli.md](docs/cli.md)).
+See [docs/getting-started.md](docs/getting-started.md) for the full guide —
+install, adapters, `prefix`, dark mode and troubleshooting.
 
 Compatibility: **tailwindcss ≥ 4.3.3** — verified in CI against 4.3.3 (the
 oldest supported 4.x), the version pinned in this repo, and `latest`.

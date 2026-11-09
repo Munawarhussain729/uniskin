@@ -1,4 +1,4 @@
-# 003 — Skin builder: border width and density have no token
+# 004 — Skin builder: border width and density have no token
 
 Status: proposal (no change to core or adapters in this PR)
 
