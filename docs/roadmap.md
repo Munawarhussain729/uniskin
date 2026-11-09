@@ -3,9 +3,10 @@
 Status: proposed. The scope of each release is a plan, not a promise; it
 is reviewed when the previous release ships.
 
-Latest published release: **0.4.0** (vocabulary v1.4). **0.5.0** is
-versioned on `main` (commit `2399ba0`, vocabulary v1.6) and waiting to be
-published; see [Release log](#release-log). The component order comes
+Latest published release: **0.4.0** (vocabulary v1.4). **0.5.0**
+(`2399ba0`, vocabulary v1.6) and **0.6.0** (`a137182`, vocabulary v1.8) are
+versioned on `main` and waiting to be published; see
+[Release log](#release-log). The component order comes
 from [ADR-003](decisions/003-vocabulary-expansion.md); the release
 mechanics are in [releasing.md](releasing.md).
 
@@ -57,6 +58,30 @@ git tag uniskin@<version> <version commit> && git push origin uniskin@<version>
 |---------|------------|----------------|-------|
 | 0.4.0 | v1.4 | `c6f81a3` | published |
 | 0.5.0 | v1.6 | `2399ba0` | versioned, not yet published |
+| 0.6.0 | v1.8 | `a137182` | versioned, not yet published |
+
+Merging a Version Packages PR only versions a release. A GitHub Release
+appears when the tag is pushed, and the tag comes after the npm publish. To
+catch up on 0.5.0 and 0.6.0, publish in order, each from its own commit:
+
+```sh
+# 0.5.0
+git checkout 2399ba0 && pnpm install --frozen-lockfile && pnpm -r build
+pnpm --filter uniskin publish && pnpm --filter @uniskin/shadcn publish && pnpm --filter @uniskin/daisyui publish
+git tag uniskin@0.5.0 2399ba0
+
+# 0.6.0
+git checkout a137182 && pnpm install --frozen-lockfile && pnpm -r build
+pnpm --filter uniskin publish && pnpm --filter @uniskin/shadcn publish && pnpm --filter @uniskin/daisyui publish
+git tag uniskin@0.6.0 a137182
+
+git checkout main && git push origin uniskin@0.5.0 uniskin@0.6.0
+```
+
+Run `scripts/release-smoke.sh <version>` after each publish. Pushing the
+tags starts the GitHub Release workflow; it failed with a GitHub-side error
+on its first run (0.4.0), so if it does not create the release, create it
+from the changelog with `gh release create uniskin@<version>`.
 
 ## Releases
 
@@ -77,7 +102,7 @@ and the coverage matrix are updated; vocabulary label becomes v1.6 (the
 accordion is v1.5, progress v1.6). Also shipped: a fix for an alert
 cascade bug that adding rules exposed (see `docs/qa/accordion-2026-11.md`).
 
-### 0.6.0: overlays
+### 0.6.0: overlays (versioned)
 
 | Item | Notes |
 |------|-------|
@@ -86,7 +111,12 @@ cascade bug that adding rules exposed (see `docs/qa/accordion-2026-11.md`).
 
 Exit: the placement convention is written in `writing-adapters.md`; both
 components pass axe and the reduced-motion checks; label v1.8 (tooltip
-v1.7, toast v1.8).
+v1.7, toast v1.8). Done. Also written down: the entering-elements
+convention (`@starting-style`) and the rule that intents only set
+variables. Recorded exceptions: the bubble and toast fills reuse each
+skin's intent pairs, so a few upstream palette values appear (see
+`docs/qa/tooltip-2026-11.md` and `docs/qa/toast-2026-11.md`); 0.9.0 revisits
+every allow-listed entry.
 
 ### 0.7.0: menus
 
