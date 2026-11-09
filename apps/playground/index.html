@@ -52,6 +52,8 @@
       h2.group { font-size: 1.15rem; text-transform: none; margin: 3rem 0 0; padding-top: 1.5rem; border-top: 1px solid #ddd; }
       .fields { display: grid; gap: 0.75rem; max-width: 26rem; }
       .cols { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); align-items: start; }
+      .radio-group { border: 0; padding: 0; margin: 0 0 0.75rem; display: grid; gap: 0.5rem; }
+      .radio-group legend { padding: 0; margin-bottom: 0.25rem; font-size: 0.8rem; opacity: 0.75; }
       .check { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
       .hint { color: #666; font-size: 0.85rem; }
     </style>
@@ -160,6 +162,12 @@
         </select>
         <select class="ui-select ui-sm" aria-label="Small"><option>Small</option></select>
         <select class="ui-select" disabled aria-label="Disabled"><option>Disabled</option></select>
+        <select class="ui-select" multiple aria-label="Multiple (no chevron)">
+          <option>Alpha</option><option selected>Beta</option><option>Gamma</option>
+        </select>
+        <select class="ui-select ui-sm" size="3" aria-label="Listbox size">
+          <option>One</option><option>Two</option><option>Three</option>
+        </select>
       </div>
       <div class="fields">
         <h2>checkbox</h2>
@@ -175,6 +183,37 @@
           <input type="checkbox" class="ui-checkbox ui-primary" checked aria-label="md" />
           <input type="checkbox" class="ui-checkbox ui-lg ui-primary" checked aria-label="lg" />
           <input type="checkbox" class="ui-checkbox" checked disabled aria-label="disabled" />
+          <button type="button" role="checkbox" class="ui-checkbox ui-primary" aria-checked="true" aria-label="aria-checked true"></button>
+          <button type="button" role="checkbox" class="ui-checkbox ui-primary" aria-checked="mixed" aria-label="aria-checked mixed"></button>
+        </div>
+      </div>
+      <div class="fields">
+        <h2>radio</h2>
+        <fieldset class="radio-group" id="radio-plan">
+          <legend>Plan</legend>
+          <label class="check"><input type="radio" name="plan" class="ui-radio ui-primary" value="free" checked /> Free</label>
+          <label class="check"><input type="radio" name="plan" class="ui-radio ui-primary" value="pro" /> Pro</label>
+          <label class="check"><input type="radio" name="plan" class="ui-radio ui-primary" value="team" /> Team</label>
+        </fieldset>
+        <fieldset class="radio-group">
+          <legend>Styles</legend>
+          <label class="check"><input type="radio" name="style" class="ui-radio" checked /> Default</label>
+          <label class="check"><input type="radio" name="style" class="ui-radio ui-success ui-soft" /> Success soft</label>
+          <label class="check"><input type="radio" name="style" class="ui-radio ui-danger ui-outline" /> Danger outline</label>
+          <label class="check"><input type="radio" name="style" class="ui-radio ui-warning ui-ghost" /> Warning ghost</label>
+        </fieldset>
+        <div class="row" role="radiogroup" aria-label="Size">
+          <input type="radio" name="size" class="ui-radio ui-sm ui-primary" checked aria-label="sm" />
+          <input type="radio" name="size" class="ui-radio ui-primary" aria-label="md" />
+          <input type="radio" name="size" class="ui-radio ui-lg ui-primary" aria-label="lg" />
+        </div>
+        <div class="row">
+          <input type="radio" name="off" class="ui-radio" checked disabled aria-label="disabled checked" />
+          <input type="radio" name="off" class="ui-radio" disabled aria-label="disabled" />
+        </div>
+        <div class="row" role="radiogroup" aria-label="Headless">
+          <button type="button" role="radio" class="ui-radio ui-primary" aria-checked="true" aria-label="aria-checked on"></button>
+          <button type="button" role="radio" class="ui-radio ui-primary" aria-checked="false" aria-label="aria-checked off"></button>
         </div>
       </div>
     </div>

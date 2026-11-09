@@ -137,6 +137,21 @@ export default defineAdapter({
         },
       },
     },
+    radio: {
+      base: {
+        "--ui-radio-size": "1rem",
+        "--ui-radio-dot-size": "0.5em",
+        "--ui-radio-dot": "var(--ui-c)",
+        "border-color": "hsl(var(--primary))",
+        /* shadcn: ring stays transparent, a primary dot marks the choice */
+        '&:checked, &[aria-checked="true"]': { "background-color": "transparent" },
+        "box-shadow": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        "&:focus-visible": {
+          outline: "none",
+          "box-shadow": "0 0 0 3px hsl(var(--ring) / 0.5)",
+        },
+      },
+    },
     card: {
       base: {
         "border-radius": "calc(var(--radius) + 4px)",

@@ -98,6 +98,15 @@ export default defineAdapter({
         lg: { "--ui-check-size": "calc(var(--size-selector, 0.25rem) * 7)" },
       },
     },
+    radio: {
+      base: {
+        "--ui-radio-size": "calc(var(--size-selector, 0.25rem) * 6)",
+      },
+      sizes: {
+        sm: { "--ui-radio-size": "calc(var(--size-selector, 0.25rem) * 5)" },
+        lg: { "--ui-radio-size": "calc(var(--size-selector, 0.25rem) * 7)" },
+      },
+    },
     card: {
       base: {
         "border-radius": "var(--radius-box, 1rem)",

@@ -70,6 +70,7 @@ export const VOCABULARY = [
   "textarea",
   "select",
   "checkbox",
+  "radio",
   "card",
   "card-header",
   "card-body",

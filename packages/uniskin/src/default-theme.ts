@@ -354,6 +354,13 @@ export const defaultAdapter = defineAdapter({
         "background-position": "calc(100% - 1.1rem) 55%, calc(100% - 0.75rem) 55%",
         "background-size": "0.35rem 0.35rem, 0.35rem 0.35rem",
         "background-repeat": "no-repeat",
+        /* listbox-style selects have no dropdown arrow */
+        '&[multiple], &[size]:not([size="1"])': {
+          "background-image": "none",
+          "padding-right": "0.75rem",
+          height: "auto",
+          cursor: "auto",
+        },
       },
       intents: fieldIntents,
       styles: fieldStyles,
@@ -393,14 +400,14 @@ export const defaultAdapter = defineAdapter({
           "font-size": "var(--ui-check-size, 1.125rem)",
         },
         "&:hover": { "border-color": "var(--ui-c)" },
-        "&:checked, &:indeterminate": {
+        '&:checked, &:indeterminate, &[aria-checked="true"], &[aria-checked="mixed"]': {
           "background-color": "var(--ui-c)",
           "border-color": "var(--ui-c)",
         },
-        "&:checked::after": {
+        '&:checked::after, &[aria-checked="true"]::after': {
           transform: "translateY(-8%) rotate(45deg) scale(1)",
         },
-        "&:indeterminate::after": {
+        '&:indeterminate::after, &[aria-checked="mixed"]::after': {
           width: "0.55em",
           height: "2px",
           "border-width": "0",
@@ -414,20 +421,20 @@ export const defaultAdapter = defineAdapter({
         outline: {
           "--ui-check-mark": "var(--ui-c)",
           "border-color": "var(--ui-c)",
-          "&:checked, &:indeterminate": { "background-color": "transparent" },
+          '&:checked, &:indeterminate, &[aria-checked="true"], &[aria-checked="mixed"]': { "background-color": "transparent" },
         },
         ghost: {
           "--ui-check-mark": "var(--ui-c-soft-fg)",
           "background-color": "var(--ui-surface-muted)",
           "border-color": "transparent",
-          "&:checked, &:indeterminate": {
+          '&:checked, &:indeterminate, &[aria-checked="true"], &[aria-checked="mixed"]': {
             "background-color": "var(--ui-c-soft)",
             "border-color": "transparent",
           },
         },
         soft: {
           "--ui-check-mark": "var(--ui-c-soft-fg)",
-          "&:checked, &:indeterminate": {
+          '&:checked, &:indeterminate, &[aria-checked="true"], &[aria-checked="mixed"]': {
             "background-color": "var(--ui-c-soft)",
             "border-color": "var(--ui-c)",
           },
@@ -436,6 +443,78 @@ export const defaultAdapter = defineAdapter({
       sizes: {
         sm: { "--ui-check-size": "0.9375rem" },
         lg: { "--ui-check-size": "1.5rem" },
+      },
+      states: {
+        disabled: { opacity: "0.5", cursor: "not-allowed" },
+        loading: { cursor: "progress", animation: "ui-pulse 1.2s ease-in-out infinite" },
+        active: { "box-shadow": "0 0 0 3px color-mix(in oklab, var(--ui-c) 30%, transparent)" },
+      },
+    },
+
+    radio: {
+      base: {
+        ...neutralVars,
+        appearance: "none",
+        display: "inline-grid",
+        "place-content": "center",
+        "flex-shrink": "0",
+        "box-sizing": "border-box",
+        width: "var(--ui-radio-size, 1.125rem)",
+        height: "var(--ui-radio-size, 1.125rem)",
+        margin: "0",
+        "vertical-align": "middle",
+        cursor: "pointer",
+        "background-color": "var(--ui-surface)",
+        border: "1px solid color-mix(in oklab, var(--ui-border) 55%, var(--ui-surface-fg))",
+        "border-radius": "50%",
+        transition: transition(["background-color", "border-color", "box-shadow"]),
+        "&::after": {
+          content: '""',
+          width: "var(--ui-radio-dot-size, 0.5em)",
+          height: "var(--ui-radio-dot-size, 0.5em)",
+          "border-radius": "50%",
+          "background-color": "var(--ui-radio-dot, var(--ui-on-c))",
+          transform: "scale(0)",
+          transition: "transform 0.12s ease",
+          "font-size": "var(--ui-radio-size, 1.125rem)",
+          "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+        },
+        "&:hover": { "border-color": "var(--ui-c)" },
+        '&:checked, &[aria-checked="true"]': {
+          "background-color": "var(--ui-c)",
+          "border-color": "var(--ui-c)",
+        },
+        '&:checked::after, &[aria-checked="true"]::after': { transform: "scale(1)" },
+        "&:focus-visible": focusRing,
+        "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+      },
+      intents,
+      styles: {
+        outline: {
+          "--ui-radio-dot": "var(--ui-c)",
+          "border-color": "var(--ui-c)",
+          '&:checked, &[aria-checked="true"]': { "background-color": "transparent" },
+        },
+        ghost: {
+          "--ui-radio-dot": "var(--ui-c-soft-fg)",
+          "background-color": "var(--ui-surface-muted)",
+          "border-color": "transparent",
+          '&:checked, &[aria-checked="true"]': {
+            "background-color": "var(--ui-c-soft)",
+            "border-color": "transparent",
+          },
+        },
+        soft: {
+          "--ui-radio-dot": "var(--ui-c-soft-fg)",
+          '&:checked, &[aria-checked="true"]': {
+            "background-color": "var(--ui-c-soft)",
+            "border-color": "var(--ui-c)",
+          },
+        },
+      },
+      sizes: {
+        sm: { "--ui-radio-size": "0.9375rem" },
+        lg: { "--ui-radio-size": "1.5rem" },
       },
       states: {
         disabled: { opacity: "0.5", cursor: "not-allowed" },
