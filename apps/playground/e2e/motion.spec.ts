@@ -47,6 +47,27 @@ test("loading spin/pulse under prefers-reduced-motion: reduce", async ({ page })
         stillAnimating.push(`${adapter} | ui-table tbody[${i}] | element`);
     }
 
+    // ui-accordion: the open panel fades in and the trigger/chevron transition
+    // — all of it must stop under reduce
+    const openPanels = page.locator(".ui-accordion-item[open] > .ui-accordion-panel");
+    for (let i = 0; i < (await openPanels.count()); i++) {
+      const info = await openPanels.nth(i).evaluate((el) => ({
+        name: getComputedStyle(el).animationName,
+        dur: getComputedStyle(el).animationDuration,
+      }));
+      if (running(info.name, info.dur))
+        stillAnimating.push(`${adapter} | ui-accordion-panel[${i}] | element`);
+    }
+    const triggers = page.locator(".ui-accordion-trigger");
+    for (let i = 0; i < (await triggers.count()); i++) {
+      const t = await triggers.nth(i).evaluate((el) => ({
+        own: getComputedStyle(el).transitionProperty,
+        after: getComputedStyle(el, "::after").transitionProperty,
+      }));
+      if (t.own !== "none") stillAnimating.push(`${adapter} | ui-accordion-trigger[${i}] | transition`);
+      if (t.after !== "none") stillAnimating.push(`${adapter} | ui-accordion-trigger[${i}] | ::after transition`);
+    }
+
     // positive control: the skin does honour reduced-motion for the modal fade
     const modalTransition = await page.locator("dialog.ui-modal").evaluate(
       (el) => getComputedStyle(el).transitionProperty,

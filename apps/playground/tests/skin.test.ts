@@ -58,6 +58,11 @@ const COMPONENTS: Record<string, Slots> = {
      003 §4), so the emitted states slot only covers table-level loading */
   table: { intents: true, styles: STYLES, sizes: true, states: ["loading"] },
   "table-wrap": {},
+  /* parts take no modifiers; native <details> has no disabled/loading state */
+  accordion: { intents: true, styles: STYLES, sizes: true },
+  "accordion-item": {},
+  "accordion-trigger": {},
+  "accordion-panel": {},
 };
 
 const cssCache = new Map<string, string>();
@@ -553,6 +558,72 @@ describe("alert intents do not compete with styles", () => {
     );
     expect(css).toContain(":not(.uk-soft)");
     expect(css).not.toContain(":not(.ui-soft)");
+  });
+});
+
+describe("ui-accordion (roadmap 0.5.0)", () => {
+  for (const adapter of ADAPTERS) {
+    describe(adapter, () => {
+      it("hides the native marker and draws a CSS chevron", () => {
+        const block = ruleBlock(skin(adapter), ".ui-accordion-trigger");
+        expect(block).toContain("::-webkit-details-marker");
+        expect(block).toContain("list-style: none");
+        expect(block).toContain("&::after");
+      });
+
+      it("keys the open state off [open] on the item", () => {
+        const block = ruleBlock(skin(adapter), ".ui-accordion-item");
+        expect(block).toContain("&[open] > .ui-accordion-trigger");
+        expect(block).toContain("rotate(-135deg)");
+        expect(block).toContain("ui-accordion-reveal");
+      });
+
+      it("trigger keeps a focus-visible ring", () => {
+        expect(ruleBlock(skin(adapter), ".ui-accordion-trigger")).toContain(":focus-visible");
+      });
+    });
+  }
+
+  it("maps outline to separate items, ghost to no lines and soft to a filled list", () => {
+    const css = skin("default");
+    expect(ruleBlock(css, ".ui-accordion.ui-outline")).toContain("& .ui-accordion-item");
+    expect(ruleBlock(css, ".ui-accordion.ui-ghost")).toContain("& .ui-accordion-item + .ui-accordion-item");
+    expect(ruleBlock(css, ".ui-accordion.ui-soft")).toContain(
+      "& .ui-accordion-item[open] > .ui-accordion-trigger",
+    );
+  });
+
+  it("hooks are read with fallbacks in the default theme", () => {
+    const css = skin("default");
+    for (const hook of ["--ui-accordion-pad-x", "--ui-accordion-pad-y"])
+      expect(ruleBlock(css, ".ui-accordion-trigger")).toContain(`var(${hook},`);
+    expect(ruleBlock(css, ".ui-accordion")).toContain("var(--ui-accordion-border,");
+    expect(ruleBlock(css, ".ui-accordion-trigger")).toContain("var(--ui-accordion-hover,");
+  });
+
+  it("reveal animation and trigger transitions are disabled under reduced motion", () => {
+    const css = skin("default");
+    expect(css).toMatch(/@keyframes ui-accordion-reveal/);
+    expect(ruleBlock(css, ".ui-accordion-item")).toMatch(
+      /prefers-reduced-motion: reduce\)\s*\{[^}]*animation: none/,
+    );
+    expect(ruleBlock(css, ".ui-accordion-trigger")).toMatch(
+      /prefers-reduced-motion: reduce\)\s*\{[^}]*transition: none/,
+    );
+  });
+
+  it('prefix: "uk" renames the classes, nested references and the reveal keyframes', () => {
+    const css = compileWithFiles(
+      {
+        "index.html":
+          '<div class="uk-accordion uk-soft"><details class="uk-accordion-item" open><summary class="uk-accordion-trigger">a</summary><div class="uk-accordion-panel">b</div></details></div>',
+      },
+      'prefix: "uk";',
+    );
+    expect(css).toContain(".uk-accordion");
+    expect(css).toContain(".uk-accordion-item[open] > .uk-accordion-trigger");
+    expect(css).toContain("@keyframes uk-accordion-reveal");
+    expect(css).not.toMatch(/\.ui-/);
   });
 });
 

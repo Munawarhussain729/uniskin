@@ -172,6 +172,27 @@ export default defineAdapter({
       },
     },
     "table-wrap": { base: { "border-radius": "var(--radius-box, 1rem)" } },
+    accordion: {
+      base: {
+        /* daisy collapse: base-300 border, rounded-box, semibold title */
+        "--ui-accordion-border": "var(--color-base-300, oklch(90% 0 0))",
+        "--ui-accordion-hover": "var(--color-base-200, oklch(98% 0 0))",
+        "--ui-accordion-soft-bg": "var(--color-base-200, oklch(98% 0 0))",
+        "--ui-accordion-pad-y": "1rem",
+        "--ui-accordion-pad-x": "1.25rem",
+        "border-radius": "var(--radius-box, 1rem)",
+      },
+      styles: {
+        /* separate boxes get the rounded-box corner; the divided list does
+           not, so its dividers stay straight */
+        outline: { "& .ui-accordion-item": { "border-radius": "var(--radius-box, 1rem)" } },
+      },
+      sizes: {
+        sm: { "--ui-accordion-pad-y": "0.625rem", "--ui-accordion-pad-x": "1rem" },
+        lg: { "--ui-accordion-pad-y": "1.25rem", "--ui-accordion-pad-x": "1.5rem" },
+      },
+    },
+    "accordion-trigger": { base: { "font-weight": "600" } },
     alert: {
       base: {
         "border-radius": "var(--radius-box, 1rem)",
