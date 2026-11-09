@@ -5,3 +5,6 @@ apps/playground/public/adapters/
 .DS_Store
 apps/playground/tests/__out__/
 apps/site/public/adapters/
+apps/site/tests/__out__/
+apps/site/test-results/
+apps/site/playwright-report/

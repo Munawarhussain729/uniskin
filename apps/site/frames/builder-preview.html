@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uniskin — skin builder preview</title>
+    <link id="skin" rel="stylesheet" href="/adapters/default.css" />
+    <style>
+      :root { color-scheme: light; }
+      html.dark { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 1.25rem;
+        background: var(--ui-surface);
+        color: var(--ui-surface-fg);
+        font-family: var(--ui-font-sans);
+      }
+      .p-stack { display: grid; gap: 1.25rem; }
+      .p-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+      .p-title { font-weight: 600; font-size: 1rem; }
+      .p-fields { display: grid; gap: 0.75rem; margin: 1rem 0; }
+      .p-grid2 { display: grid; gap: 0.75rem; grid-template-columns: 1fr 1fr; }
+      .p-check { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+      .p-actions { display: flex; justify-content: flex-end; gap: 0.5rem; flex-wrap: wrap; }
+      .p-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+      .p-label {
+        margin: 0 0 0.5rem;
+        font-size: 0.72rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        opacity: 0.7;
+      }
+      .p-alerts { display: grid; gap: 0.5rem; }
+      @media (max-width: 30rem) { .p-grid2 { grid-template-columns: 1fr; } }
+    </style>
+    <script>
+      /* The builder drives class + data-theme on <html>; ?dark=1 pins a mode
+         when the frame is opened on its own. */
+      (() => {
+        const q = new URLSearchParams(location.search);
+        const dark = q.get("dark") === "1";
+        document.documentElement.classList.toggle("dark", dark);
+        document.documentElement.classList.toggle("light", !dark);
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="p-stack">
+      <div class="ui-card">
+        <div class="ui-card-header p-head">
+          <span class="p-title">Project settings</span>
+          <span class="ui-badge ui-success">Active</span>
+        </div>
+        <div class="ui-card-body">
+          <div class="ui-tabs" role="tablist" aria-label="Settings sections">
+            <button class="ui-tab" role="tab" aria-selected="true">General</button>
+            <button class="ui-tab" role="tab" aria-selected="false">Members</button>
+            <button class="ui-tab" role="tab" aria-selected="false">Usage</button>
+            <button class="ui-tab ui-disabled" role="tab" aria-disabled="true">Billing</button>
+          </div>
+          <div class="p-fields">
+            <div class="ui-alert ui-warning ui-soft" role="note">
+              Trial ends in 3 days — upgrade to keep this workspace.
+            </div>
+            <div class="p-grid2">
+              <input class="ui-input" value="uniskin-docs" aria-label="Project name" />
+              <select class="ui-select" aria-label="Region">
+                <option>eu-central</option>
+                <option>us-east</option>
+                <option>ap-south</option>
+              </select>
+            </div>
+            <textarea class="ui-textarea" rows="2" aria-label="Description">Docs for the Uniskin vocabulary.</textarea>
+            <label class="p-check">
+              <input type="checkbox" class="ui-checkbox ui-primary" checked />
+              Deploy previews on every push
+            </label>
+          </div>
+        </div>
+        <div class="ui-card-footer p-actions">
+          <button class="ui-button ui-ghost" type="button">Cancel</button>
+          <button class="ui-button ui-outline" type="button">Reset</button>
+          <button class="ui-button ui-primary" type="button">Save changes</button>
+        </div>
+      </div>
+
+      <div>
+        <p class="p-label">Solid</p>
+        <div class="p-row">
+          <button class="ui-button ui-primary" type="button">Primary</button>
+          <button class="ui-button ui-secondary" type="button">Secondary</button>
+          <button class="ui-button ui-success" type="button">Success</button>
+          <button class="ui-button ui-warning" type="button">Warning</button>
+          <button class="ui-button ui-danger" type="button">Danger</button>
+        </div>
+      </div>
+      <div>
+        <p class="p-label">Outline</p>
+        <div class="p-row">
+          <button class="ui-button ui-primary ui-outline" type="button">Primary</button>
+          <button class="ui-button ui-secondary ui-outline" type="button">Secondary</button>
+          <button class="ui-button ui-success ui-outline" type="button">Success</button>
+          <button class="ui-button ui-warning ui-outline" type="button">Warning</button>
+          <button class="ui-button ui-danger ui-outline" type="button">Danger</button>
+        </div>
+      </div>
+      <div>
+        <p class="p-label">Soft + badges</p>
+        <div class="p-row">
+          <button class="ui-button ui-primary ui-soft" type="button">Primary</button>
+          <button class="ui-button ui-secondary ui-soft" type="button">Secondary</button>
+          <button class="ui-button ui-success ui-soft" type="button">Success</button>
+          <button class="ui-button ui-warning ui-soft" type="button">Warning</button>
+          <button class="ui-button ui-danger ui-soft" type="button">Danger</button>
+        </div>
+        <div class="p-row" style="margin-top: 0.6rem">
+          <span class="ui-badge ui-primary">primary</span>
+          <span class="ui-badge ui-secondary ui-soft">secondary</span>
+          <span class="ui-badge ui-success ui-soft">success</span>
+          <span class="ui-badge ui-warning ui-soft">warning</span>
+          <span class="ui-badge ui-danger ui-outline">danger</span>
+        </div>
+      </div>
+      <div>
+        <p class="p-label">Sizes &amp; states</p>
+        <div class="p-row">
+          <button class="ui-button ui-primary ui-sm" type="button">Small</button>
+          <button class="ui-button ui-primary" type="button">Medium</button>
+          <button class="ui-button ui-primary ui-lg" type="button">Large</button>
+          <button class="ui-button" type="button" disabled>Disabled</button>
+          <button class="ui-button ui-secondary ui-loading" type="button">Loading</button>
+        </div>
+      </div>
+      <div class="p-alerts">
+        <div class="ui-alert ui-primary" role="note">Primary alert — a quiet heads-up.</div>
+        <div class="ui-alert ui-success ui-soft" role="note">Success alert — deploy finished.</div>
+        <div class="ui-alert ui-danger ui-soft" role="note">Danger alert — the build failed.</div>
+      </div>
+      <div class="ui-modal-box ui-primary ui-sm" style="width: 100%">
+        <p class="p-title" style="margin: 0 0 0.5rem">Delete project?</p>
+        <p style="margin: 0 0 1rem">This cannot be undone.</p>
+        <div class="p-actions">
+          <button class="ui-button ui-ghost ui-sm" type="button">Keep</button>
+          <button class="ui-button ui-danger ui-sm" type="button">Delete</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.querySelectorAll(".ui-tabs").forEach((tabs) =>
+        tabs.addEventListener("click", (e) => {
+          const tab = e.target.closest(".ui-tab");
+          if (!tab || tab.classList.contains("ui-disabled")) return;
+          tabs
+            .querySelectorAll(".ui-tab")
+            .forEach((t) => t.setAttribute("aria-selected", String(t === tab)));
+        }),
+      );
+    </script>
+  </body>
+</html>

@@ -17,6 +17,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: join(root, "index.html"),
+        builder: join(root, "builder/index.html"),
         ...frames,
       },
     },
