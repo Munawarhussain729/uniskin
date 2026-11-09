@@ -42,7 +42,7 @@ file type it scans (HTML, JSX, Vue, PHP, …). If you keep templates in a
 file type Tailwind doesn't scan, add an explicit
 [`@source`](https://tailwindcss.com/docs/functions-and-directives#source-directive).
 
-## Vocabulary v1
+## Vocabulary (v1.3)
 
 Prefix is `ui-` by default; change it with `prefix: "uk"` → `uk-button`.
 
@@ -64,7 +64,7 @@ Prefix is `ui-` by default; change it with `prefix: "uk"` → `uk-button`.
   `ui-active` ⇔ `[aria-selected="true"]`/`[aria-pressed="true"]`.
 - Every interactive component has `:focus-visible` styling.
 
-Status: the full v1 vocabulary ships in the default skin. The shadcn and
+Status: the full vocabulary ships in the default skin. The shadcn and
 daisyUI adapters restyle every component; slots they don't define fall
 back to the default skin. Per-component markup, modifiers, native-attribute
 equivalents and accessibility notes: [docs/vocabulary.md](docs/vocabulary.md).
@@ -81,8 +81,9 @@ Notes:
 
 Uniskin ships a complete built-in default style driven by `--ui-*` CSS
 variables. An adapter overrides only what it supports; everything else
-silently falls back to the default. In dev builds, Uniskin prints a
-warning listing the slots an adapter doesn't cover.
+silently falls back to the default. Built-in adapters are silent; a custom
+adapter gets a one-line summary of what falls back, and `debug: true` (or
+`UNISKIN_DEBUG=1`) lists every slot.
 
 ## Writing your own adapter
 
