@@ -1,5 +1,17 @@
 # uniskin
 
+## 0.4.0
+
+### Minor Changes
+
+- a3ed9df: Adapters can now declare their own `@keyframes` (`keyframes`, merged over the built-in `spin`/`pulse` and re-prefixed with the consumer's `prefix`) and choose where dark tokens are emitted (`darkRootSelector`, default `.dark, [data-theme="dark"]`). Both are optional, so existing adapters are unaffected.
+- 10f416e: New optional tokens, all defaulting to today's look: `--ui-overlay` and `--ui-overlay-soft` for the modal scrim and soft veil (light and dark sets), and per-intent pins `--ui-<intent>-hover`, `--ui-<intent>-border` and `--ui-<intent>-soft-hover` (exposed as `--ui-c-hover`, `--ui-c-border`, `--ui-c-soft-hover` on every intent). Scale-driven adapters can now remap tokens instead of rewriting button style slots.
+- bb38532: Add `ui-table` and `ui-table-wrap` to the vocabulary (v1.4): native `<table>` styling via nested `th`/`td`/`tr`/`caption` selectors, `ui-soft` zebra, `ui-outline` cell grid, `ui-ghost` line-less, intents tinting header underline + selected-row fill, `ui-sm`/`ui-lg` density, `[aria-sort]` arrows, sticky `thead th`, tr-level selected/disabled and table-level `ui-loading`/`aria-busy`. Component-scoped hooks `--ui-table-*` documented in `docs/writing-adapters.md`. shadcn maps to `Table` (`border-b`, `hover:bg-muted/50`, selected `--muted`); daisyUI maps to `table`/`table-zebra`.
+
+### Patch Changes
+
+- f88f506: Adapter warnings are more accurate. `warnUnsupported` now checks an adapter against the documented coverage matrix instead of every modifier, so a conforming adapter is no longer warned about combinations that are not part of the vocabulary. Slot keys outside the known modifier sets (for example `styles: { classic: … }`) are now reported instead of being silently dropped.
+
 ## 0.3.0
 
 ### Minor Changes
