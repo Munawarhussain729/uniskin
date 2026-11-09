@@ -3,7 +3,9 @@
 Status: proposed. The scope of each release is a plan, not a promise; it
 is reviewed when the previous release ships.
 
-Current release: **0.4.0** (vocabulary v1.4). The component order comes
+Latest published release: **0.4.0** (vocabulary v1.4). **0.5.0** is
+versioned on `main` (commit `2399ba0`, vocabulary v1.6) and waiting to be
+published; see [Release log](#release-log). The component order comes
 from [ADR-003](decisions/003-vocabulary-expansion.md); the release
 mechanics are in [releasing.md](releasing.md).
 
@@ -37,9 +39,28 @@ mechanics are in [releasing.md](releasing.md).
 6. Redeploy the site and check `/`, `/builder/` and the adapter CSS.
 7. Update this file: tick the release, re-confirm the next scope.
 
+## Release log
+
+A release is **versioned** when its Version Packages PR is merged, and
+**published** when the owner runs the publish step. Because publishing
+needs the owner's 2FA, the next release's features may already be on
+`main` by then, so publish each version from its own version commit:
+
+```sh
+git checkout <version commit>
+pnpm install --frozen-lockfile && pnpm -r build
+pnpm --filter uniskin publish && pnpm --filter @uniskin/shadcn publish && pnpm --filter @uniskin/daisyui publish
+git tag uniskin@<version> <version commit> && git push origin uniskin@<version>
+```
+
+| Version | Vocabulary | Version commit | State |
+|---------|------------|----------------|-------|
+| 0.4.0 | v1.4 | `c6f81a3` | published |
+| 0.5.0 | v1.6 | `2399ba0` | versioned, not yet published |
+
 ## Releases
 
-### 0.5.0: disclosure and feedback
+### 0.5.0: disclosure and feedback (versioned)
 
 Components that are native HTML, need no JavaScript, and finish the
 "common app UI" basics.
@@ -48,11 +69,13 @@ Components that are native HTML, need no JavaScript, and finish the
 |------|-------|
 | `ui-accordion` | Native `<details>`/`<summary>`; style the marker, `[open]`, focus ring; height/opacity animation only with a reduced-motion override. |
 | `ui-progress` | Native `<progress>`; intents and sizes; determinate and `:indeterminate`. |
-| Intent pins adopted | `ui-badge`, `ui-alert` and `ui-card` read `--ui-c-border` and `--ui-c-soft-hover` (follow-up of the intent-pin work in 0.4.0). |
+| Intent pins adopted | `ui-badge`, `ui-alert` and `ui-card.ui-outline` read `--ui-c-border`. `--ui-c-soft-hover` stays button-only: none of the three hovers. |
 | Housekeeping | Enable "Allow GitHub Actions to create and approve pull requests" so the Version Packages PR opens itself; confirm the tag-triggered release workflow runs; connect the site's Vercel project to the repo for automatic deploys. |
 
 Exit: both components pass the per-component checklist; `vocabulary.md`
-and the coverage matrix are updated; vocabulary label becomes v1.5.
+and the coverage matrix are updated; vocabulary label becomes v1.6 (the
+accordion is v1.5, progress v1.6). Also shipped: a fix for an alert
+cascade bug that adding rules exposed (see `docs/qa/accordion-2026-11.md`).
 
 ### 0.6.0: overlays
 
@@ -62,7 +85,8 @@ and the coverage matrix are updated; vocabulary label becomes v1.5.
 | `ui-toast` + `ui-toast-region` | CSS for placement and look; the live region, timers and dismissal stay with the consumer and are documented. |
 
 Exit: the placement convention is written in `writing-adapters.md`; both
-components pass axe and the reduced-motion checks; label v1.6.
+components pass axe and the reduced-motion checks; label v1.8 (tooltip
+v1.7, toast v1.8).
 
 ### 0.7.0: menus
 
@@ -72,7 +96,7 @@ components pass axe and the reduced-motion checks; label v1.6.
 | Decision | Whether to ship a small optional JavaScript helper or stay CSS-only and point to headless libraries. Decide before implementation; the 1.0 promise of "CSS only" must stay true for the core package. |
 
 Exit: keyboard e2e (arrows, Home/End, Escape, focus return) in all six
-skin and mode combinations; label v1.7.
+skin and mode combinations; label v1.9.
 
 ### 0.8.0: the remaining small components
 
