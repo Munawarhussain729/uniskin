@@ -61,12 +61,6 @@ function measure(el: Element) {
 
 const SW = "#switch-native input";
 
-/** Palette limits for the extra intent coverage (see docs/qa/switch-contrast-2026-11.md). */
-const KNOWN_PALETTE_LIMITS: Record<string, true> = {
-  "shadcn/dark": true,
-  "daisyui/light": true,
-};
-
 for (const adapter of ADAPTERS) {
   for (const mode of MODES) {
     test.describe(`${adapter}/${mode}`, () => {
@@ -111,9 +105,12 @@ for (const adapter of ADAPTERS) {
       });
 
       test("on state: thumb vs track >= 3:1, and track or border vs surface >= 3:1 for the default intent", async ({ page }) => {
-        const extras = KNOWN_PALETTE_LIMITS[`${adapter}/${mode}`]
-          ? []
-          : ["#switch-native input.ui-success", "input.ui-switch.ui-danger"];
+        // daisyUI light: the success and danger on-tracks are below 3:1 against
+        // the surface (measured 1.88:1 and 2.74:1; docs/qa/switch-contrast-2026-11.md).
+        // Palette values are out of scope here, so only the track check is
+        // skipped for that combination; thumb contrast is still asserted.
+        const trackKnownLow = adapter === "daisyui" && mode === "light";
+        const extras = ["#switch-native input.ui-success", "input.ui-switch.ui-danger"];
         const sw = page.locator(SW).nth(2);
         await sw.check();
         const r = await sw.evaluate(measure);
@@ -122,7 +119,9 @@ for (const adapter of ADAPTERS) {
         for (const sel of extras) {
           const m = await page.locator(sel).first().evaluate(measure);
           expect(m.thumbVsTrack, `${sel} thumb`).toBeGreaterThanOrEqual(3);
-          expect(m.trackVsSurround, `${sel} track`).toBeGreaterThanOrEqual(3);
+          if (!trackKnownLow) {
+            expect(m.trackVsSurround, `${sel} track`).toBeGreaterThanOrEqual(3);
+          }
         }
       });
 
