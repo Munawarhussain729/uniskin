@@ -2,6 +2,8 @@
 
 One semantic class vocabulary, swappable Tailwind CSS v4 UI skins.
 
+[Live demo](https://uniskin-css.vercel.app) · [Skin builder](https://uniskin-css.vercel.app/builder/) · [GitHub](https://github.com/Munawarhussain729/uniskin)
+
 Write `ui-button ui-primary` once, in plain HTML, React, Vue, PHP or anything
 else. Pick an **adapter** in your CSS to decide how it looks: the built-in
 default, a shadcn/ui look, a daisyUI look, or your own. Switching adapters
