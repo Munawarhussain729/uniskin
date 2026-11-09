@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "apps/site/builder/index.html"
+        ],
+        "createdAt": "2026-11-09T05:40:29.340Z",
+        "reason": "agent triage: false positive; type scale lives in external builder.css (h1 clamp 2-3.3rem, h2 1.45rem, body 0.85-1rem, ratios ~2.3x and ~1.45x), not resolved by the HTML-only check"
+      }
+    ]
+  }
+}

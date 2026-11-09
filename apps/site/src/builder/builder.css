@@ -174,14 +174,13 @@ select.txt { cursor: pointer; }
   margin-bottom: 0.5rem;
   background: var(--paper-2);
   border: 1px solid var(--line);
-  border-left-width: 4px;
   border-radius: 4px;
   font-size: 0.88rem;
   outline: none;
 }
 .audit > span:nth-child(2) { flex: 1 1 14rem; min-width: 0; }
-.audit[data-state="pass"] { border-left-color: var(--code-str); }
-.audit[data-state="fail"] { border-left-color: var(--accent); background: var(--accent-soft); }
+.audit[data-state="pass"] { border-color: var(--code-str); }
+.audit[data-state="fail"] { border-color: var(--accent); background: var(--accent-soft); }
 .audit-ic {
   display: inline-grid;
   place-items: center;
