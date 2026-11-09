@@ -1,6 +1,6 @@
 # Vocabulary reference
 
-Every class in Uniskin vocabulary v1.4, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.5, grouped by component. The prefix is
 `ui-` by default — if you set `prefix: "uk"` in the `@plugin` options,
 read every `ui-*` class below as `uk-*`.
 
@@ -426,6 +426,48 @@ header (`thead th` is `position: sticky`).
 - Nested tables inherit `ui-table` styling — put `ui-table` on the
   inner table too, or accept the inherit.
 
+### `ui-accordion`, `ui-accordion-item`, `ui-accordion-trigger`, `ui-accordion-panel`
+
+Disclosure list built on native `<details>` / `<summary>`, with no
+JavaScript. The browser provides open/close, Enter and Space on the
+summary, and the expanded state exposed to assistive technology.
+`ui-accordion` wraps the items and carries the modifiers; the other
+classes are parts.
+
+```html
+<div class="ui-accordion ui-soft">
+  <details class="ui-accordion-item" open>
+    <summary class="ui-accordion-trigger">What is Uniskin?</summary>
+    <div class="ui-accordion-panel">One class vocabulary, swappable skins.</div>
+  </details>
+  <details class="ui-accordion-item">
+    <summary class="ui-accordion-trigger">Does it need JavaScript?</summary>
+    <div class="ui-accordion-panel">No. The output is CSS only.</div>
+  </details>
+</div>
+```
+
+- **Parts:** `ui-accordion-item` on `<details>`, `ui-accordion-trigger`
+  on `<summary>`, `ui-accordion-panel` on the content element.
+- **Intents:** all five; tint the open trigger (`--ui-c-text`), and the
+  soft tint under `ui-soft`.
+- **Styles:** default = one bordered list with dividers; `ui-outline` =
+  separate bordered items; `ui-ghost` = no lines; `ui-soft` = filled
+  list whose open trigger takes the intent's soft tint.
+- **Sizes:** `ui-sm`, `ui-lg` — trigger padding and font size via
+  `--ui-accordion-pad-y/-x`.
+- **State:** the `[open]` attribute on `<details>` rotates the chevron
+  and reveals the panel (a short fade; off under reduced motion).
+  There are no `ui-disabled`/`ui-loading` states: a native `<details>`
+  cannot be disabled, so do not fake it with classes.
+- **Hooks:** `--ui-accordion-pad-x`, `--ui-accordion-pad-y`,
+  `--ui-accordion-border`, `--ui-accordion-hover`,
+  `--ui-accordion-soft-bg`.
+- **Consumer provides:** a meaningful summary text (it is the button's
+  accessible name). `<details name="group">` makes an exclusive group
+  where the browser supports it; browser support is partial, so treat
+  it as an enhancement.
+
 ## Coverage matrix
 
 Supported modifiers in the built-in default skin (adapters may cover
@@ -456,6 +498,10 @@ fewer — anything omitted falls back to the default):
 | `ui-tab`         | ✓ | — | ✓ | disabled loading active |
 | `ui-table`       | ✓ | outline ghost soft | ✓ | loading (table); disabled active (`<tr>`) |
 | `ui-table-wrap`  | — | — | — | — |
+| `ui-accordion`   | ✓ | outline ghost soft | ✓ | — |
+| `ui-accordion-item` | — | — | — | — |
+| `ui-accordion-trigger` | — | — | — | — |
+| `ui-accordion-panel` | — | — | — | — |
 
 ## Accessibility
 

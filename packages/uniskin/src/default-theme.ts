@@ -964,6 +964,139 @@ export const defaultAdapter = defineAdapter({
         },
       },
     },
+    /* ui-accordion: native <details>/<summary>, no JavaScript. The
+       container carries the modifiers; the item, trigger and panel parts
+       are styled from their own slots. `[open]` is the state hook. */
+    accordion: {
+      base: {
+        /* neutral intent vars — an intent class re-points them, and the
+           open trigger is tinted with --ui-c-text */
+        "--ui-c": "var(--ui-neutral)",
+        "--ui-c-text": "var(--ui-surface-fg)",
+        "--ui-on-c": "var(--ui-neutral-fg)",
+        "--ui-c-soft": "var(--ui-neutral-soft)",
+        "--ui-c-soft-fg": "var(--ui-neutral-soft-fg)",
+
+        display: "block",
+        "font-family": "var(--ui-font-sans)",
+        "font-size": "var(--ui-text-md)",
+        "line-height": "1.25",
+        color: "var(--ui-surface-fg)",
+        border: "1px solid var(--ui-accordion-border, var(--ui-border))",
+        "border-radius": "var(--ui-radius)",
+        overflow: "hidden",
+        "& .ui-accordion-item + .ui-accordion-item": {
+          "border-top": "1px solid var(--ui-accordion-border, var(--ui-border))",
+        },
+      },
+      intents,
+      styles: {
+        /* separate bordered items */
+        outline: {
+          border: "0",
+          display: "grid",
+          gap: "0.5rem",
+          overflow: "visible",
+          "& .ui-accordion-item": {
+            border: "1px solid var(--ui-accordion-border, var(--ui-border))",
+            "border-radius": "var(--ui-radius)",
+            overflow: "hidden",
+          },
+        },
+        /* no lines at all */
+        ghost: {
+          border: "0",
+          "& .ui-accordion-item + .ui-accordion-item": { "border-top": "0" },
+        },
+        /* filled container; the open trigger takes the intent's soft tint */
+        soft: {
+          border: "0",
+          "background-color": "var(--ui-accordion-soft-bg, var(--ui-surface-muted))",
+          "& .ui-accordion-item + .ui-accordion-item": { "border-top-color": "var(--ui-surface)" },
+          /* the whole open item takes the tint (trigger and panel), so the
+             panel text does not sit against the edge of a band */
+          "& .ui-accordion-item[open]": { "background-color": "var(--ui-c-soft)" },
+          "& .ui-accordion-item[open] > .ui-accordion-trigger": { color: "var(--ui-c-soft-fg)" },
+          /* the default ring colour can fall under 3:1 on a tint; the tint's
+             own foreground is chosen to contrast with it */
+          "& .ui-accordion-item[open] > .ui-accordion-trigger:focus-visible": {
+            "outline-color": "var(--ui-c-soft-fg)",
+          },
+          "& .ui-accordion-item[open] > .ui-accordion-panel": { color: "var(--ui-c-soft-fg)" },
+        },
+      },
+      sizes: {
+        sm: {
+          "font-size": "var(--ui-text-sm)",
+          "--ui-accordion-pad-y": "0.5rem",
+          "--ui-accordion-pad-x": "0.75rem",
+        },
+        lg: {
+          "font-size": "var(--ui-text-lg)",
+          "--ui-accordion-pad-y": "1rem",
+          "--ui-accordion-pad-x": "1.25rem",
+        },
+      },
+    },
+    "accordion-item": {
+      base: {
+        display: "block",
+        /* tinted by the intent, with a share of the surface text mixed back
+           in so a saturated intent stays >= 4.5:1 on any surface */
+        "&[open] > .ui-accordion-trigger": {
+          color: "color-mix(in oklab, var(--ui-c-text) 75%, var(--ui-surface-fg))",
+        },
+        "&[open] > .ui-accordion-trigger::after": {
+          transform: "translateY(0.15em) rotate(-135deg)",
+        },
+        "&[open] > .ui-accordion-panel": {
+          animation: "ui-accordion-reveal 0.18s ease-out",
+        },
+      },
+    },
+    /* the <summary>: a keyboard-focusable disclosure button for free */
+    "accordion-trigger": {
+      base: {
+        display: "flex",
+        "align-items": "center",
+        "justify-content": "space-between",
+        gap: "1rem",
+        padding: "var(--ui-accordion-pad-y, 0.75rem) var(--ui-accordion-pad-x, 1rem)",
+        "font-weight": "500",
+        color: "var(--ui-surface-fg)",
+        cursor: "pointer",
+        "list-style": "none",
+        "user-select": "none",
+        transition: transition(["background-color", "color"]),
+        "&::-webkit-details-marker": { display: "none" },
+        "&::marker": { content: '""' },
+        /* chevron drawn from borders, not an icon font */
+        "&::after": {
+          content: '""',
+          flex: "none",
+          width: "0.5em",
+          height: "0.5em",
+          "border-right": "2px solid currentColor",
+          "border-bottom": "2px solid currentColor",
+          transform: "translateY(-0.15em) rotate(45deg)",
+          transition: "transform 0.15s ease",
+        },
+        "&:hover": { "background-color": "var(--ui-accordion-hover, var(--ui-surface-muted))" },
+        "&:focus-visible": { ...focusRing, "outline-offset": "-2px" },
+        "@media (prefers-reduced-motion: reduce)": {
+          transition: "none",
+          "&::after": { transition: "none" },
+        },
+      },
+    },
+    "accordion-panel": {
+      base: {
+        padding: "0 var(--ui-accordion-pad-x, 1rem) var(--ui-accordion-pad-y, 0.75rem)",
+        "font-size": "var(--ui-text-sm)",
+        "line-height": "1.55",
+        color: "color-mix(in oklab, var(--ui-surface-fg) 78%, var(--ui-surface))",
+      },
+    },
     modal: {
       base: {
         /* works as a <div>, a <dialog> (open / showModal) or a :target */
@@ -1134,4 +1267,8 @@ export const defaultAdapter = defineAdapter({
 export const defaultKeyframes: Record<string, CssRuleObject> = {
   spin: { to: { transform: "rotate(360deg)" } },
   pulse: { "50%": { opacity: "0.55" } },
+  "accordion-reveal": {
+    from: { opacity: "0", transform: "translateY(-0.25rem)" },
+    to: { opacity: "1", transform: "none" },
+  },
 };

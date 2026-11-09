@@ -12,6 +12,8 @@ const FOCUSABLE = [
   "textarea:not([disabled])",
   "[role='tab']:not([disabled])",
   "[role='switch']:not([disabled]):not([aria-disabled='true'])",
+  // ui-accordion-trigger: the native <summary> is the keyboard-focusable control
+  "summary",
   // scrollable ui-table-wrap (decision 003 §4): consumers add tabindex=0
   "[tabindex='0']:not([disabled]):not([aria-disabled='true'])",
 ].join(",");

@@ -229,6 +229,34 @@ export default defineAdapter({
       },
     },
     "table-wrap": { base: { border: "0", "border-radius": "0" } },
+    accordion: {
+      base: {
+        /* shadcn Accordion: borderless list, border-b per item, py-4 trigger */
+        "--ui-accordion-border": "hsl(var(--border))",
+        "--ui-accordion-pad-x": "0",
+        "--ui-accordion-pad-y": "1rem",
+        "--ui-accordion-hover": "transparent",
+        border: "0",
+        "border-radius": "0",
+        overflow: "visible",
+        "& .ui-accordion-item + .ui-accordion-item": { "border-top": "0" },
+        "& .ui-accordion-item": { "border-bottom": "1px solid hsl(var(--border))" },
+        "& .ui-accordion-item:last-child": { "border-bottom": "0" },
+      },
+      /* boxed looks need horizontal padding back */
+      styles: {
+        outline: { "--ui-accordion-pad-x": "1rem" },
+        soft: { "--ui-accordion-pad-x": "1rem", "--ui-accordion-soft-bg": "hsl(var(--muted))" },
+        ghost: { "--ui-accordion-pad-x": "0.5rem" },
+      },
+    },
+    "accordion-trigger": {
+      base: {
+        "font-size": "0.875rem",
+        "&:hover": { "text-decoration": "underline" },
+      },
+    },
+    "accordion-panel": { base: { "font-size": "0.875rem" } },
     alert: {
       base: {
         "--ui-c": "hsl(var(--card))",

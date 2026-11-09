@@ -52,4 +52,8 @@ export const COVERAGE: Record<ComponentName, Coverage> = {
   tab: { ...NONE, intents: INTENTS, sizes: SIZES, states: STATES },
   table: ALL,
   "table-wrap": NONE,
+  accordion: { ...ALL, states: [] },
+  "accordion-item": NONE,
+  "accordion-trigger": NONE,
+  "accordion-panel": NONE,
 };
