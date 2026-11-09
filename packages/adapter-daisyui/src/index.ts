@@ -24,11 +24,18 @@ const fieldSizes = {
   lg: { height: "calc(var(--size-field, 0.25rem) * 12)", padding: "0 1rem", "font-size": "1.125rem" },
 };
 
-/* daisyUI alert: tinted surface with a matching border, text in the intent color */
+/* daisyUI alert: tinted surface with a matching border, text in the intent color.
+   An intent and a style are both single-class modifiers of the same
+   specificity, so their order in the emitted CSS must not decide the look:
+   the tint applies only when no style class overrides it. */
 const alertIntent = {
-  "background-color": "color-mix(in oklab, var(--ui-c) 10%, var(--ui-surface))",
-  "border-color": "color-mix(in oklab, var(--ui-c) 40%, transparent)",
-  color: "color-mix(in oklab, var(--ui-c) 85%, var(--ui-surface-fg))",
+  "&:not(.ui-soft):not(.ui-ghost):not(.ui-outline)": {
+    "background-color": "color-mix(in oklab, var(--ui-c) 10%, var(--ui-surface))",
+    color: "color-mix(in oklab, var(--ui-c) 85%, var(--ui-surface-fg))",
+  },
+  "&:not(.ui-soft):not(.ui-ghost)": {
+    "border-color": "color-mix(in oklab, var(--ui-c) 40%, transparent)",
+  },
 };
 
 /**
