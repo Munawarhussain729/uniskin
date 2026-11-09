@@ -151,6 +151,8 @@ describe("overlay and intent tokens", () => {
     );
     expect(primary["--ui-c-border"]).toBe("var(--ui-primary-border, var(--ui-c))");
     expect(primary["--ui-c-soft-hover"]).toBe("var(--ui-primary-soft-hover, var(--ui-c))");
+  });
+});
 
 describe("adapter keyframes", () => {
   const shimmer = { from: { opacity: "0.4" }, to: { opacity: "1" } };
