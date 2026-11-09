@@ -315,6 +315,66 @@ html.dark .fix { color: #1a0c06; }
 .rng-h { grid-column: 1 / -1; font-size: 0.8rem; color: var(--ink-2); margin: 0; }
 .type-sample { margin: 1rem 0 0.6rem; font-size: 1.15rem; line-height: 1.4; }
 
+/* share-state notice */
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+  padding: 0.65rem 0.9rem;
+  margin: 0 0 1.25rem;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  color: var(--ink);
+}
+.notice[hidden] { display: none; }
+.notice span { flex: 1; min-width: 0; }
+.notice-x {
+  font: inherit;
+  flex: none;
+  background: none;
+  border: none;
+  color: var(--ink-2);
+  cursor: pointer;
+  padding: 0 0.15rem;
+  line-height: 1.3;
+}
+.notice-x:hover { color: var(--ink); }
+
+/* adapter import */
+.imp { margin-top: 1.4rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
+.imp summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-2);
+  border-radius: 4px;
+}
+.imp summary:hover { color: var(--ink); }
+.imp-h { font-size: 0.8rem; color: var(--ink-2); margin: 0.6rem 0; }
+.imp-ta {
+  resize: vertical;
+  min-height: 5.5rem;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+.imp-actions { display: flex; gap: 0.5rem; margin-top: 0.55rem; }
+.imp-file { position: relative; cursor: pointer; overflow: hidden; }
+.imp-file .sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.imp-file:focus-within { outline: 2px solid var(--ink); outline-offset: 2px; }
+.imp-status { margin: 0.55rem 0 0; font-size: 0.8rem; color: var(--ink-2); }
+.imp-status:empty { margin: 0; }
+.imp-status[data-state="pass"] { color: var(--code-str); }
+.imp-status[data-state="warn"], .imp-status[data-state="fail"] { color: var(--accent); }
+
 /* ---------- export ---------- */
 
 .export { border-top: 1px solid var(--line); padding-block: clamp(2rem, 5vw, 3.5rem); background: var(--paper-2); }
@@ -346,7 +406,10 @@ html.dark .fix { color: #1a0c06; }
 .panel-x { background: var(--paper); border: 1px solid var(--line-strong); border-top: none; padding: 1rem; border-radius: 0 0 4px 4px; }
 .use { font-size: 0.9rem; color: var(--ink-2); margin: 0 0 0.8rem; }
 .code-wrap .code { max-height: 26rem; overflow: auto; font-size: 0.8rem; white-space: pre; }
-.code-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.7rem; }
+.code .t-c { color: var(--ink-2); }
+.code .t-k { color: var(--accent); }
+.code .t-s, .code .t-n { color: var(--code-str); }
+.code-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.7rem; flex-wrap: wrap; }
 .act {
   padding: 0.45rem 1rem;
   min-height: 2.5rem;

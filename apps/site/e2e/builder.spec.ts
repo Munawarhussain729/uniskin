@@ -114,3 +114,104 @@ test("fits at 360px without horizontal scroll", async ({ page }) => {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
   expect(overflow).toBeLessThanOrEqual(0);
 });
+
+/* ------------------------------------------------------------- builder v2 */
+
+test("edits are mirrored into a shareable URL hash", async ({ page }) => {
+  await page.locator(PRIMARY_HEX).fill("#0b7285");
+  await page.locator('[data-auto="primary"]').check();
+  await page.locator("#radius").fill("1");
+
+  await expect.poll(() => page.url()).toContain("#s=");
+
+  /* the same URL in a fresh page restores the whole state */
+  const url = page.url();
+  const page2 = await page.context().newPage();
+  await page2.goto(url);
+  await expect(page2.locator(PRIMARY_HEX)).toHaveValue("#0b7285");
+  await expect(page2.locator("#radius-o")).toHaveText("1rem");
+  await page2.close();
+});
+
+test("a broken or foreign hash falls back to defaults with a notice", async ({ page }) => {
+  /* whatever the untouched default shows is what a bad hash must restore */
+  const defaultPrimary = await page.locator(PRIMARY_HEX).inputValue();
+  const stale = Buffer.from(JSON.stringify([2, "light", null])).toString("base64url");
+  for (const [hash, match] of [
+    ["#s=definitely-not-a-state", /couldn't be read/],
+    [`#s=${stale}`, /different version/],
+  ] as const) {
+    await page.goto(`/builder/${hash}`);
+    const notice = page.locator("#notice");
+    await expect(notice).toBeVisible();
+    await expect(notice).toContainText(match);
+    /* defaults are loaded and the notice is dismissible without blocking */
+    await expect(page.locator(PRIMARY_HEX)).toHaveValue(defaultPrimary);
+    await page.locator("#notice-dismiss").click();
+    await expect(notice).toBeHidden();
+  }
+});
+
+test("Copy link puts the shareable URL on the clipboard", async ({ page, context }) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"], {
+    origin: "http://localhost:4198",
+  });
+  await page.locator(PRIMARY_HEX).fill("#0b7285");
+  await page.locator('[data-auto="primary"]').check();
+  await page.locator("#copy-link").click();
+  await expect(page.locator("#copy-link")).toHaveText("Link copied");
+  const clip = await page.evaluate(() => navigator.clipboard.readText());
+  expect(clip).toContain("#s=");
+  expect(clip).toBe(page.url());
+});
+
+test("the export panel is syntax highlighted without changing the text", async ({ page }) => {
+  await expect(page.locator("#out .t-k").first()).toBeVisible(); // import/export keywords
+  await expect(page.locator("#out .t-s").first()).toBeVisible(); // strings
+  await expect(page.locator("#out .t-c").first()).toBeVisible(); // comment header
+  await page.locator("#tab-css").click();
+  await expect(page.locator("#out .t-n").first()).toBeVisible(); // hex colours
+  await expect(page.locator("#out")).toContainText("--ui-primary:");
+});
+
+test("exports carry the state header and import back into the controls", async ({ page }) => {
+  await page.locator(PRIMARY_HEX).fill("#0b7285");
+  await page.locator('[data-auto="primary"]').check();
+  await page.locator("#name").fill("Round Trip");
+  await page.locator("#radius").fill("1");
+  const file = (await page.locator("#out").textContent()) ?? "";
+  expect(file).toContain("// uniskin-state:");
+
+  /* mutate the controls, then bring the file back */
+  await page.locator(PRIMARY_HEX).fill("#ff0000");
+  await page.locator('[data-auto="primary"]').check();
+  await page.locator("#name").fill("Changed");
+  await page.locator(".imp summary").click();
+  await page.locator("#imp-paste").fill(file);
+  await page.locator("#imp-apply").click();
+
+  await expect(page.locator("#imp-status")).toContainText(/Imported/);
+  await expect(page.locator("#imp-status")).toHaveAttribute("data-state", "pass");
+  await expect(page.locator(PRIMARY_HEX)).toHaveValue("#0b7285");
+  await expect(page.locator("#name")).toHaveValue("Round Trip");
+  await expect(page.locator("#radius-o")).toHaveText("1rem");
+});
+
+test("import rejects non-builder files with a readable error", async ({ page }) => {
+  await page.locator(".imp summary").click();
+  await page.locator("#imp-paste").fill("console.log('not an adapter')");
+  await page.locator("#imp-apply").click();
+  await expect(page.locator("#imp-status")).toHaveAttribute("data-state", "fail");
+  await expect(page.locator("#imp-status")).toContainText(/defineAdapter/);
+  await expect(page.locator("#audit")).toHaveAttribute("data-state", "pass");
+});
+
+test("import works via file upload too", async ({ page }) => {
+  const s = (await page.locator("#out").textContent()) ?? "";
+  await page.locator("#imp-file").setInputFiles({
+    name: "uploaded-skin.mjs",
+    mimeType: "text/javascript",
+    buffer: Buffer.from(s),
+  });
+  await expect(page.locator("#imp-status")).toContainText(/Imported/);
+});
