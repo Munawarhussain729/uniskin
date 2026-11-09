@@ -42,9 +42,11 @@ change published behaviour.
    Each `pnpm publish` prompts for the npm OTP. `pnpm -r publish` also
    works — it publishes workspace packages in topological order — but
    doing them one at a time makes the order and the OTP prompts explicit.
-4. **Tag the release** if you want git tags (`git tag uniskin@x.y.z &&
-   git push --tags`) — changesets does not create tags in this repo's
-   workflow.
+4. **Tag the release** — `git tag uniskin@x.y.z && git push --tags`.
+   Changesets does not create tags, so this is manual. Pushing the tag
+   triggers `.github/workflows/github-release.yml`, which creates the
+   GitHub Release from that version's `packages/uniskin/CHANGELOG.md`
+   entry (it fails if there is none). It never publishes to npm.
 5. **Smoke-test the published packages** with
    `scripts/release-smoke.sh <version>` — see
    [smoke-test.md](smoke-test.md).

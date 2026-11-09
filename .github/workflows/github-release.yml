@@ -1,0 +1,41 @@
+name: GitHub Release
+
+# Creates a GitHub Release from the CHANGELOG when the owner pushes a
+# release tag (`git tag uniskin@x.y.z && git push --tags`). It does not
+# publish to npm - that stays a manual, 2FA step (docs/releasing.md).
+
+on:
+  push:
+    tags: ["uniskin@*"]
+
+permissions: {}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the release
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Create the release from the CHANGELOG
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          version="${TAG#uniskin@}"
+          # the matching "## <version>" section of the core changelog
+          awk -v v="$version" '
+            $0 == "## " v { on = 1; next }
+            /^## / { on = 0 }
+            on
+          ' packages/uniskin/CHANGELOG.md > notes.md
+          if [ ! -s notes.md ]; then
+            echo "No CHANGELOG entry for $version in packages/uniskin/CHANGELOG.md" >&2
+            exit 1
+          fi
+          {
+            echo "Published as \`uniskin@$version\`, \`@uniskin/shadcn@$version\` and \`@uniskin/daisyui@$version\`."
+            echo
+            cat notes.md
+          } > body.md
+          gh release create "$TAG" --verify-tag --title "$version" --notes-file body.md
