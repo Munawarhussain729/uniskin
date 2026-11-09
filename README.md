@@ -2,6 +2,8 @@
 
 One class vocabulary, swappable Tailwind CSS v4 skins.
 
+**[Live demo](https://uniskin-css.vercel.app)** · **[Skin builder](https://uniskin-css.vercel.app/builder/)** · [npm](https://www.npmjs.com/package/uniskin) · [Docs](docs/getting-started.md)
+
 ![The same Project settings markup rendered by the default, shadcn and daisyUI adapters](docs/assets/social-preview.png)
 
 Write `ui-button ui-primary ui-md` once — in plain HTML, React, Vue, PHP,
