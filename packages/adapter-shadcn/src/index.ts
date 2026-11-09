@@ -22,8 +22,9 @@ const fieldHeights = {
   },
 };
 
-/* shadcn alert: card-like by default; intents keep their own border color */
-const alertIntent = { "border-color": "var(--ui-c)" };
+/* shadcn alert: card-like by default; intents keep their own border color
+   unless a style sets its own (guarded so emission order never decides) */
+const alertIntent = { "&:not(.ui-soft):not(.ui-ghost)": { "border-color": "var(--ui-c)" } };
 
 /* Map Uniskin tokens onto the shadcn variables. These are var() aliases, so they
    are repeated inside the dark scope to re-resolve against the dark palette. */
