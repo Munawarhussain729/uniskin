@@ -5,3 +5,4 @@
    it at — deterministic output. The frames hold every ui-* class the
    demo and vocabulary specimens use. */
 @source "../frames";
+@source "../../docs/vocabulary.md";

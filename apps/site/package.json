@@ -7,6 +7,8 @@
     "css": "node scripts/build-css.mjs",
     "dev": "node scripts/dev.mjs",
     "build": "node scripts/build-css.mjs && vite build",
+    "pretest": "pnpm --filter uniskin build",
+    "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
@@ -16,9 +18,11 @@
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.5",
+    "@types/node": "~22.20.5",
     "daisyui": "^5.7.50",
     "tailwindcss": "^4.3.5",
     "typescript": "^5.9.3",
-    "vite": "^7.2.4"
+    "vite": "^7.2.4",
+    "vitest": "^3.2.4"
   }
 }

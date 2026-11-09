@@ -1,4 +1,6 @@
 import { ADAPTERS, RELEASED, type AdapterName } from "./config";
+import { buildExamples, KIND_LABEL, type Example } from "./examples";
+import vocabularyMd from "../../../docs/vocabulary.md?raw";
 import "./site.css";
 
 const params = new URLSearchParams(location.search);
@@ -50,6 +52,77 @@ function applyToFrame(frame: HTMLIFrameElement) {
   doc.documentElement.classList.toggle("light", !state.dark);
   doc.documentElement.setAttribute("data-theme", state.dark ? "dark" : "light");
 }
+
+/* ---- components section: entries generated from docs/vocabulary.md ---- */
+
+/** The iframe document every example shares — only the <link> ever changes. */
+function exampleSrcdoc(example: Example): string {
+  /* dialog-based samples need real height; content-sized rows size to their body. */
+  const minHeight = example.id === "modal" ? "min-height:15rem;" : "";
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link id="skin" rel="stylesheet" href="/adapters/default.css">
+<style>
+  :root{color-scheme:light}html.dark{color-scheme:dark}
+  *{box-sizing:border-box}
+  body{margin:0;padding:0.9rem;background:var(--ui-surface);color:var(--ui-surface-fg);font-family:var(--ui-font-sans);${minHeight}}
+  body.flex{display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center}
+</style></head><body class="${example.layout}">${example.markup}</body></html>`;
+}
+
+/* The section is populated from the doc at load; markup text is set via
+   textContent so nothing needs escaping. */
+function renderExamples() {
+  const list = document.getElementById("ex-list");
+  if (!list) return;
+  list.replaceChildren();
+  let kind: Example["kind"] | "" = "";
+  for (const example of buildExamples(vocabularyMd)) {
+    if (example.kind !== kind) {
+      kind = example.kind;
+      const group = document.createElement("h3");
+      group.className = "ex-group";
+      group.textContent = KIND_LABEL[kind];
+      list.append(group);
+    }
+    const entry = document.createElement("article");
+    entry.className = "ex-entry";
+
+    const meta = document.createElement("div");
+    meta.className = "ex-meta";
+    const chips = document.createElement("p");
+    chips.className = "ex-classes";
+    for (const cls of example.classes) {
+      const chip = document.createElement("code");
+      chip.textContent = cls;
+      chips.append(chip, " ");
+    }
+    meta.append(chips);
+    if (example.blurb) {
+      const blurb = document.createElement("p");
+      blurb.className = "ex-blurb";
+      blurb.textContent = example.blurb;
+      meta.append(blurb);
+    }
+
+    const frame = document.createElement("iframe");
+    frame.className = "ex-frame";
+    frame.setAttribute("data-skin-frame", "");
+    frame.setAttribute("data-frame", `ex-${example.id}`);
+    frame.title = `${example.classes.join(" ")} — rendered example`;
+    frame.srcdoc = exampleSrcdoc(example);
+
+    const pre = document.createElement("pre");
+    pre.className = "code ex-code";
+    const code = document.createElement("code");
+    code.textContent = example.markup;
+    pre.append(code);
+
+    entry.append(meta, frame, pre);
+    list.append(entry);
+  }
+}
+
+renderExamples();
 
 function apply() {
   document.documentElement.classList.toggle("dark", state.dark);

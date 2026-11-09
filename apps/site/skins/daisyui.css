@@ -7,3 +7,4 @@
 @plugin "uniskin" { adapter: "daisyui"; }
 
 @source "../frames";
+@source "../../docs/vocabulary.md";
