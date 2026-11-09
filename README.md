@@ -2,6 +2,8 @@
 
 One class vocabulary, swappable Tailwind CSS v4 skins.
 
+![The same Project settings markup rendered by the default, shadcn and daisyUI adapters](docs/assets/social-preview.png)
+
 Write `ui-button ui-primary ui-md` once — in plain HTML, React, Vue, PHP,
 anything. Pick an "adapter" in your CSS to decide how it looks: the
 built-in default, a shadcn/ui look, a daisyUI look, or your own. Switching
