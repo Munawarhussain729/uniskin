@@ -43,6 +43,30 @@ const ALLOWLIST: AllowEntry[] = [
     why: "shadcn solid destructive fill ≈3.6:1 on the bubble's 12px text — the same destructive colour as the button above; see docs/qa/tooltip-2026-11.md",
   },
   {
+    adapters: ["shadcn"],
+    modes: ["light"],
+    rule: "color-contrast",
+    selector: ".ui-toast.ui-danger:not(.ui-outline):not(.ui-soft), .ui-toast.ui-danger:not(.ui-outline):not(.ui-soft) > .ui-button",
+    kind: "upstream",
+    why: "shadcn solid destructive fill ≈3.6:1 — the same destructive colour as the button above; the dismiss button inherits it; see docs/qa/toast-2026-11.md",
+  },
+  {
+    adapters: ["daisyui"],
+    modes: ["dark"],
+    rule: "color-contrast",
+    selector: ".ui-toast.ui-primary:not(.ui-outline):not(.ui-soft), .ui-toast.ui-primary:not(.ui-outline):not(.ui-soft) > .ui-button",
+    kind: "upstream",
+    why: "daisyUI's own dark primary ≈4.1:1 with its content colour; the dismiss button inherits it; see docs/qa/toast-2026-11.md",
+  },
+  {
+    adapters: ["daisyui"],
+    modes: ["light"],
+    rule: "color-contrast",
+    selector: ".ui-toast.ui-soft.ui-danger, .ui-toast.ui-soft.ui-danger > .ui-button",
+    kind: "upstream",
+    why: "daisyUI light soft danger ≈4.47:1 (palette value); the dismiss button inherits it; see docs/qa/toast-2026-11.md",
+  },
+  {
     adapters: ["daisyui"],
     modes: ["light"],
     rule: "color-contrast",
@@ -89,6 +113,14 @@ const INCOMPLETE_ALLOW: AllowEntry[] = [
     selector: "table.ui-loading td, table[aria-busy] td",
     kind: "upstream",
     why: "ui-loading/aria-busy pulses the tbody opacity — axe samples mid-animation and reports indeterminate; static text contrast asserted in table.spec.ts",
+  },
+  {
+    adapters: ["default", "shadcn", "daisyui"],
+    modes: ["light", "dark"],
+    rule: "color-contrast",
+    selector: ".ui-toast.ui-loading, .ui-toast.ui-loading *",
+    kind: "upstream",
+    why: "ui-loading pulses the toast opacity — axe samples mid-animation and blends text and fill with the page; static text contrast of the loading toast is asserted in toast.spec.ts",
   },
 ];
 

@@ -1,6 +1,6 @@
 # Vocabulary reference
 
-Every class in Uniskin vocabulary v1.7, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.8, grouped by component. The prefix is
 `ui-` by default — if you set `prefix: "uk"` in the `@plugin` options,
 read every `ui-*` class below as `uk-*`.
 
@@ -538,6 +538,51 @@ anchor, so it stays visible while the pointer moves onto it.
     anchor, so near a viewport edge it can be clipped. Pick another
     `data-placement`, or use a positioning library.
 
+### `ui-toast`, `ui-toast-region`
+
+Transient messages stacked in a corner. CSS does the position, stacking,
+elevation and the enter transition; **everything dynamic is yours**: adding
+and removing toasts, timers and the live region.
+
+```html
+<div class="ui-toast-region" role="region" aria-label="Notifications" data-placement="bottom-end">
+  <div class="ui-toast ui-success" role="status">
+    Saved.
+    <button class="ui-button ui-ghost ui-sm" aria-label="Dismiss">x</button>
+  </div>
+  <div class="ui-toast ui-danger" role="alert">Upload failed.</div>
+</div>
+```
+
+- **`ui-toast-region`:** a fixed, stacking container. `data-placement` is
+  `top` or `bottom` plus `start`, `center` or `end` (for example
+  `top-center`); the default is `bottom-end`. `start` and `end` follow the
+  writing direction. The region never blocks the page: it has
+  `pointer-events: none`, and only the toasts take the pointer. It pads for
+  device safe areas.
+- **`ui-toast`:** one message. The neutral toast is a surface card with a 1px
+  edge (a shadow alone vanishes on dark surfaces). Intents give a solid fill;
+  `ui-soft` is tinted and `ui-outline` keeps the surface with an accent edge.
+  There is no `ui-ghost`: a floating toast needs an opaque background.
+- **Sizes:** `ui-sm`, `ui-lg`.
+- **State:** `ui-loading` pulses the toast (for "uploading"). A toast with
+  `[hidden]` is removed. `ui-disabled` is not meaningful.
+- **Enter transition:** a toast fades and rises in when it is inserted
+  (`@starting-style`), and appears instantly under reduced motion. There is
+  no exit transition: remove the node when you are done, or play your own
+  exit first.
+- **Hooks:** `--ui-toast-w` (default `22rem`), `--ui-toast-gap`,
+  `--ui-toast-shadow`, `--ui-toast-offset`.
+- **Consumer provides:**
+  - A live region that **already exists in the DOM before a toast is
+    inserted**: `role="status"` (polite) or `role="alert"` (assertive).
+    Inserting an element that is itself the live region is not announced
+    reliably. The safe pattern is a persistent region you insert into.
+  - Timers. Pause them on hover and focus, and do **not** auto-dismiss
+    errors or toasts with actions (WCAG 2.2.1 timing).
+  - A visible dismiss control. Toasts must never take focus.
+  - A way to reach the region by keyboard, such as a hotkey.
+
 ## Coverage matrix
 
 Supported modifiers in the built-in default skin (adapters may cover
@@ -575,6 +620,8 @@ fewer — anything omitted falls back to the default):
 | `ui-progress`    | ✓ | outline ghost | ✓ | — |
 | `ui-tooltip`     | ✓ | outline soft | ✓ | active |
 | `ui-tooltip-anchor` | — | — | — | — |
+| `ui-toast`       | ✓ | outline soft | ✓ | loading |
+| `ui-toast-region` | — | — | — | — |
 
 ## Accessibility
 

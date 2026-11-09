@@ -153,6 +153,35 @@ later) take a `data-placement` attribute instead of a modifier class:
   and would enlarge the vocabulary for something that only positions.
 - Positioning is relative to the anchor and has no collision handling;
   document that, and point to a positioning library.
+- A fixed container (the toast region) takes the two-part form, a vertical
+  side then a horizontal one (`top-start`, `bottom-center`, ...), and
+  `pointer-events: none` so it never blocks the page.
+
+## Entering elements
+
+Components inserted into the page at runtime (toasts now) enter with a
+transition instead of an animation, using `@starting-style` so the browser
+has a "from" state without any script:
+
+```ts
+base: {
+  opacity: "1",
+  transform: "none",
+  transition: "opacity 0.2s ease, transform 0.2s ease",
+  "@starting-style": { opacity: "0", transform: "translateY(0.5rem)" },
+  "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+}
+```
+
+- Always add the reduced-motion override: with `transition: none` the
+  element simply appears.
+- Exit is the consumer's job (CSS cannot remove a node). Do not rely on
+  `transition-behavior: allow-discrete` for a component that must work in
+  browsers without it.
+- Intents must only set variables, never paint, on a component that also has
+  style modifiers: an intent and a style are same-specificity single-class
+  rules, so which one wins would depend on emission order. Paint once in
+  `base` from the variables (see `ui-toast`).
 
 ## Runtime notes
 
@@ -193,6 +222,7 @@ is harmless:
 | `ui-accordion` | `--ui-accordion-pad-x`, `--ui-accordion-pad-y` (trigger and panel padding; sizes set them), `--ui-accordion-border`, `--ui-accordion-hover` (trigger hover fill), `--ui-accordion-soft-bg` (list fill under `ui-soft`) |
 | `ui-progress` | `--ui-progress-h` (height; sizes set it), `--ui-progress-track` (track fill), `--ui-progress-bar` (bar colour, default `--ui-c-text` so intents tint it), `--ui-progress-border` (track outline under `ui-outline`) |
 | `ui-tooltip` | `--ui-tooltip-bg`, `--ui-tooltip-fg` (override the intent-driven fill and text), `--ui-tooltip-gap` (distance from the anchor), `--ui-tooltip-arrow` (arrow size, `0` removes it), `--ui-tooltip-max-w`, `--ui-tooltip-fs`, `--ui-tooltip-pad-x`, `--ui-tooltip-pad-y` (sizes set the last three) |
+| `ui-toast` | `--ui-toast-w` (toast width, default `22rem`), `--ui-toast-gap` (stack gap), `--ui-toast-shadow`, `--ui-toast-offset` (distance from the viewport edge), `--ui-toast-edge` (border colour; intents set it), `--ui-toast-fs`, `--ui-toast-pad-x`, `--ui-toast-pad-y` (sizes set the last three) |
 | `ui-switch` | `--ui-switch-size` (height, default `1.25rem`; width is `1.75x`), `--ui-switch-track` (off colour, default a grey mixed from `--ui-surface-fg`), `--ui-switch-thumb` (thumb colour), `--ui-switch-pad` (thumb inset, default `2px`) |
 | `ui-card` | `--ui-card-pad` (padding shared by header, body and footer, default `1.25rem`), `--ui-card-border` (border colour, default `--ui-border`; intents mix their colour into it) |
 | `ui-modal` | `--ui-modal-w` (width of `ui-modal-box`, default `32rem`; `ui-sm` and `ui-lg` set `24rem` and `48rem`) |

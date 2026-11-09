@@ -661,6 +661,41 @@
       <span class="ui-tooltip-anchor"><button class="ui-button ui-sm" aria-describedby="tip-16">lg</button><span class="ui-tooltip ui-lg ui-active" id="tip-16" role="tooltip">Ctrl+S</span></span>
     </div>
 
+    <h2 class="group">Toast</h2>
+    <p style="margin:0 0 .5rem">Live: inserts into a persistent live region (bottom-end).</p>
+    <button class="ui-button ui-primary" id="toast-show">Show toast</button>
+    <div class="ui-toast-region" id="toast-live" role="region" aria-label="Notifications" data-placement="bottom-end"><div id="toast-live-status" role="status" aria-live="polite" style="display:contents"></div></div>
+    <div id="toast-static" style="margin-top:1rem;display:grid;gap:.5rem;max-width:24rem">
+      <div class="ui-toast" role="status">Changes saved.<button class="ui-button ui-ghost ui-sm" >Dismiss</button></div>
+      <div class="ui-toast ui-success" role="status">Upload complete<button class="ui-button ui-ghost ui-sm" >Dismiss</button></div>
+      <div class="ui-toast ui-warning" role="status">Storage almost full<button class="ui-button ui-ghost ui-sm" >Dismiss</button></div>
+      <div class="ui-toast ui-danger" role="status">Upload failed<button class="ui-button ui-ghost ui-sm" >Dismiss</button></div>
+      <div class="ui-toast ui-primary" role="status">New version available<button class="ui-button ui-ghost ui-sm" >Dismiss</button></div>
+      <div class="ui-toast ui-soft ui-success" role="status">Soft success<button class="ui-button ui-ghost ui-sm" >Dismiss</button></div>
+      <div class="ui-toast ui-soft ui-danger" role="status">Soft danger<button class="ui-button ui-ghost ui-sm" >Dismiss</button></div>
+      <div class="ui-toast ui-outline ui-primary" role="status">Outline primary<button class="ui-button ui-ghost ui-sm" >Dismiss</button></div>
+      <div class="ui-toast ui-sm" role="status">Small<button class="ui-button ui-ghost ui-sm" >Dismiss</button></div>
+      <div class="ui-toast ui-lg" role="status">Large<button class="ui-button ui-ghost ui-sm" >Dismiss</button></div>
+      <div class="ui-toast ui-loading ui-primary" role="status">Uploading photo...<button class="ui-button ui-ghost ui-sm" >Dismiss</button></div>
+    </div>
+    <script>
+      (() => {
+        let n = 0;
+        document.getElementById("toast-show").addEventListener("click", () => {
+          const t = document.createElement("div");
+          t.className = "ui-toast ui-success";
+          t.id = "toast-live-" + ++n;
+          t.textContent = "Saved (" + n + ")";
+          const b = document.createElement("button");
+          b.className = "ui-button ui-ghost ui-sm";
+          b.textContent = "Dismiss";
+          b.addEventListener("click", () => t.remove());
+          t.appendChild(b);
+          document.getElementById("toast-live-status").appendChild(t);
+        });
+      })();
+    </script>
+
     </main>
   </body>
 </html>

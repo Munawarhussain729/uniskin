@@ -58,5 +58,7 @@ export const COVERAGE: Record<ComponentName, Coverage> = {
   "accordion-panel": NONE,
   tooltip: { ...NONE, intents: INTENTS, styles: ["outline", "soft"], sizes: SIZES, states: ["active"] },
   "tooltip-anchor": NONE,
+  toast: { ...NONE, intents: INTENTS, styles: ["outline", "soft"], sizes: SIZES, states: ["loading"] },
+  "toast-region": NONE,
   progress: { ...NONE, intents: INTENTS, styles: ["outline", "ghost"], sizes: SIZES },
 };
