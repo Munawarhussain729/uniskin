@@ -5,26 +5,68 @@ on:
     branches: [main]
   pull_request:
 
+# Pushing to a PR branch cancels its superseded run; pushes to main
+# always run to completion.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# Default deny; each job opts into the scopes it needs.
+permissions: {}
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
         node: [20, 22]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       # pnpm 11 imports node:sqlite, absent on Node 20 — use the bundled
       # standalone binary there. Scripts still run under the runner's
       # Node (20), which is what the matrix measures.
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
         with:
           standalone: ${{ matrix.node == 20 }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: ${{ matrix.node }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # Non-blocking for now: findings land in the job summary and the
+      # step is annotated when it fails, but the job stays green.
+      - name: Audit production dependencies
+        continue-on-error: true
+        run: pnpm audit --prod
+      - name: Summarize audit findings
+        run: |
+          pnpm audit --prod --json > "$RUNNER_TEMP/audit.json" || true
+          node <<'EOF'
+            const fs = require("fs");
+            let audit = {};
+            try {
+              audit = JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP + "/audit.json", "utf8"));
+            } catch {}
+            const sev = audit.metadata?.vulnerabilities ?? {};
+            const lines = [
+              "### `pnpm audit --prod`",
+              "",
+              "| Severity | Count |",
+              "|---|---:|",
+              ...["critical", "high", "moderate", "low", "info"].map(s => `| ${s} | ${sev[s] ?? 0} |`),
+              "",
+              `${audit.metadata?.totalDependencies ?? "?"} dependencies scanned.`,
+            ];
+            const advisories = Object.values(audit.advisories ?? {});
+            if (advisories.length) {
+              lines.push("", "| Package | Severity | Finding |", "|---|---|---|");
+              for (const a of advisories) lines.push(`| ${a.module_name} | ${a.severity} | ${a.title} |`);
+            }
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join("\n") + "\n");
+          EOF
       - run: pnpm lint
       - run: pnpm -r build
       - run: pnpm --filter site build
@@ -35,6 +77,8 @@ jobs:
   # context and how plugin utilities are serialized).
   tailwind-compat:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     continue-on-error: ${{ matrix.tailwind == 'latest' }}
     strategy:
       fail-fast: false
@@ -47,9 +91,9 @@ jobs:
           - "4.3.5"
           - "latest"
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: pnpm
@@ -96,10 +140,12 @@ jobs:
 
   install-check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: pnpm
@@ -112,6 +158,25 @@ jobs:
             (cd "packages/$pkg" && pnpm pack --pack-destination "$RUNNER_TEMP/tarballs")
           done
           ls -la "$RUNNER_TEMP/tarballs"
+      - name: Report package sizes
+        run: |
+          node <<'EOF'
+            const { execFileSync } = require("child_process");
+            const fs = require("fs");
+            const lines = [
+              "### `npm pack --dry-run`",
+              "",
+              "| Package | Files | Tarball | Unpacked |",
+              "|---|---:|---:|---:|",
+            ];
+            const kib = (n) => `${(n / 1024).toFixed(1)} KiB`;
+            for (const dir of ["uniskin", "adapter-shadcn", "adapter-daisyui"]) {
+              const out = execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], { cwd: `packages/${dir}`, encoding: "utf8" });
+              const p = JSON.parse(out)[0];
+              lines.push(`| ${p.name}@${p.version} | ${p.entryCount} | ${kib(p.size)} | ${kib(p.unpackedSize)} |`);
+            }
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join("\n") + "\n");
+          EOF
       - name: Install tarballs into a fresh project
         run: |
           SCRATCH="$RUNNER_TEMP/uniskin-install-check"
