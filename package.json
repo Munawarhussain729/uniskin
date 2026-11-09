@@ -8,6 +8,7 @@
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "lint": "eslint .",
+    "release:smoke": "scripts/release-smoke.sh",
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
