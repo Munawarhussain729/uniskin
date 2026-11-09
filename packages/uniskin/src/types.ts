@@ -71,6 +71,7 @@ export const VOCABULARY = [
   "select",
   "checkbox",
   "radio",
+  "switch",
   "card",
   "card-header",
   "card-body",

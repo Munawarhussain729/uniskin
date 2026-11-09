@@ -107,6 +107,17 @@ export default defineAdapter({
         lg: { "--ui-radio-size": "calc(var(--size-selector, 0.25rem) * 7)" },
       },
     },
+    switch: {
+      /* daisyUI toggle: sized from --size-selector like checkbox/radio; the off
+         track stays the default >= 3:1 grey rather than 20% base-content. */
+      base: {
+        "--ui-switch-size": "calc(var(--size-selector, 0.25rem) * 6)",
+      },
+      sizes: {
+        sm: { "--ui-switch-size": "calc(var(--size-selector, 0.25rem) * 5)" },
+        lg: { "--ui-switch-size": "calc(var(--size-selector, 0.25rem) * 7)" },
+      },
+    },
     card: {
       base: {
         "border-radius": "var(--radius-box, 1rem)",
