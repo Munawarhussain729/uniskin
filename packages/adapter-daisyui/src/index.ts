@@ -4,14 +4,14 @@ import { defineAdapter } from "uniskin/adapter";
 const field = {
   "border-width": "var(--border, 1px)",
   "border-color":
-    "var(--ui-field-c, color-mix(in oklab, var(--color-base-content, #1f2937) 20%, transparent))",
+    "var(--ui-field-c, color-mix(in oklab, var(--ui-border) 55%, var(--ui-surface-fg)))",
   "&:hover": {},
   "&:focus-visible": {
     outline: "2px solid var(--ui-c-text)",
     "outline-offset": "2px",
     "box-shadow": "none",
     "border-color":
-      "var(--ui-field-c, color-mix(in oklab, var(--color-base-content, #1f2937) 20%, transparent))",
+      "var(--ui-field-c, color-mix(in oklab, var(--ui-border) 55%, var(--ui-surface-fg)))",
   },
 };
 const singleLine = {
@@ -91,7 +91,7 @@ export default defineAdapter({
       base: {
         "--ui-check-size": "calc(var(--size-selector, 0.25rem) * 6)",
         "border-radius": "var(--radius-selector, 0.5rem)",
-        "border-color": "color-mix(in oklab, var(--color-base-content, #1f2937) 20%, transparent)",
+        "border-color": "color-mix(in oklab, var(--ui-border) 55%, var(--ui-surface-fg))",
       },
       sizes: {
         sm: { "--ui-check-size": "calc(var(--size-selector, 0.25rem) * 5)" },

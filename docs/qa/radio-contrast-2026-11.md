@@ -14,3 +14,6 @@ dark (WCAG 1.4.11, non-text >= 3:1).
   - shadcn dark: `--destructive` (dark red) outline radio, about 1.8:1.
   - daisyUI light: success soft border, about 1.9:1.
   Consumers needing these combinations should pick a stronger intent colour.
+
+Update: the skipped combinations above were fixed in
+`palette-contrast-2026-11.md` and are now asserted in the e2e suite.

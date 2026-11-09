@@ -59,18 +59,6 @@ function measure(el: Element) {
   };
 }
 
-/**
- * Intent colours that the upstream palette itself renders below 3:1 on the
- * page surface (shadcn dark `--destructive`, daisyUI light success). The
- * default `ui-primary` radio is still asserted in every skin below; these
- * extra intent/style combinations are only asserted where the palette allows.
- * Recorded in docs/qa/radio-contrast-2026-11.md.
- */
-const KNOWN_PALETTE_LIMITS: Record<string, true> = {
-  "shadcn/dark": true,
-  "daisyui/light": true,
-};
-
 for (const adapter of ADAPTERS) {
   for (const mode of MODES) {
     test.describe(`${adapter}/${mode}`, () => {
@@ -85,9 +73,7 @@ for (const adapter of ADAPTERS) {
       });
 
       test("checked radio marks the choice with >= 3:1 contrast (dot and circle)", async ({ page }) => {
-        const extras = KNOWN_PALETTE_LIMITS[`${adapter}/${mode}`]
-          ? []
-          : ["input.ui-radio.ui-success.ui-soft", "input.ui-radio.ui-danger.ui-outline"];
+        const extras = ["input.ui-radio.ui-success.ui-soft", "input.ui-radio.ui-danger.ui-outline"];
         for (const sel of ["#radio-plan input:checked", ...extras]) {
           const el = page.locator(sel).first();
           await el.check();
