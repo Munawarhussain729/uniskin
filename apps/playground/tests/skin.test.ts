@@ -627,6 +627,20 @@ describe("ui-accordion (roadmap 0.5.0)", () => {
   });
 });
 
+describe("intent border pin (--ui-c-border)", () => {
+  it("badge, alert and the outline card read it, with the accent as the fallback", () => {
+    const css = skin("default");
+    const pin = "var(--ui-c-border, var(--ui-c))";
+    expect(ruleBlock(css, ".ui-badge")).toContain(`border: 1px solid ${pin}`);
+    expect(ruleBlock(css, ".ui-alert")).toContain(`border: 1px solid ${pin}`);
+    expect(ruleBlock(css, ".ui-card")).toContain(`border-color: ${pin}`);
+  });
+
+  it("an intent defines the pin from --ui-<intent>-border", () => {
+    expect(skin("default")).toContain("--ui-c-border: var(--ui-primary-border, var(--ui-c))");
+  });
+});
+
 describe("custom prefix", () => {
   it('prefix: "uk" namespaces classes, keyframes and animation references', () => {
     const css = compileWithFiles(

@@ -97,8 +97,19 @@ tints), pin the result by setting a per-intent token in `tokens` (and
 | `--ui-<intent>-soft` | `--ui-c-soft`, the `ui-soft` background |
 | `--ui-<intent>-soft-fg` | `--ui-c-soft-fg`, text on that background |
 
+Three more pins cover systems whose hover, border and soft-hover colours
+are hand-picked steps rather than mixes of the accent. Each intent sets the
+element variable from its token and falls back to today's derived value, so
+leaving them unset changes nothing:
+
+| Token | Sets | Used by | Fallback |
+|-------|------|---------|----------|
+| `--ui-<intent>-hover` | `--ui-c-hover` | `ui-button` solid hover fill | the accent mixed 15% toward black |
+| `--ui-<intent>-border` | `--ui-c-border` | `ui-button` border (solid, outline, soft hover); `ui-badge` and `ui-alert` base border; `ui-card.ui-outline` border | the accent |
+| `--ui-<intent>-soft-hover` | `--ui-c-soft-hover` | `ui-button.ui-soft` hover fill | the accent |
+
 `<intent>` is one of `primary secondary success warning danger`.
-`@uniskin/shadcn` and `@uniskin/daisyui` both use these.
+`@uniskin/shadcn` and `@uniskin/daisyui` use the first three pins.
 
 You can still override a component's `&:`-level states or repaint a
 whole slot when tokens aren't enough (see `@uniskin/shadcn`'s outline,
@@ -106,6 +117,11 @@ which stays neutral because shadcn/ui has no colored-outline variant).
 
 ## Dark mode and animation
 
+- **Overlay tokens.** `--ui-overlay` colours the `ui-modal` scrim (default
+  `rgb(0 0 0 / 0.5)`) and `--ui-overlay-soft` the `ui-modal.ui-soft` veil
+  (default `rgb(255 255 255 / 0.6)`). Both exist in the light and dark
+  sets, so remap them in `tokens` and `darkTokens` to match your system's
+  backdrop.
 - **`darkTokens`** are emitted under `.dark, [data-theme="dark"]`. If the
   system you are porting has its own dark scope, set
   `darkRootSelector` (for example `'.radix-themes[data-appearance="dark"]'`).
