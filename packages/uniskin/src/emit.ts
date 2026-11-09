@@ -41,6 +41,20 @@ function rePrefixKeyframes(
   return out;
 }
 
+/** Re-point `.ui-<class>` references in nested selector keys at `replacement`. */
+function rePrefixClassSelectors(
+  rule: CssRuleObject,
+  ref: RegExp,
+  replacement: string,
+): CssRuleObject {
+  const out: CssRuleObject = {};
+  for (const [key, value] of Object.entries(rule)) {
+    out[key.replace(ref, replacement)] =
+      value && typeof value === "object" ? rePrefixClassSelectors(value, ref, replacement) : value;
+  }
+  return out;
+}
+
 /**
  * Turn a merged adapter into Tailwind plugin rules for a given prefix.
  *
@@ -113,6 +127,16 @@ export function buildRules(
     const ref = new RegExp(`(?<![-\\w])${DEFAULT_PREFIX}-(${kfNames.join("|")})\\b`, "g");
     for (const sel of Object.keys(utilities)) {
       utilities[sel] = rePrefixKeyframes(utilities[sel], ref, `${p}$1`);
+    }
+  }
+
+  if (prefix !== DEFAULT_PREFIX) {
+    // Nested selectors can reference vocabulary classes too (e.g. the
+    // table's `& tbody tr.ui-active`) — re-prefix them like the emitted
+    // class selectors.
+    const clsRef = new RegExp(`\\.${DEFAULT_PREFIX}-([a-zA-Z][\\w-]*)`, "g");
+    for (const sel of Object.keys(utilities)) {
+      utilities[sel] = rePrefixClassSelectors(utilities[sel], clsRef, `.${p}$1`);
     }
   }
 

@@ -74,6 +74,14 @@ const INCOMPLETE_ALLOW: AllowEntry[] = [
     kind: "upstream",
     why: "select chevron is an inline-SVG background image — axe cannot resolve the background; contrast verified manually",
   },
+  {
+    adapters: ["default", "shadcn", "daisyui"],
+    modes: ["light", "dark"],
+    rule: "color-contrast",
+    selector: "table.ui-loading td, table[aria-busy] td",
+    kind: "upstream",
+    why: "ui-loading/aria-busy pulses the tbody opacity — axe samples mid-animation and reports indeterminate; static text contrast asserted in table.spec.ts",
+  },
 ];
 
 const SERIOUS = new Set(["serious", "critical"]);

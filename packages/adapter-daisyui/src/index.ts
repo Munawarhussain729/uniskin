@@ -141,6 +141,30 @@ export default defineAdapter({
         lg: { height: "calc(var(--size-selector, 0.25rem) * 7)", "font-size": "1rem" },
       },
     },
+    table: {
+      base: {
+        /* daisy table: base-300 rules, base-200 zebra under ui-soft,
+           radius-box on the wrap */
+        /* base-300 dividers are ~1:1 on the dark theme — mix toward
+           base-content so the default row dividers stay visible */
+        "--ui-table-border":
+          "color-mix(in oklab, var(--color-base-content, oklch(20% 0 0)) 30%, var(--color-base-100, oklch(100% 0 0)))",
+        "--ui-table-stripe": "var(--color-base-200, oklch(98% 0 0))",
+        "--ui-table-row-hover": "var(--color-base-200, oklch(98% 0 0))",
+        "--ui-table-pad-y": "0.625rem",
+        "--ui-table-pad-x": "0.75rem",
+        /* intent soft-fg on the tinted fill misses 4.5:1 (measured 4.47
+           light / 4.17 dark) — keep the tint, text in surface fg */
+        "& tbody tr.ui-active, & tbody tr[aria-selected='true']": {
+          color: "var(--ui-surface-fg)",
+        },
+      },
+      sizes: {
+        sm: { "--ui-table-pad-y": "0.375rem", "--ui-table-pad-x": "0.5rem" },
+        lg: { "--ui-table-pad-y": "1rem", "--ui-table-pad-x": "1.25rem" },
+      },
+    },
+    "table-wrap": { base: { "border-radius": "var(--radius-box, 1rem)" } },
     alert: {
       base: {
         "border-radius": "var(--radius-box, 1rem)",

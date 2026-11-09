@@ -54,6 +54,10 @@ const COMPONENTS: Record<string, Slots> = {
   "modal-box": { intents: true, sizes: true },
   tabs: { intents: true, styles: STYLES, sizes: true },
   tab: { intents: true, sizes: true, states: ["disabled", "loading", "active"] },
+  /* tr-level selected/disabled live in nested base selectors (decision
+     003 §4), so the emitted states slot only covers table-level loading */
+  table: { intents: true, styles: STYLES, sizes: true, states: ["loading"] },
+  "table-wrap": {},
 };
 
 const cssCache = new Map<string, string>();
@@ -436,6 +440,93 @@ describe("ui-field (decision 003, component 4)", () => {
       expect(css).toContain(`.uk-${part}`);
     }
     expect(css).toContain('[aria-invalid="true"]');
+    expect(css).not.toMatch(/\.ui-/);
+  });
+});
+
+describe("ui-table (decision 003, component 5)", () => {
+  for (const adapter of ADAPTERS) {
+    describe(adapter, () => {
+      it("styles th/td/tr/caption through nested selectors", () => {
+        const block = ruleBlock(skin(adapter), ".ui-table");
+        expect(block).toContain("& th, & td");
+        expect(block).toContain("& thead th");
+        expect(block).toContain("& tbody tr");
+        expect(block).toContain("& caption");
+        expect(block).toContain("position: sticky");
+      });
+
+      it("draws a CSS sort arrow on [aria-sort]", () => {
+        const block = ruleBlock(skin(adapter), ".ui-table");
+        expect(block).toContain('[aria-sort="ascending"]::after');
+        expect(block).toContain('[aria-sort="descending"]::after');
+      });
+
+      it("supports tr-level selected and disabled states", () => {
+        const block = ruleBlock(skin(adapter), ".ui-table");
+        expect(block).toContain("tr[aria-selected='true']");
+        expect(block).toContain("tr[aria-disabled='true']");
+        expect(block).toContain("tr.ui-active");
+        expect(block).toContain("tr.ui-disabled");
+      });
+
+      it("wrap is a scroll container with a focus ring", () => {
+        const block = ruleBlock(skin(adapter), ".ui-table-wrap");
+        expect(block).toContain("overflow-x: auto");
+        expect(block).toContain(":focus-visible");
+      });
+    });
+  }
+
+  it("maps soft to zebra, outline to grid and ghost to no lines", () => {
+    const css = skin("default");
+    /* styles whose rules target descendants flatten to compound selectors;
+       simple declarations nest as `&.ui-*` inside the `.ui-table` block */
+    expect(css).toContain(".ui-table.ui-soft tbody tr:nth-of-type(even)");
+    expect(css).toContain(".ui-table.ui-outline th");
+    expect(css).toContain(".ui-table.ui-ghost tbody tr");
+  });
+
+  it("loading pulses the tbody under ui-loading and aria-busy", () => {
+    const css = skin("default");
+    expect(css).toContain(".ui-table.ui-loading tbody");
+    expect(ruleBlock(css, ".ui-table.ui-loading tbody")).toContain("ui-pulse");
+    expect(ruleBlock(css, ".ui-table")).toContain('[aria-busy="true"]');
+  });
+
+  it("hooks are read with fallbacks in the default theme", () => {
+    const block = ruleBlock(skin("default"), ".ui-table");
+    for (const hook of [
+      "--ui-table-pad-x",
+      "--ui-table-pad-y",
+      "--ui-table-head-bg",
+      "--ui-table-head-fg",
+      "--ui-table-stripe",
+      "--ui-table-row-hover",
+      "--ui-table-border",
+    ])
+      expect(block).toContain(`var(${hook},`);
+    expect(ruleBlock(skin("shadcn"), ".ui-table")).toContain("--ui-table-head-fg");
+    expect(ruleBlock(skin("daisyui"), ".ui-table")).toContain("--ui-table-stripe");
+  });
+
+  it("row hover transition is disabled under prefers-reduced-motion", () => {
+    const block = ruleBlock(skin("default"), ".ui-table");
+    expect(block).toMatch(/prefers-reduced-motion: reduce\)\s*\{[^}]*transition: none/);
+  });
+
+  it('prefix: "uk" renames table classes and the loading keyframes', () => {
+    const css = compileWithFiles(
+      {
+        "index.html":
+          '<div class="uk-table-wrap"><table class="uk-table uk-soft uk-loading"><tbody><tr><td></td></tr></tbody></table></div>',
+      },
+      'prefix: "uk";',
+    );
+    expect(css).toContain(".uk-table");
+    expect(css).toContain(".uk-table-wrap");
+    expect(css).toContain(".uk-table.uk-soft");
+    expect(css).toContain(".uk-table.uk-loading");
     expect(css).not.toMatch(/\.ui-/);
   });
 });
