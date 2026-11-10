@@ -1,6 +1,6 @@
 # Vocabulary reference
 
-Every class in Uniskin vocabulary v1.8, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.9, grouped by component. The prefix is
 `ui-` by default — if you set `prefix: "uk"` in the `@plugin` options,
 read every `ui-*` class below as `uk-*`.
 
@@ -583,6 +583,72 @@ and removing toasts, timers and the live region.
   - A visible dismiss control. Toasts must never take focus.
   - A way to reach the region by keyboard, such as a hotkey.
 
+### `ui-dropdown`, `ui-menu`, `ui-menu-item`, `ui-menu-label`, `ui-menu-separator`
+
+A floating action menu in CSS only, and the same list un-floated. **Uniskin
+ships no JavaScript**: the keyboard behaviour of a real menu is yours (or a
+headless library's), and is spelled out below.
+
+```html
+<div class="ui-dropdown" data-placement="bottom-start">
+  <button class="ui-button" id="opts" aria-haspopup="menu" aria-expanded="false">Options</button>
+  <div class="ui-menu" role="menu" aria-labelledby="opts">
+    <div class="ui-menu-label" role="presentation">File</div>
+    <button class="ui-menu-item" role="menuitem">Rename</button>
+    <button class="ui-menu-item ui-disabled" role="menuitem" aria-disabled="true">Archive</button>
+    <hr class="ui-menu-separator" role="separator">
+    <button class="ui-menu-item ui-danger" role="menuitem">Delete</button>
+  </div>
+</div>
+```
+
+- **`ui-dropdown`:** a positioned wrapper. It hides its direct `ui-menu`
+  child (`visibility: hidden`, so closed items are not tabbable) and shows
+  it when **any one** of these holds: `open` on a `<details
+  class="ui-dropdown">`; `aria-expanded="true"` on a direct child (the
+  trigger); `ui-active` on the dropdown; or the menu is `:popover-open`.
+  Closing fades out over 0.12s and then hides; opening shows at once, so a
+  script can focus the first item in the same tick.
+- **Placement:** `data-placement` on the dropdown, a vertical side then a
+  horizontal one: `bottom-start` (default), `bottom-end`, `top-start`,
+  `top-end`. `start` and `end` follow the writing direction. There is no
+  collision handling: near a viewport edge pick another placement or use a
+  positioning library.
+- **`ui-menu`:** the panel: a surface with a 1px border (a shadow alone
+  vanishes on dark surfaces), a shadow, scrolling past `20rem`. Outside a
+  dropdown it is a plain in-flow list (a sidebar, a context list). Styles:
+  `ui-ghost` (no border, fill or shadow) and `ui-soft` (muted fill). Sizes:
+  `ui-sm`, `ui-lg`. There is no `ui-outline` and no intent on the menu.
+- **`ui-menu-item`:** a `<button>` or `<a>`. Hover, `:focus-visible` and
+  `[data-highlighted]` (the headless libraries' highlight) tint it, and
+  keyboard focus also draws a 2px ring. Intents colour the label and tint
+  (`ui-danger` is the destructive item). Sizes `ui-sm`, `ui-lg`. States:
+  `ui-disabled` (also `:disabled` and `aria-disabled="true"`) and
+  `ui-active` (the current item, bolder and tinted). An item with
+  `aria-checked="true"` (`menuitemcheckbox` or `menuitemradio`) shows a
+  trailing check mark that is kept out of its accessible name.
+- **`ui-menu-label`:** a non-interactive heading. **`ui-menu-separator`:** a
+  1px rule; use `<hr role="separator">`.
+- **Hooks:** `--ui-menu-w` (minimum width, default `10rem`),
+  `--ui-menu-max-h`, `--ui-menu-pad`, `--ui-menu-gap` (distance from the
+  trigger), `--ui-menu-shadow`, `--ui-menu-z` (default `50`),
+  `--ui-menu-item-hover-bg`, `--ui-menu-item-hover-fg`.
+- **Not an ARIA menu by default.** Use `role="menu"` and `role="menuitem"`
+  for application menus (actions), never for site navigation: a list of
+  links is a `<nav>` with `aria-current="page"` on the current link, which
+  `ui-active` styles too. A `<details class="ui-dropdown">` with a
+  `<summary>` trigger is a disclosure of links: it gives open and close but
+  not `role="menu"` semantics or arrow keys.
+- **Keyboard contract (yours to provide):** on the trigger, `aria-haspopup`
+  and `aria-expanded`; Enter, Space and ArrowDown open the menu and focus
+  the first item (ArrowUp opens and focuses the last); inside the menu,
+  ArrowDown and ArrowUp move focus and wrap, skipping disabled items; Home
+  and End jump to the first and last; typing a character moves to the next
+  item starting with it; Enter and Space activate; **Escape closes the menu
+  and returns focus to the trigger**; Tab closes it; a click outside closes
+  it. Radix `DropdownMenu` and Ark `Menu` do all of this and set
+  `data-highlighted`. The playground's demo has a short working handler.
+
 ## Coverage matrix
 
 Supported modifiers in the built-in default skin (adapters may cover
@@ -622,6 +688,11 @@ fewer — anything omitted falls back to the default):
 | `ui-tooltip-anchor` | — | — | — | — |
 | `ui-toast`       | ✓ | outline soft | ✓ | loading |
 | `ui-toast-region` | — | — | — | — |
+| `ui-dropdown`    | — | — | — | — |
+| `ui-menu`        | — | ghost soft | ✓ | — |
+| `ui-menu-item`   | ✓ | — | ✓ | disabled active |
+| `ui-menu-label`  | — | — | — | — |
+| `ui-menu-separator` | — | — | — | — |
 
 ## Accessibility
 

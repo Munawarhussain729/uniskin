@@ -60,5 +60,10 @@ export const COVERAGE: Record<ComponentName, Coverage> = {
   "tooltip-anchor": NONE,
   toast: { ...NONE, intents: INTENTS, styles: ["outline", "soft"], sizes: SIZES, states: ["loading"] },
   "toast-region": NONE,
+  dropdown: NONE,
+  menu: { ...NONE, styles: ["ghost", "soft"], sizes: SIZES },
+  "menu-item": { ...NONE, intents: INTENTS, sizes: SIZES, states: ["disabled", "active"] },
+  "menu-label": NONE,
+  "menu-separator": NONE,
   progress: { ...NONE, intents: INTENTS, styles: ["outline", "ghost"], sizes: SIZES },
 };

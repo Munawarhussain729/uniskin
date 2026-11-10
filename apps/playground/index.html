@@ -696,6 +696,82 @@
       })();
     </script>
 
+    <h2 class="group">Menu</h2>
+    <div id="menu-demo" style="display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-start">
+      <div class="ui-dropdown" id="dd-live" style="min-width:11rem">
+        <button class="ui-button" id="dd-live-trigger" aria-haspopup="menu" aria-expanded="false">Options</button>
+        <div class="ui-menu" id="dd-live-menu" role="menu" aria-labelledby="dd-live-trigger">
+          <button class="ui-menu-item" role="menuitem">Rename</button>
+          <button class="ui-menu-item" role="menuitem">Duplicate</button>
+          <button class="ui-menu-item ui-disabled" role="menuitem" aria-disabled="true">Archive</button>
+          <hr class="ui-menu-separator" role="separator">
+          <button class="ui-menu-item ui-danger" role="menuitem">Delete</button>
+        </div>
+      </div>
+      <div class="ui-dropdown ui-active" id="dd-open" data-placement="bottom-start" style="min-width:11rem;margin-bottom:15rem">
+        <button class="ui-button ui-primary" aria-haspopup="menu" aria-expanded="true">Account</button>
+        <div class="ui-menu" id="dd-open-menu" role="menu" aria-label="Account">
+          <div class="ui-menu-label" role="presentation">Signed in as ada</div>
+          <button class="ui-menu-item ui-active" role="menuitem">Profile</button>
+          <button class="ui-menu-item" role="menuitem">Settings</button>
+          <button class="ui-menu-item ui-primary" role="menuitem">Upgrade</button>
+          <button class="ui-menu-item ui-success" role="menuitem">Invite</button>
+          <button class="ui-menu-item ui-warning" role="menuitem">Billing</button>
+          <hr class="ui-menu-separator" role="separator">
+          <button class="ui-menu-item ui-danger" role="menuitem">Sign out</button>
+        </div>
+      </div>
+      <details class="ui-dropdown" id="dd-details" data-placement="bottom-end" style="min-width:11rem;text-align:end;margin-bottom:8rem">
+        <summary class="ui-button">More</summary>
+        <div class="ui-menu">
+          <a class="ui-menu-item" href="#dd-details">Docs</a>
+          <a class="ui-menu-item" href="#dd-details">Changelog</a>
+        </div>
+      </details>
+      <div class="ui-dropdown ui-active" id="dd-top" data-placement="top-end" style="margin-top:8rem">
+        <button class="ui-button" aria-haspopup="menu" aria-expanded="true">Above</button>
+        <div class="ui-menu ui-sm" id="dd-top-menu" role="menu" aria-label="Above">
+          <button class="ui-menu-item" role="menuitemcheckbox" aria-checked="true">Show grid</button>
+          <button class="ui-menu-item" role="menuitemcheckbox" aria-checked="false">Snap to guides</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-start">
+      <div style="display:grid;gap:.5rem">
+        <nav class="ui-menu ui-ghost" id="menu-static" aria-label="Sections">
+          <a class="ui-menu-item ui-active" href="#menu-static" aria-current="page">Overview</a>
+          <a class="ui-menu-item" href="#menu-static">Activity</a>
+          <a class="ui-menu-item" href="#menu-static">Members</a>
+        </nav>
+        <div class="ui-menu ui-soft ui-lg" id="menu-soft" role="menu" aria-label="Soft">
+          <button class="ui-menu-item" role="menuitem">Cut</button>
+          <button class="ui-menu-item" role="menuitem">Copy</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      (() => {
+        const dd = document.getElementById("dd-live");
+        const t = document.getElementById("dd-live-trigger");
+        const items = () => [...dd.querySelectorAll('[role="menuitem"]:not([aria-disabled="true"])')];
+        const set = (open, focus) => {
+          t.setAttribute("aria-expanded", String(open));
+          if (open && focus) (focus === "last" ? items().at(-1) : items()[0]).focus();
+          if (!open) t.focus();
+        };
+        t.addEventListener("click", () => set(t.getAttribute("aria-expanded") !== "true", "first"));
+        dd.addEventListener("keydown", (e) => {
+          const list = items(), i = list.indexOf(document.activeElement);
+          if (e.key === "Escape") return set(false);
+          if (e.key === "Tab") t.setAttribute("aria-expanded", "false");
+          if (i < 0 && e.target === t && e.key === "ArrowDown") { e.preventDefault(); return set(true, "first"); }
+          if (i < 0) return;
+          const go = { ArrowDown: list[(i + 1) % list.length], ArrowUp: list[(i - 1 + list.length) % list.length], Home: list[0], End: list.at(-1) }[e.key];
+          if (go) { e.preventDefault(); go.focus(); }
+        });
+      })();
+    </script>
+
     </main>
   </body>
 </html>

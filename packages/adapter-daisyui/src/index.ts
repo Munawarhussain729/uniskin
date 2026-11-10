@@ -183,6 +183,18 @@ export default defineAdapter({
         "font-size": "0.875rem",
       },
     },
+    /* daisyUI menu in a dropdown-content: rounded-box on base-100, items take
+       rounded-field and a base-content tint on hover */
+    menu: {
+      base: {
+        "--ui-menu-fs": "0.875rem",
+        "--ui-menu-pad": "0.5rem",
+        "--ui-menu-shadow": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+        "border-color": "var(--color-base-300, oklch(95% 0 0))",
+        "border-radius": "var(--radius-box, 1rem)",
+      },
+    },
+    "menu-item": { base: { "border-radius": "var(--radius-field, 0.25rem)" } },
     tooltip: {
       base: {
         /* daisy tooltip-content: neutral fill, neutral-content text, rounded-field */

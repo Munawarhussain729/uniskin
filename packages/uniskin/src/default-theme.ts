@@ -1409,6 +1409,156 @@ export const defaultAdapter = defineAdapter({
         loading: { animation: "ui-pulse 1.2s ease-in-out infinite" },
       },
     },
+    /* ui-dropdown / ui-menu / ui-menu-item: CSS for the floating panel, its
+       placement and the item states. Uniskin ships no JavaScript: the roving
+       focus, typeahead, Escape-and-return-focus and click-outside dismissal of
+       a real menu button are the consumer's (or a headless library's). The
+       panel opens on [open] (a <details>), aria-expanded="true" on the
+       trigger, ui-active on the dropdown, or :popover-open on the menu. */
+    dropdown: {
+      base: {
+        position: "relative",
+        display: "inline-block",
+        "& > .ui-menu": {
+          position: "absolute",
+          "z-index": "var(--ui-menu-z, 50)",
+          "inset-block-start": "calc(100% + var(--ui-menu-gap, 0.25rem))",
+          "inset-inline-start": "0",
+          visibility: "hidden",
+          opacity: "0",
+          /* closing fades, then hides; opening shows at once (below), so a
+             script can focus the first item in the same tick */
+          transition: "opacity 0.12s ease, visibility 0s linear 0.12s",
+        },
+        /* placement: a vertical side then a horizontal one */
+        '&[data-placement^="top"] > .ui-menu': {
+          "inset-block-start": "auto",
+          "inset-block-end": "calc(100% + var(--ui-menu-gap, 0.25rem))",
+        },
+        '&[data-placement$="end"] > .ui-menu': {
+          "inset-inline-start": "auto",
+          "inset-inline-end": "0",
+        },
+        "&[open] > .ui-menu, &.ui-active > .ui-menu, &:has(> [aria-expanded=\"true\"]) > .ui-menu, & > .ui-menu:popover-open": {
+          visibility: "visible",
+          opacity: "1",
+          transition: "opacity 0.12s ease, visibility 0s",
+        },
+        "@media (prefers-reduced-motion: reduce)": { "& > .ui-menu": { transition: "none" } },
+        /* a <summary> trigger: drop the disclosure marker */
+        "& > summary": { "list-style": "none", cursor: "pointer" },
+        "& > summary::-webkit-details-marker": { display: "none" },
+      },
+    },
+    menu: {
+      base: {
+        "--ui-menu-fs": "0.9375rem",
+        display: "flex",
+        "flex-direction": "column",
+        gap: "1px",
+        "box-sizing": "border-box",
+        "min-width": "var(--ui-menu-w, 10rem)",
+        "max-height": "var(--ui-menu-max-h, 20rem)",
+        "overflow-y": "auto",
+        margin: "0",
+        padding: "var(--ui-menu-pad, 0.25rem)",
+        "list-style": "none",
+        "font-family": "var(--ui-font-sans)",
+        "font-size": "var(--ui-menu-fs)",
+        color: "var(--ui-surface-fg)",
+        "background-color": "var(--ui-surface)",
+        /* the border keeps the panel visible on dark surfaces, where a
+           shadow does not */
+        border: "1px solid var(--ui-border)",
+        "border-radius": "var(--ui-radius)",
+        "box-shadow": "var(--ui-menu-shadow, 0 10px 24px -10px rgb(0 0 0 / 0.35))",
+        "&[hidden]": { display: "none" },
+      },
+      styles: {
+        /* no border, fill or shadow: a plain list, for sidebars */
+        ghost: {
+          "background-color": "transparent",
+          "border-color": "transparent",
+          "box-shadow": "none",
+        },
+        /* muted fill */
+        soft: { "background-color": "var(--ui-neutral-soft)" },
+      },
+      sizes: {
+        sm: { "--ui-menu-fs": "0.8125rem", "--ui-menu-item-py": "0.25rem", "--ui-menu-item-px": "0.5rem" },
+        lg: { "--ui-menu-fs": "1.0625rem", "--ui-menu-item-py": "0.5rem", "--ui-menu-item-px": "0.75rem" },
+      },
+    },
+    "menu-item": {
+      base: {
+        "--ui-c-text": "var(--ui-surface-fg)",
+        appearance: "none",
+        display: "flex",
+        "align-items": "center",
+        gap: "0.5rem",
+        "box-sizing": "border-box",
+        width: "100%",
+        margin: "0",
+        padding: "var(--ui-menu-item-py, 0.375rem) var(--ui-menu-item-px, 0.625rem)",
+        "font-family": "inherit",
+        "font-size": "var(--ui-menu-fs, 0.9375rem)",
+        "line-height": "1.3",
+        "text-align": "start",
+        "text-decoration": "none",
+        color: "var(--ui-c-text)",
+        "background-color": "transparent",
+        border: "0",
+        "border-radius": "calc(var(--ui-radius) * 0.75)",
+        cursor: "pointer",
+        transition: transition(["background-color", "color"]),
+        /* :hover, keyboard focus and the headless library's highlight */
+        "&:hover, &:focus-visible, &[data-highlighted]": {
+          "background-color": "var(--ui-menu-item-hover-bg, color-mix(in oklab, var(--ui-c-text) 9%, transparent))",
+          color: "var(--ui-menu-item-hover-fg, var(--ui-c-text))",
+        },
+        "&:focus-visible": { outline: "2px solid var(--ui-ring)", "outline-offset": "-2px" },
+        /* a checked menuitemcheckbox / menuitemradio shows a trailing check;
+           the empty alt text keeps it out of the accessible name */
+        '&[aria-checked="true"]::after': {
+          content: '"\\2713" / ""',
+          "margin-inline-start": "auto",
+        },
+        "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+      },
+      intents,
+      sizes: {
+        sm: { "--ui-menu-fs": "0.8125rem", "--ui-menu-item-py": "0.25rem", "--ui-menu-item-px": "0.5rem" },
+        lg: { "--ui-menu-fs": "1.0625rem", "--ui-menu-item-py": "0.5rem", "--ui-menu-item-px": "0.75rem" },
+      },
+      states: {
+        disabled: { opacity: "0.45", cursor: "not-allowed", "pointer-events": "none" },
+        /* the current item */
+        active: {
+          "background-color": "color-mix(in oklab, var(--ui-c-text) 14%, transparent)",
+          "font-weight": "600",
+        },
+      },
+    },
+    "menu-label": {
+      base: {
+        padding: "var(--ui-menu-item-py, 0.375rem) var(--ui-menu-item-px, 0.625rem)",
+        "font-size": "0.75em",
+        "font-weight": "600",
+        "letter-spacing": "0.02em",
+        color: "color-mix(in oklab, var(--ui-surface-fg) 68%, transparent)",
+        cursor: "default",
+      },
+    },
+    "menu-separator": {
+      base: {
+        height: "1px",
+        margin: "0.25rem 0",
+        padding: "0",
+        border: "0",
+        "background-color": "var(--ui-border)",
+        "align-self": "stretch",
+      },
+    },
     modal: {
       base: {
         /* works as a <div>, a <dialog> (open / showModal) or a :target */
