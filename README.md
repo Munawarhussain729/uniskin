@@ -18,7 +18,7 @@ runtime JavaScript.
 
 ```css
 @import "tailwindcss";
-@plugin "uniskin" { adapter: "shadcn"; }   /* or "daisyui", "bootstrap", or "./my-adapter.js" */
+@plugin "uniskin" { adapter: "shadcn"; }   /* or "daisyui", "bootstrap", "flowbite", "radix", or "./my-adapter.js" */
 ```
 
 ```html
@@ -32,6 +32,8 @@ pnpm add uniskin            # core plugin + built-in default skin
 pnpm add @uniskin/shadcn    # optional adapter
 pnpm add @uniskin/daisyui   # optional adapter
 pnpm add @uniskin/bootstrap  # optional adapter
+pnpm add @uniskin/flowbite   # optional adapter
+pnpm add @uniskin/radix      # optional adapter
 ```
 
 Then in your Tailwind v4 entry CSS, add the `@plugin` line shown above — or let
@@ -75,8 +77,8 @@ Prefix is `ui-` by default; change it with `prefix: "uk"` → `uk-button`.
 
 Status: stable (1.0). The full vocabulary ships in the default skin. The shadcn and
 daisyUI adapters restyle the common components and fall back to the default
-skin for the rest; the Bootstrap adapter defines every component and every
-modifier (`checkAdapter` reports 297 of 297). Per-component markup, modifiers, native-attribute
+skin for the rest; the Bootstrap, Flowbite and Radix Themes adapters define every component
+and every modifier (`checkAdapter` reports 297 of 297). Per-component markup, modifiers, native-attribute
 equivalents and accessibility notes: [docs/vocabulary.md](docs/vocabulary.md).
 
 Notes:
@@ -132,7 +134,7 @@ or a headless library like Radix/Ark UI — their unstyled components take
 ## Repo layout
 
 - `packages/uniskin` — the plugin, default theme, adapter interface
-- `packages/adapter-shadcn`, `packages/adapter-daisyui`, `packages/adapter-bootstrap` — adapters
+- `packages/adapter-shadcn`, `packages/adapter-daisyui`, `packages/adapter-bootstrap`, `packages/adapter-flowbite`, `packages/adapter-radix` — adapters
 - `apps/site` — the home page and the skin builder
 - `apps/playground` — Vite demo + manual test (`pnpm dev` in there)
 - `docs/` — decisions, adapter guide, [stability and support policy](docs/stability.md), [upgrading to 1.0](docs/migrating.md)

@@ -112,6 +112,14 @@ describe("init: adapters", () => {
     expect(read(css)).toContain('@plugin "uniskin" { adapter: "flowbite"; }');
   });
 
+  it("radix adds the adapter and no extra library", async () => {
+    const css = project(root);
+    const h = harness();
+    await main(["init", "--adapter", "radix"], h.io, root);
+    expect(h.runs[0]!.args).toEqual(["install", "uniskin", "@uniskin/radix"]);
+    expect(read(css)).toContain('@plugin "uniskin" { adapter: "radix"; }');
+  });
+
   it("skips packages already declared", async () => {
     project(root, { deps: { uniskin: "^0.1.0" } });
     const h = harness();

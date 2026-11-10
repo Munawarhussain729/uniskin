@@ -1536,7 +1536,7 @@ export const defaultAdapter = defineAdapter({
         transition: transition(["background-color", "color"]),
         /* :hover, keyboard focus and the headless library's highlight */
         "&:hover, &:focus-visible, &[data-highlighted]": {
-          "background-color": "var(--ui-menu-item-hover-bg, color-mix(in oklab, var(--ui-c-text) 9%, transparent))",
+          "background-color": "var(--ui-menu-item-hover-bg, color-mix(in oklab, var(--ui-c-text) 6%, transparent))",
           color: "var(--ui-menu-item-hover-fg, var(--ui-c-text))",
         },
         "&:focus-visible": { outline: "2px solid var(--ui-ring)", "outline-offset": "-2px" },

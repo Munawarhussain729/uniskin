@@ -2,9 +2,10 @@ import { describe, expect, it } from "vitest";
 import { checkAdapter } from "uniskin/conformance";
 import bootstrapAdapter from "@uniskin/bootstrap";
 import flowbiteAdapter from "@uniskin/flowbite";
+import radixAdapter from "@uniskin/radix";
 import { compileAdapter, compileAdapterStderr, compileWithFiles } from "./compile.js";
 
-const ADAPTERS = ["default", "shadcn", "daisyui", "bootstrap", "flowbite"] as const;
+const ADAPTERS = ["default", "shadcn", "daisyui", "bootstrap", "flowbite", "radix"] as const;
 
 const INTENTS = ["primary", "secondary", "success", "warning", "danger"] as const;
 const STYLES = ["outline", "ghost", "soft"] as const;
@@ -300,7 +301,7 @@ describe("content scanning", () => {
 });
 
 describe("radio and checkbox/select gap fixes (decision 003, wave 1)", () => {
-  for (const adapter of ["default", "shadcn", "daisyui", "bootstrap", "flowbite"]) {
+  for (const adapter of ["default", "shadcn", "daisyui", "bootstrap", "flowbite", "radix"]) {
     describe(adapter, () => {
       const css = () => skin(adapter);
 
@@ -357,7 +358,7 @@ describe("radio and checkbox/select gap fixes (decision 003, wave 1)", () => {
 });
 
 describe("ui-switch (decision 003, component 3)", () => {
-  for (const adapter of ["default", "shadcn", "daisyui", "bootstrap", "flowbite"]) {
+  for (const adapter of ["default", "shadcn", "daisyui", "bootstrap", "flowbite", "radix"]) {
     describe(adapter, () => {
       const css = () => skin(adapter);
 
@@ -413,7 +414,7 @@ describe("ui-switch (decision 003, component 3)", () => {
 });
 
 describe("ui-field (decision 003, component 4)", () => {
-  for (const adapter of ["default", "shadcn", "daisyui", "bootstrap", "flowbite"]) {
+  for (const adapter of ["default", "shadcn", "daisyui", "bootstrap", "flowbite", "radix"]) {
     describe(adapter, () => {
       const css = () => skin(adapter);
 
@@ -1053,6 +1054,32 @@ describe("@uniskin/flowbite", () => {
   });
 });
 
+describe("@uniskin/radix", () => {
+  it("defines every component and modifier: checkAdapter is complete", () => {
+    const report = checkAdapter(radixAdapter);
+    expect(report.missing).toEqual([]);
+    expect(report.unknownSlots).toEqual([]);
+    expect(report.covered).toBe(report.total);
+  });
+
+  it("reads the Radix 12-step scales with the Radix value as the fallback", () => {
+    const tokens = radixAdapter.tokens as Record<string, string>;
+    expect(tokens["--ui-primary"]).toBe("var(--blue-9, #3e63dd)");
+    expect(tokens["--ui-primary-soft"]).toBe("var(--blue-3, #edf2fe)");
+    expect(tokens["--ui-surface-fg"]).toBe("var(--gray-12, #202020)");
+  });
+
+  it("dark mode is Radix's .dark and .dark-theme", () => {
+    const css = compileAdapter("radix");
+    expect(css).toContain(".dark-theme");
+    expect(css).toContain('[data-theme="dark"]');
+  });
+
+  it("secondary text follows the mode instead of a fixed grey", () => {
+    expect(JSON.stringify(radixAdapter.components)).not.toContain("--gray-11");
+  });
+});
+
 describe("custom prefix", () => {
   it('prefix: "uk" namespaces classes, keyframes and animation references', () => {
     const css = compileWithFiles(
@@ -1107,7 +1134,7 @@ describe("dark mode", () => {
 });
 
 describe("contrast and dark-theme legibility", () => {
-  for (const adapter of ["default", "shadcn", "daisyui", "bootstrap", "flowbite"]) {
+  for (const adapter of ["default", "shadcn", "daisyui", "bootstrap", "flowbite", "radix"]) {
     it(`${adapter}: soft tints derive from the surface, not hard-coded white/black`, () => {
       const css = compileAdapter(adapter);
       expect(css).toMatch(/--ui-c-soft:\s*var\(--ui-\w+-soft, color-mix\([^;]*var\(--ui-surface\)\)\)/);
