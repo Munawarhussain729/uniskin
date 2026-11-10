@@ -43,7 +43,7 @@
   "peerDependencies": {
     "daisyui": "^5.0.0",
     "tailwindcss": "^4.3.3",
-    "uniskin": "workspace:>=0.1.0 <1.0.0"
+    "uniskin": "workspace:^"
   },
   "peerDependenciesMeta": {
     "daisyui": {
