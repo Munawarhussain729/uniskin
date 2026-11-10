@@ -99,8 +99,14 @@ test("loading spin/pulse under prefers-reduced-motion: reduce", async ({ page })
       if (running(t.name, t.dur)) stillAnimating.push(`${adapter} | ui-toast[${i}] | animation`);
     }
 
+    // the drawer's slide must stop under reduce, as well as the overlay fade
+    const drawerTp = await page
+      .locator("#demo-drawer .ui-modal-box")
+      .evaluate((el) => getComputedStyle(el).transitionProperty);
+    if (drawerTp !== "none") stillAnimating.push(`${adapter} | drawer box | transition`);
+
     // positive control: the skin does honour reduced-motion for the modal fade
-    const modalTransition = await page.locator("dialog.ui-modal").evaluate(
+    const modalTransition = await page.locator("dialog#demo-modal").evaluate(
       (el) => getComputedStyle(el).transitionProperty,
     );
     if (modalTransition === "none") modalTransitionOK.push(adapter);

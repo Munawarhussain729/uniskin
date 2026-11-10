@@ -242,6 +242,7 @@ is harmless:
 | `ui-switch` | `--ui-switch-size` (height, default `1.25rem`; width is `1.75x`), `--ui-switch-track` (off colour, default a grey mixed from `--ui-surface-fg`), `--ui-switch-thumb` (thumb colour), `--ui-switch-pad` (thumb inset, default `2px`) |
 | `ui-card` | `--ui-card-pad` (padding shared by header, body and footer, default `1.25rem`), `--ui-card-border` (border colour, default `--ui-border`; intents mix their colour into it) |
 | `ui-modal` | `--ui-modal-w` (width of `ui-modal-box`, default `32rem`; `ui-sm` and `ui-lg` set `24rem` and `48rem`) |
+| `ui-modal` (drawer) | `--ui-modal-w` (width of a side drawer, default `24rem`), `--ui-drawer-h` (maximum height of a top or bottom drawer, default `80%`) |
 | `ui-tab` | `--ui-tab-py`, `--ui-tab-px`, `--ui-tab-fs`, `--ui-tab-radius` (shape); `--ui-tab-hover-bg`, `--ui-tab-active-fg`, `--ui-tab-active-bg`, `--ui-tab-active-line`, `--ui-tab-active-shadow` (the active tab) |
 | `ui-field` | `--ui-field-gap` (stack gap, default `0.375rem`), `--ui-field-label`, `--ui-field-hint`, `--ui-field-error` (text colours; the error falls back to `--ui-danger-text`, then `--ui-danger`) |
 

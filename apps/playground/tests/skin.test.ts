@@ -943,6 +943,25 @@ describe("ui-breadcrumb / ui-pagination (roadmap 0.8.0)", () => {
     );
     for (const c of [".uk-breadcrumb", ".uk-pagination", ".uk-pagination-item"]) expect(css).toContain(c);
     expect(css).not.toMatch(/\.ui-/);
+describe("ui-modal as a drawer (roadmap 0.8.0)", () => {
+  for (const adapter of ADAPTERS) {
+    it(`${adapter}: data-placement docks the box to each edge and slides it in`, () => {
+      const modal = ruleBlock(skin(adapter), ".ui-modal");
+      for (const side of ["start", "end", "top", "bottom"]) expect(modal, side).toContain(`[data-placement="${side}"]`);
+      expect(modal).toContain("translateX(-100%)");
+      expect(modal).toContain("translateY(100%)");
+      expect(modal).toContain("[data-placement][open] > .ui-modal-box");
+    });
+  }
+
+  it("right-to-left flips the start and end slide", () => {
+    expect(ruleBlock(skin("default"), ".ui-modal")).toContain(":dir(rtl)");
+  });
+
+  it("the slide transition is disabled under reduced motion", () => {
+    expect(ruleBlock(skin("default"), ".ui-modal")).toMatch(
+      /prefers-reduced-motion: reduce\)\s*\{[^}]*transition: none[^}]*\[data-placement\] > \.ui-modal-box[^}]*transition: none/s,
+    );
   });
 });
 

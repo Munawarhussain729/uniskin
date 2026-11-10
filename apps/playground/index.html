@@ -417,6 +417,36 @@
       </div>
     </dialog>
 
+    <h2>drawer</h2>
+    <div class="row" id="drawer-demo" style="margin-bottom:.75rem">
+      <button class="ui-button" data-drawer="start">Start</button>
+      <button class="ui-button" data-drawer="end">End</button>
+      <button class="ui-button" data-drawer="top">Top</button>
+      <button class="ui-button" data-drawer="bottom">Bottom</button>
+    </div>
+    <dialog class="ui-modal" id="demo-drawer" data-placement="end" aria-label="Filters">
+      <div class="ui-modal-box">
+        <h3 style="margin:0 0 .5rem">Filters</h3>
+        <p style="margin:0 0 1.25rem">A drawer is a modal docked to an edge.</p>
+        <form method="dialog" class="row" style="justify-content:flex-end">
+          <button class="ui-button ui-ghost" value="cancel">Close</button>
+          <button class="ui-button ui-primary" value="apply">Apply</button>
+        </form>
+      </div>
+    </dialog>
+    <script>
+      (() => {
+        const dlg = document.getElementById("demo-drawer");
+        document.querySelectorAll("[data-drawer]").forEach((b) =>
+          b.addEventListener("click", () => {
+            dlg.setAttribute("data-placement", b.dataset.drawer);
+            dlg.showModal();
+          }),
+        );
+        dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+      })();
+    </script>
+
     <script>
       document.getElementById("indet").indeterminate = true;
       const modal = document.getElementById("demo-modal");
