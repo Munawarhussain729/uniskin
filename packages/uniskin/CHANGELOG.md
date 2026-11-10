@@ -1,5 +1,17 @@
 # uniskin
 
+## 1.1.0
+
+### Minor Changes
+
+- 59d256b: Add `@uniskin/bootstrap`, a Bootstrap 5.3 adapter that defines the whole vocabulary: `checkAdapter` reports 297 of 297 combinations, so nothing falls back to the default skin. Colours, radii, type scale, hover shades and the `-subtle` / `-text-emphasis` pairs are Bootstrap's own, each as `var(--bs-*)` with Bootstrap's default as the fallback, so loading Bootstrap's stylesheet carries a customised theme through and leaving it out still renders Bootstrap's default look. Dark mode follows `data-bs-theme="dark"` as well as `.dark`, `[data-theme="dark"]` and `prefers-color-scheme`. Where a Bootstrap value misses WCAG AA the adapter adjusts it and says so in its README: form-control borders (3:1), a solid focus ring at Bootstrap's 0.25rem size, and darker intent text on light pages. `npx uniskin init --adapter bootstrap` installs and wires it, and `adapter: "bootstrap"` is treated as built in. The playground and the accessibility, contrast, keyboard and motion tests now cover a fourth skin.
+- aba18e6: Add `@uniskin/flowbite`, a Flowbite adapter that defines the whole vocabulary: `checkAdapter` reports 297 of 297 combinations, so nothing falls back to the default skin. Flowbite is Tailwind utilities, so its tokens are Tailwind's palette: every colour is a `var(--color-*)` with the palette value as the fallback, and overriding `--color-blue-700` in `@theme` re-themes the skin. Dark mode is Flowbite's `.dark` class (also `[data-theme="dark"]` and `prefers-color-scheme`). Where a Flowbite value misses WCAG AA the adapter adjusts it and says so in its README: form-control borders (3:1), a solid 4px focus ring, and darker intent text on light pages. `npx uniskin init --adapter flowbite` installs and wires it, and `adapter: "flowbite"` is treated as built in. The shared accessibility, contrast, keyboard and motion tests now run a fifth skin.
+- c57192c: Add `@uniskin/radix`, a Radix Themes adapter that defines the whole vocabulary: `checkAdapter` reports 297 of 297 combinations, so nothing falls back to the default skin. Colours are Radix's 12-step scales, read as `var(--blue-9, #3e63dd)` with the Radix value as the fallback, so loading Radix Themes' stylesheet (or overriding a step) carries a custom scale through and leaving it out still renders the default Radix look. Steps keep their Radix roles (3 soft, 9 solid, 10 hover, 11 text, 12 high-contrast). Dark mode is Radix's `.dark` / `.dark-theme` (also `[data-theme="dark"]` and `prefers-color-scheme`). Where a Radix value misses WCAG AA the adapter adjusts it and says so in its README: solid green and red fills, soft success and warning text, text-field borders (3:1) and a solid focus ring. `npx uniskin init --adapter radix` installs and wires it, and `adapter: "radix"` is treated as built in. The shared accessibility, contrast, keyboard and motion tests now run a sixth skin.
+
+### Patch Changes
+
+- c57192c: Lighten the default menu-item hover tint from 9% to 6% of the item's text colour. Measured on the settled colours (the earlier test sampled mid-fade), the danger and warning items fell to 4.4 to 4.5:1 on hover; at 6% every intent stays at or above 4.5:1 apart from the recorded daisyUI dark primary.
+
 ## 1.0.1
 
 ### Patch Changes
