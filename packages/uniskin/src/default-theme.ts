@@ -1643,6 +1643,106 @@ export const defaultAdapter = defineAdapter({
         },
       },
     },
+    /* ui-breadcrumb: put it on the <ol> inside <nav aria-label="Breadcrumb">.
+       The separators are decorative generated content with empty alt text. */
+    breadcrumb: {
+      base: {
+        "--ui-breadcrumb-fs": "0.9375rem",
+        display: "flex",
+        "flex-wrap": "wrap",
+        "align-items": "center",
+        gap: "0.25rem 0.5rem",
+        margin: "0",
+        padding: "0",
+        "list-style": "none",
+        "font-family": "var(--ui-font-sans)",
+        "font-size": "var(--ui-breadcrumb-fs)",
+        "line-height": "1.4",
+        color: "color-mix(in oklab, var(--ui-surface-fg) 68%, transparent)",
+        "& > li": { display: "inline-flex", "align-items": "center", gap: "0.5rem" },
+        '& > li + li::before': {
+          content: '"/" / ""',
+          color: "var(--ui-breadcrumb-sep, color-mix(in oklab, var(--ui-surface-fg) 45%, transparent))",
+        },
+        "& a": {
+          color: "inherit",
+          "text-decoration": "none",
+          "border-radius": "calc(var(--ui-radius) * 0.5)",
+          "&:hover": { color: "var(--ui-surface-fg)", "text-decoration": "underline" },
+          "&:focus-visible": { outline: "2px solid var(--ui-ring)", "outline-offset": "2px" },
+        },
+        '& [aria-current="page"]': { color: "var(--ui-surface-fg)", "font-weight": "600" },
+      },
+      sizes: {
+        sm: { "--ui-breadcrumb-fs": "0.8125rem" },
+        lg: { "--ui-breadcrumb-fs": "1.0625rem" },
+      },
+    },
+    /* ui-pagination / ui-pagination-item: page links. Put the intent on the
+       <ul>; the current page is aria-current="page" (or ui-active). */
+    pagination: {
+      base: {
+        "--ui-c": "var(--ui-neutral)",
+        "--ui-on-c": "var(--ui-neutral-fg)",
+        "--ui-c-text": "var(--ui-surface-fg)",
+        "--ui-pagination-size": "2.25rem",
+        "--ui-pagination-fs": "0.9375rem",
+        display: "flex",
+        "flex-wrap": "wrap",
+        "align-items": "center",
+        gap: "0.25rem",
+        margin: "0",
+        padding: "0",
+        "list-style": "none",
+      },
+      intents,
+      sizes: {
+        sm: { "--ui-pagination-size": "1.75rem", "--ui-pagination-fs": "0.8125rem" },
+        lg: { "--ui-pagination-size": "2.75rem", "--ui-pagination-fs": "1.0625rem" },
+      },
+    },
+    "pagination-item": {
+      base: {
+        appearance: "none",
+        display: "inline-flex",
+        "align-items": "center",
+        "justify-content": "center",
+        "box-sizing": "border-box",
+        "min-width": "var(--ui-pagination-size, 2.25rem)",
+        height: "var(--ui-pagination-size, 2.25rem)",
+        margin: "0",
+        padding: "0 0.5rem",
+        "font-family": "var(--ui-font-sans)",
+        "font-size": "var(--ui-pagination-fs, 0.9375rem)",
+        "font-weight": "500",
+        "line-height": "1",
+        "text-decoration": "none",
+        color: "var(--ui-surface-fg)",
+        "background-color": "transparent",
+        border: "1px solid var(--ui-border)",
+        "border-radius": "var(--ui-radius)",
+        cursor: "pointer",
+        transition: transition(["background-color", "color", "border-color"]),
+        "&:hover": { "background-color": "color-mix(in oklab, var(--ui-surface-fg) 8%, transparent)" },
+        "&:focus-visible": { outline: "2px solid var(--ui-ring)", "outline-offset": "2px" },
+        /* the current page: filled with the pagination's colour */
+        '&[aria-current="page"], &[aria-current="page"]:hover': {
+          "background-color": "var(--ui-c)",
+          color: "var(--ui-on-c)",
+          "border-color": "var(--ui-c)",
+        },
+        "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+      },
+      states: {
+        disabled: { opacity: "0.45", cursor: "not-allowed", "pointer-events": "none" },
+        active: {
+          "background-color": "var(--ui-c)",
+          color: "var(--ui-on-c)",
+          "border-color": "var(--ui-c)",
+          "&:hover": { "background-color": "var(--ui-c)" },
+        },
+      },
+    },
     modal: {
       base: {
         /* works as a <div>, a <dialog> (open / showModal) or a :target */

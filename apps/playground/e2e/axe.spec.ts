@@ -75,6 +75,22 @@ const ALLOWLIST: AllowEntry[] = [
     why: "daisyUI's own dark primary ≈4.1:1 with its content colour (solid and soft); see docs/qa/small-2026-11.md",
   },
   {
+    adapters: ["shadcn"],
+    modes: ["light"],
+    rule: "color-contrast",
+    selector: ".ui-pagination.ui-danger .ui-pagination-item[aria-current]",
+    kind: "upstream",
+    why: "shadcn solid destructive fill ≈3.6:1 on the current page; see docs/qa/nav-2026-11.md",
+  },
+  {
+    adapters: ["daisyui"],
+    modes: ["dark"],
+    rule: "color-contrast",
+    selector: ".ui-pagination.ui-primary .ui-pagination-item[aria-current], .ui-pagination.ui-primary .ui-pagination-item.ui-active",
+    kind: "upstream",
+    why: "daisyUI's own dark primary ≈4.1:1 with its content colour on the current page; see docs/qa/nav-2026-11.md",
+  },
+  {
     adapters: ["daisyui"],
     modes: ["light"],
     rule: "color-contrast",

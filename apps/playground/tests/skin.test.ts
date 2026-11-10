@@ -77,6 +77,9 @@ const COMPONENTS: Record<string, Slots> = {
   avatar: { intents: true, styles: ["outline", "soft"], sizes: true },
   skeleton: {},
   separator: {},
+  breadcrumb: { sizes: true },
+  pagination: { intents: true, sizes: true },
+  "pagination-item": { states: ["disabled", "active"] },
 };
 
 const cssCache = new Map<string, string>();
@@ -909,6 +912,36 @@ describe("ui-avatar / ui-skeleton / ui-separator (roadmap 0.8.0)", () => {
       'prefix: "uk";',
     );
     for (const c of [".uk-avatar", ".uk-skeleton", ".uk-separator", "uk-pulse"]) expect(css).toContain(c);
+    expect(css).not.toMatch(/\.ui-/);
+  });
+});
+
+describe("ui-breadcrumb / ui-pagination (roadmap 0.8.0)", () => {
+  it("breadcrumb separators are decorative: empty alt text, between items only", () => {
+    const bc = ruleBlock(skin("default"), ".ui-breadcrumb");
+    expect(bc).toContain("& > li + li::before");
+    expect(bc).toContain('content: "/" / ""');
+    expect(bc).toContain('[aria-current="page"]');
+  });
+
+  it("the current page is filled from the pagination's colour variables", () => {
+    const item = ruleBlock(skin("default"), ".ui-pagination-item");
+    expect(item).toContain('&[aria-current="page"]');
+    expect(item).toContain("background-color: var(--ui-c)");
+    expect(item).toMatch(/prefers-reduced-motion: reduce\)\s*\{[^}]*transition: none/);
+  });
+
+  it("intents on the list set variables only", () => {
+    const block = ruleBlock(skin("default"), ".ui-pagination.ui-success");
+    expect(block.split("\n").filter((l) => /^ {4}(background-color|border-color|color):/.test(l))).toEqual([]);
+  });
+
+  it('prefix: "uk" renames them', () => {
+    const css = compileWithFiles(
+      { "index.html": '<ol class="uk-breadcrumb"></ol><ul class="uk-pagination"><li class="uk-pagination-item"></li></ul>' },
+      'prefix: "uk";',
+    );
+    for (const c of [".uk-breadcrumb", ".uk-pagination", ".uk-pagination-item"]) expect(css).toContain(c);
     expect(css).not.toMatch(/\.ui-/);
   });
 });

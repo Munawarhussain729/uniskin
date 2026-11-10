@@ -1,6 +1,6 @@
 # Vocabulary reference
 
-Every class in Uniskin vocabulary v1.12, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.14, grouped by component. The prefix is
 Every class in Uniskin vocabulary v1.12, grouped by component. The prefix is
 `ui-` by default — if you set `prefix: "uk"` in the `@plugin` options,
 read every `ui-*` class below as `uk-*`.
@@ -706,6 +706,59 @@ or `data-orientation="vertical"`.
   decorative rule can use `role="none"`. Inside a menu use
   `ui-menu-separator` instead.
 
+### `ui-breadcrumb`
+
+The trail to the current page. Put the class on the `<ol>` inside a labelled
+`<nav>`.
+
+```html
+<nav aria-label="Breadcrumb">
+  <ol class="ui-breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li><a href="/library">Library</a></li>
+    <li aria-current="page">Reports</li>
+  </ol>
+</nav>
+```
+
+- **Sizes:** `ui-sm`, `ui-lg` (font size). No intents, styles or states.
+- **Separators:** a `/` before every item but the first, as generated
+  content with empty alt text, so screen readers do not read it.
+  `--ui-breadcrumb-sep` sets its colour.
+- **Current page:** `[aria-current="page"]` on the last item, shown bold in
+  the text colour; it is not a link.
+- **Consumer provides:** the `<nav>` with an `aria-label`, and
+  `aria-current="page"`. Truncating a long trail is yours to do.
+
+### `ui-pagination`, `ui-pagination-item`
+
+A row of page links. Put the class on the `<ul>`; items go on the links.
+
+```html
+<nav aria-label="Pagination">
+  <ul class="ui-pagination ui-primary">
+    <li><button class="ui-pagination-item" disabled>Prev</button></li>
+    <li><a class="ui-pagination-item" href="?p=1" aria-current="page">1</a></li>
+    <li><a class="ui-pagination-item" href="?p=2">2</a></li>
+    <li><span class="ui-pagination-item ui-disabled" aria-hidden="true">&hellip;</span></li>
+    <li><a class="ui-pagination-item" href="?p=12">Next</a></li>
+  </ul>
+</nav>
+```
+
+- **Intents** (on `ui-pagination`): the fill of the current page; none is
+  neutral. They only set variables.
+- **Sizes** (on `ui-pagination`): `ui-sm` (1.75rem), default (2.25rem),
+  `ui-lg` (2.75rem), which is the item's minimum width and height.
+- **Item states:** `aria-current="page"` and `ui-active` (also
+  `aria-selected` / `aria-pressed`) fill the item; `ui-disabled` (also
+  `:disabled` and `aria-disabled="true"`) dims it and ignores the pointer.
+- **Hooks:** `--ui-pagination-size`, `--ui-pagination-fs`.
+- **Consumer provides:** the `<nav>` with an `aria-label`, links that go
+  somewhere, and `aria-current="page"` on the current one. Give Prev and
+  Next visible text (an icon-only label that differs from its visible text
+  fails WCAG 2.5.3). Compute the page window and the ellipsis yourself.
+
 ## Coverage matrix
 
 Supported modifiers in the built-in default skin (adapters may cover
@@ -753,6 +806,9 @@ fewer — anything omitted falls back to the default):
 | `ui-avatar`      | ✓ | outline soft | ✓ | — |
 | `ui-skeleton`    | — | — | — | — |
 | `ui-separator`   | — | — | — | — |
+| `ui-breadcrumb`  | — | — | ✓ | — |
+| `ui-pagination`  | ✓ | — | ✓ | — |
+| `ui-pagination-item` | — | — | — | disabled active |
 
 ## Accessibility
 

@@ -799,6 +799,24 @@
       </div>
     </div>
 
+    <h2 class="group">Breadcrumb and pagination</h2>
+    <div id="nav-demo" style="display:grid;gap:1rem">
+      <nav aria-label="Breadcrumb"><ol class="ui-breadcrumb"><li><a href="#nav-demo">Home</a></li><li><a href="#nav-demo">Library</a></li><li><a href="#nav-demo">Data</a></li><li aria-current="page">Reports</li></ol></nav>
+      <nav aria-label="Breadcrumb small"><ol class="ui-breadcrumb ui-sm"><li><a href="#nav-demo">Home</a></li><li aria-current="page">Small</li></ol></nav>
+      <nav aria-label="Breadcrumb large"><ol class="ui-breadcrumb ui-lg"><li><a href="#nav-demo">Home</a></li><li aria-current="page">Large</li></ol></nav>
+      <nav aria-label="Pagination"><ul class="ui-pagination">
+        <li><button class="ui-pagination-item" disabled>Prev</button></li>
+        <li><a class="ui-pagination-item" href="#nav-demo" aria-current="page">1</a></li>
+        <li><a class="ui-pagination-item" href="#nav-demo">2</a></li>
+        <li><a class="ui-pagination-item" href="#nav-demo">3</a></li>
+        <li><span class="ui-pagination-item ui-disabled" aria-hidden="true">&hellip;</span></li>
+        <li><a class="ui-pagination-item" href="#nav-demo">12</a></li>
+        <li><a class="ui-pagination-item" href="#nav-demo">Next</a></li>
+      </ul></nav>
+      <nav aria-label="Pagination primary"><ul class="ui-pagination ui-primary ui-sm"><li><a class="ui-pagination-item" href="#nav-demo">1</a></li><li><a class="ui-pagination-item" href="#nav-demo" aria-current="page">2</a></li><li><a class="ui-pagination-item ui-active" href="#nav-demo">3</a></li></ul></nav>
+      <nav aria-label="Pagination danger"><ul class="ui-pagination ui-danger ui-lg"><li><a class="ui-pagination-item" href="#nav-demo" aria-current="page">1</a></li><li><a class="ui-pagination-item" href="#nav-demo">2</a></li></ul></nav>
+    </div>
+
     </main>
   </body>
 </html>
