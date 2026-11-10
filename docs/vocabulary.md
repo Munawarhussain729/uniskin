@@ -352,6 +352,30 @@ CSS `:target`, or `ui-active` on any element:
 - See [Accessibility → `ui-modal`](#ui-modal-1) for the behavior you
   must add when not using `<dialog>`.
 
+#### Drawer: `ui-modal` docked to an edge
+
+A drawer is not a new class: it is a placement of the modal. Set
+`data-placement` on the `ui-modal` to `start`, `end`, `top` or `bottom`, and
+the box docks to that edge and slides in.
+
+```html
+<dialog class="ui-modal" data-placement="end" aria-label="Filters">
+  <div class="ui-modal-box">...</div>
+</dialog>
+```
+
+- **`start` and `end`** follow the writing direction (right-to-left flips
+  them). The box is full height and `--ui-modal-w` wide (default `24rem`;
+  `ui-sm` and `ui-lg` still set `24rem` and `48rem`). **`top` and `bottom`**
+  are full width and as tall as their content, up to `--ui-drawer-h`
+  (default `80%`).
+- The slide is a 0.25s transform and is off under reduced motion. The
+  backdrop, `ui-ghost`, `ui-soft`, `ui-active` and the open mechanisms
+  (`open`, `:target`) are the modal's own.
+- Everything in [Accessibility → `ui-modal`](#ui-modal-1) applies: use a
+  native `<dialog>` with `showModal()` for the focus containment and Escape.
+  The drawer's box has square corners.
+
 ### `ui-tabs`, `ui-tab`
 
 Tab strip. `ui-tabs` is the `role="tablist"` container (bottom border,

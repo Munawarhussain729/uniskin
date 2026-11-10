@@ -1772,7 +1772,47 @@ export const defaultAdapter = defineAdapter({
           "transition-delay": "0s",
         },
         "&::backdrop": { background: "transparent" },
-        "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+        /* drawer: data-placement="start|end|top|bottom" docks the box to an
+           edge and slides it in. Not a new class: it is a placement of the
+           modal, like the tooltip's and the toast region's. */
+        '&[data-placement="start"], &[data-placement="end"]': {
+          padding: "0",
+          "align-items": "stretch",
+          "justify-content": "flex-start",
+        },
+        '&[data-placement="end"]': { "justify-content": "flex-end" },
+        '&[data-placement="top"], &[data-placement="bottom"]': {
+          padding: "0",
+          "justify-content": "stretch",
+          "align-items": "flex-start",
+        },
+        '&[data-placement="bottom"]': { "align-items": "flex-end" },
+        '&[data-placement] > .ui-modal-box': {
+          "max-height": "none",
+          "border-radius": "0",
+          transition: "transform 0.25s ease",
+        },
+        '&[data-placement="start"] > .ui-modal-box, &[data-placement="end"] > .ui-modal-box': {
+          width: "min(var(--ui-modal-w, 24rem), 100%)",
+          height: "100%",
+        },
+        '&[data-placement="top"] > .ui-modal-box, &[data-placement="bottom"] > .ui-modal-box': {
+          width: "100%",
+          height: "auto",
+          "max-height": "var(--ui-drawer-h, 80%)",
+        },
+        '&[data-placement="start"] > .ui-modal-box': { transform: "translateX(-100%)" },
+        '&[data-placement="end"] > .ui-modal-box': { transform: "translateX(100%)" },
+        '&[data-placement="start"]:dir(rtl) > .ui-modal-box': { transform: "translateX(100%)" },
+        '&[data-placement="end"]:dir(rtl) > .ui-modal-box': { transform: "translateX(-100%)" },
+        '&[data-placement="top"] > .ui-modal-box': { transform: "translateY(-100%)" },
+        '&[data-placement="bottom"] > .ui-modal-box': { transform: "translateY(100%)" },
+        "&[data-placement][open] > .ui-modal-box, &[data-placement]:target > .ui-modal-box, &[data-placement].ui-active > .ui-modal-box":
+          { transform: "none" },
+        "@media (prefers-reduced-motion: reduce)": {
+          transition: "none",
+          "&[data-placement] > .ui-modal-box": { transition: "none" },
+        },
       },
       styles: {
         ghost: { "background-color": "transparent" },
