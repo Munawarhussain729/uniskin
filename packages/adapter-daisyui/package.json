@@ -1,6 +1,6 @@
 {
   "name": "@uniskin/daisyui",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "daisyUI visual style adapter for Uniskin — uses live daisyUI theme vars when present",
   "type": "module",
   "main": "./dist/index.js",
