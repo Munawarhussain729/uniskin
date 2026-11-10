@@ -58,9 +58,11 @@ changeset whenever a PR changes published behaviour:
 pnpm changeset
 ```
 
-Pre-1.0 rules (every published package is `0.x`):
+Semver rules (from 1.0.0; the stable surface is in
+[docs/stability.md](docs/stability.md)):
 
-- **minor** for features and breaking changes
+- **major** for a breaking change to the stable surface
+- **minor** for features (new components, modifiers, hooks, options)
 - **patch** for fixes
 - chores that touch nothing published (CI, repo docs, the private apps)
   need no changeset

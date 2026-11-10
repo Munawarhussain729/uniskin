@@ -30,5 +30,5 @@ but lower priority — they are never published.
 
 ## Supported versions
 
-Only the latest published `0.x` release line receives fixes. Please
+Only the latest published `1.x` release receives fixes. Please
 reproduce against `latest` from npm before reporting.

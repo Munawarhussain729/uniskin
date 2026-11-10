@@ -1,7 +1,8 @@
 # Roadmap and release plan to 1.0.0
 
-Status: proposed. The scope of each release is a plan, not a promise; it
-is reviewed when the previous release ships.
+Status: complete on `main` (1.0.0 is versioned; publishing it is the
+owner's step). The scope of each release was a plan, not a promise; the
+numbers changed along the way, as recorded below.
 
 Latest published release: **0.4.0** (vocabulary v1.4). **0.5.0**
 (`2399ba0`, vocabulary v1.6), **0.6.0** (`a137182`, vocabulary v1.8) and
@@ -153,7 +154,7 @@ breadcrumb and pagination (v1.14); slider (v1.15). The drawer is a
 are in `docs/qa/small-2026-11.md`, `nav-2026-11.md`, `slider-2026-11.md` and
 `drawer-2026-11.md`.
 
-### 0.9.0: release candidate
+### 0.9.0: release candidate (shipped as 0.8.0)
 
 No new vocabulary. Work is hardening and documentation.
 
@@ -175,7 +176,19 @@ No new vocabulary. Work is hardening and documentation.
 Exit: no open issue labelled `needs decision` or `breaking`; a 0.9.x
 patch line is used for any fixes found while the freeze settles.
 
-### 1.0.0
+Done, and shipped as **0.8.0** (the 0.8 component scope went out in 0.7.0,
+so the candidate took the next number): the freeze review is
+[stability.md](stability.md); `uniskin/conformance` (`checkAdapter`) is the
+conformance helper, proven with a deliberately different third adapter in the
+unit tests; `release-smoke.sh --upgrade-from` is the upgrade-path check; the
+axe allow-list now fails an entry that matches nothing (two stale ones were
+narrowed) and every entry has its reason; a unit test fails when the default
+theme reads a hook no doc mentions; the three packages are versioned
+together (`fixed` in the changeset config); the upgrade notes are
+[migrating.md](migrating.md). The freeze review found one inconsistency, in
+the coverage matrix (table row states are not slots), and fixed it.
+
+### 1.0.0 (versioned; to publish)
 
 Criteria, all required:
 
