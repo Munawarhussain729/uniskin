@@ -26,7 +26,7 @@ what to check, and what changes in how you depend on Uniskin.
 
 - **Peer range.** Change your `uniskin` peer dependency to `^1.0.0` (or
   `>=0.9.0 <2.0.0` if you support both). An adapter that declares
-  `>=0.1.0 <1.0.0` will warn at install against 1.0.
+  `>=0.1.0 <1.0.0` is refused or warned about at install against 1.0.
 - **Nothing else is required.** The adapter interface, the five slots and
   the closed modifier sets are frozen. New components arrive in minors and
   fall back to the default style until your adapter covers them.
