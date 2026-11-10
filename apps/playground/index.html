@@ -771,6 +771,33 @@
         });
       })();
     </script>
+    <h2 class="group">Avatar, skeleton, separator</h2>
+    <div id="small-demo" style="display:grid;gap:1rem;max-width:30rem">
+      <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
+        <span class="ui-avatar ui-sm" role="img" aria-label="Ada Lovelace">AL</span>
+        <span class="ui-avatar" role="img" aria-label="Grace Hopper">GH</span>
+        <span class="ui-avatar ui-lg" role="img" aria-label="Linus">LT</span>
+        <span class="ui-avatar ui-primary" role="img" aria-label="Primary">P</span>
+        <span class="ui-avatar ui-success" role="img" aria-label="Success">S</span>
+        <span class="ui-avatar ui-warning" role="img" aria-label="Warning">W</span>
+        <span class="ui-avatar ui-danger" role="img" aria-label="Danger">D</span>
+        <span class="ui-avatar ui-soft ui-primary" role="img" aria-label="Soft primary">SP</span>
+        <span class="ui-avatar ui-soft ui-danger" role="img" aria-label="Soft danger">SD</span>
+        <span class="ui-avatar ui-outline ui-primary" role="img" aria-label="Outline primary">OP</span>
+        <span class="ui-avatar" id="avatar-img"><img alt="Pixel" src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs="></span>
+      </div>
+      <div aria-busy="true" id="skeleton-demo" style="display:grid;gap:.5rem">
+        <span class="ui-skeleton" aria-hidden="true" style="--ui-skeleton-h:1.5rem;--ui-skeleton-w:40%"></span>
+        <span class="ui-skeleton" aria-hidden="true"></span>
+        <span class="ui-skeleton" aria-hidden="true" style="--ui-skeleton-w:75%"></span>
+      </div>
+      <div id="separator-demo">
+        <p style="margin:0">Above</p>
+        <hr class="ui-separator">
+        <p style="margin:0">Below</p>
+        <div style="display:flex;align-items:center;height:2rem"><span>One</span><span class="ui-separator" role="separator" aria-orientation="vertical"></span><span>Two</span></div>
+      </div>
+    </div>
 
     </main>
   </body>

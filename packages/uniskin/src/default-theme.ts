@@ -1559,6 +1559,90 @@ export const defaultAdapter = defineAdapter({
         "align-self": "stretch",
       },
     },
+    /* ui-avatar: a circle holding initials, an icon or an <img>. The label
+       or alt text is the consumer's. */
+    avatar: {
+      base: {
+        "--ui-c": "var(--ui-neutral)",
+        "--ui-on-c": "var(--ui-neutral-fg)",
+        "--ui-c-text": "var(--ui-surface-fg)",
+        "--ui-c-soft": "var(--ui-neutral-soft)",
+        "--ui-c-soft-fg": "var(--ui-neutral-soft-fg)",
+        "--ui-avatar-size": "2.5rem",
+        display: "inline-flex",
+        "align-items": "center",
+        "justify-content": "center",
+        "flex-shrink": "0",
+        "box-sizing": "border-box",
+        width: "var(--ui-avatar-size)",
+        height: "var(--ui-avatar-size)",
+        overflow: "hidden",
+        "border-radius": "9999px",
+        border: "1px solid transparent",
+        "font-family": "var(--ui-font-sans)",
+        "font-size": "calc(var(--ui-avatar-size) * 0.4)",
+        "font-weight": "600",
+        "line-height": "1",
+        "text-transform": "uppercase",
+        "user-select": "none",
+        "background-color": "var(--ui-avatar-bg, var(--ui-c))",
+        color: "var(--ui-avatar-fg, var(--ui-on-c))",
+        "& > img": { width: "100%", height: "100%", "object-fit": "cover", display: "block" },
+      },
+      intents,
+      styles: {
+        soft: {
+          "background-color": "var(--ui-avatar-bg, var(--ui-c-soft))",
+          color: "var(--ui-avatar-fg, var(--ui-c-soft-fg))",
+        },
+        outline: {
+          "background-color": "transparent",
+          color: "var(--ui-c-text)",
+          "border-color": "var(--ui-c-border, var(--ui-c))",
+        },
+      },
+      sizes: {
+        sm: { "--ui-avatar-size": "1.75rem" },
+        lg: { "--ui-avatar-size": "3.5rem" },
+      },
+    },
+    /* ui-skeleton: a placeholder block while content loads. Mark it
+       aria-hidden and put aria-busy on the region that is loading. */
+    skeleton: {
+      base: {
+        display: "block",
+        "box-sizing": "border-box",
+        width: "var(--ui-skeleton-w, 100%)",
+        height: "var(--ui-skeleton-h, 1rem)",
+        "border-radius": "calc(var(--ui-radius) * 0.75)",
+        "background-color": "var(--ui-skeleton-bg, color-mix(in oklab, var(--ui-surface-fg) 12%, transparent))",
+        animation: "ui-pulse 1.5s ease-in-out infinite",
+        "@media (prefers-reduced-motion: reduce)": { animation: "none" },
+      },
+    },
+    /* ui-separator: a 1px rule, horizontal by default; vertical with
+       aria-orientation="vertical" (or data-orientation="vertical") */
+    separator: {
+      base: {
+        display: "block",
+        "box-sizing": "border-box",
+        width: "100%",
+        height: "1px",
+        margin: "var(--ui-separator-gap, 1rem) 0",
+        padding: "0",
+        border: "0",
+        "flex-shrink": "0",
+        "background-color": "var(--ui-separator-color, var(--ui-border))",
+        '&[aria-orientation="vertical"], &[data-orientation="vertical"]': {
+          display: "inline-block",
+          width: "1px",
+          height: "auto",
+          "align-self": "stretch",
+          "min-height": "1em",
+          margin: "0 var(--ui-separator-gap, 1rem)",
+        },
+      },
+    },
     modal: {
       base: {
         /* works as a <div>, a <dialog> (open / showModal) or a :target */

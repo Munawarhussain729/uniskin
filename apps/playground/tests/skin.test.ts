@@ -74,6 +74,9 @@ const COMPONENTS: Record<string, Slots> = {
   "menu-item": { intents: true, sizes: true, states: ["disabled", "active"] },
   "menu-label": {},
   "menu-separator": {},
+  avatar: { intents: true, styles: ["outline", "soft"], sizes: true },
+  skeleton: {},
+  separator: {},
 };
 
 const cssCache = new Map<string, string>();
@@ -876,6 +879,32 @@ describe("ui-dropdown / ui-menu (roadmap 0.7.0)", () => {
     );
     for (const c of [".uk-dropdown", ".uk-menu", ".uk-menu-item", ".uk-menu-label", ".uk-menu-separator"])
       expect(css).toContain(c);
+describe("ui-avatar / ui-skeleton / ui-separator (roadmap 0.8.0)", () => {
+  it("the avatar is a circle sized by --ui-avatar-size, and sizes only set the variable", () => {
+    const css = skin("default");
+    expect(ruleBlock(css, ".ui-avatar")).toContain("border-radius: 9999px");
+    expect(ruleBlock(css, ".ui-avatar.ui-lg")).toContain("--ui-avatar-size");
+    expect(ruleBlock(css, ".ui-avatar.ui-lg")).not.toContain("width:");
+  });
+
+  it("the skeleton pulses and stops under reduced motion", () => {
+    const sk = ruleBlock(skin("default"), ".ui-skeleton");
+    expect(sk).toContain("ui-pulse");
+    expect(sk).toMatch(/prefers-reduced-motion: reduce\)\s*\{[^}]*animation: none/);
+  });
+
+  it("the separator has a vertical form on aria-orientation and data-orientation", () => {
+    const sep = ruleBlock(skin("default"), ".ui-separator");
+    expect(sep).toContain('[aria-orientation="vertical"]');
+    expect(sep).toContain('[data-orientation="vertical"]');
+  });
+
+  it('prefix: "uk" renames all three and the pulse keyframes', () => {
+    const css = compileWithFiles(
+      { "index.html": '<span class="uk-avatar">A</span><i class="uk-skeleton"></i><hr class="uk-separator">' },
+      'prefix: "uk";',
+    );
+    for (const c of [".uk-avatar", ".uk-skeleton", ".uk-separator", "uk-pulse"]) expect(css).toContain(c);
     expect(css).not.toMatch(/\.ui-/);
   });
 });

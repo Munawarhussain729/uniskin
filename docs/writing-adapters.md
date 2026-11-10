@@ -234,6 +234,9 @@ is harmless:
 | `ui-toast` | `--ui-toast-w` (toast width, default `22rem`), `--ui-toast-gap` (stack gap), `--ui-toast-shadow`, `--ui-toast-offset` (distance from the viewport edge), `--ui-toast-edge` (border colour; intents set it), `--ui-toast-fs`, `--ui-toast-pad-x`, `--ui-toast-pad-y` (sizes set the last three) |
 | `ui-menu` | `--ui-menu-w` (minimum width, default `10rem`), `--ui-menu-max-h`, `--ui-menu-pad`, `--ui-menu-gap` (distance from the trigger, set on the dropdown or above), `--ui-menu-shadow`, `--ui-menu-z` (default `50`), `--ui-menu-fs`, `--ui-menu-item-py`, `--ui-menu-item-px` (sizes set these on the menu and on items) |
 | `ui-menu-item` | `--ui-menu-item-hover-bg`, `--ui-menu-item-hover-fg` (hover, focus and `[data-highlighted]` tint and label) |
+| `ui-avatar` | `--ui-avatar-size` (diameter; sizes set it), `--ui-avatar-bg`, `--ui-avatar-fg` |
+| `ui-skeleton` | `--ui-skeleton-w`, `--ui-skeleton-h`, `--ui-skeleton-bg` |
+| `ui-separator` | `--ui-separator-color`, `--ui-separator-gap` |
 | `ui-switch` | `--ui-switch-size` (height, default `1.25rem`; width is `1.75x`), `--ui-switch-track` (off colour, default a grey mixed from `--ui-surface-fg`), `--ui-switch-thumb` (thumb colour), `--ui-switch-pad` (thumb inset, default `2px`) |
 | `ui-card` | `--ui-card-pad` (padding shared by header, body and footer, default `1.25rem`), `--ui-card-border` (border colour, default `--ui-border`; intents mix their colour into it) |
 | `ui-modal` | `--ui-modal-w` (width of `ui-modal-box`, default `32rem`; `ui-sm` and `ui-lg` set `24rem` and `48rem`) |

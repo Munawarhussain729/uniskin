@@ -262,6 +262,15 @@ export default defineAdapter({
         "border-radius": "calc(var(--ui-radius) - 4px)",
       },
     },
+    /* shadcn Avatar fallback: muted fill; Skeleton: animate-pulse on accent */
+    avatar: {
+      base: {
+        "--ui-c": "hsl(var(--muted))",
+        "--ui-on-c": "hsl(var(--foreground))",
+        "font-weight": "500",
+      },
+    },
+    skeleton: { base: { "--ui-skeleton-bg": "hsl(var(--accent))", "border-radius": "calc(var(--ui-radius) - 2px)" } },
     tooltip: {
       base: {
         /* shadcn TooltipContent: bg-primary text-primary-foreground

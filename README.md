@@ -46,13 +46,13 @@ file type it scans (HTML, JSX, Vue, PHP, …). If you keep templates in a
 file type Tailwind doesn't scan, add an explicit
 [`@source`](https://tailwindcss.com/docs/functions-and-directives#source-directive).
 
-## Vocabulary (v1.9)
+## Vocabulary (v1.12)
 
 Prefix is `ui-` by default; change it with `prefix: "uk"` → `uk-button`.
 
 | Kind       | Classes |
 |------------|---------|
-| Components | `ui-button`, `ui-input`, `ui-textarea`, `ui-select`, `ui-checkbox`, `ui-radio`, `ui-switch`, `ui-field`, `ui-card`, `ui-badge`, `ui-alert`, `ui-modal`, `ui-tabs`, `ui-table`, `ui-accordion`, `ui-progress`, `ui-tooltip`, `ui-toast`, `ui-dropdown`, `ui-menu` |
+| Components | `ui-button`, `ui-input`, `ui-textarea`, `ui-select`, `ui-checkbox`, `ui-radio`, `ui-switch`, `ui-field`, `ui-card`, `ui-badge`, `ui-alert`, `ui-modal`, `ui-tabs`, `ui-table`, `ui-accordion`, `ui-progress`, `ui-tooltip`, `ui-toast`, `ui-dropdown`, `ui-menu`, `ui-avatar`, `ui-skeleton`, `ui-separator` |
 | Parts      | `ui-field-label`, `ui-field-hint`, `ui-field-error`, `ui-card-header`, `ui-card-body`, `ui-card-footer`, `ui-modal-box`, `ui-tab`, `ui-table-wrap`, `ui-accordion-item`, `ui-accordion-trigger`, `ui-accordion-panel`, `ui-tooltip-anchor`, `ui-toast-region`, `ui-menu-item`, `ui-menu-label`, `ui-menu-separator` |
 | Intent     | `ui-primary`, `ui-secondary`, `ui-success`, `ui-warning`, `ui-danger` |
 | Style      | `ui-outline`, `ui-ghost`, `ui-soft` (`solid` is the default) |
