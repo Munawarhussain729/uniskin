@@ -36,3 +36,17 @@ describe("docs/vocabulary.md", () => {
     expect(missing.sort()).toEqual([]);
   });
 });
+
+describe("documented hooks", () => {
+  /** Composition variables and the per-intent pins have their own table in writing-adapters.md. */
+  const INTERNAL = /^--ui-(c(-[a-z-]+)?|on-c|(primary|secondary|success|warning|danger|neutral)-(text|soft|soft-fg|hover|border|soft-hover))$/;
+
+  it("lists every custom property the default theme reads with a fallback", () => {
+    const src = readFileSync(resolve(process.cwd(), "src/default-theme.ts"), "utf8");
+    const docs =
+      readFileSync(resolve(process.cwd(), "../../docs/writing-adapters.md"), "utf8") + doc;
+    const hooks = new Set([...src.matchAll(/var\((--ui-[a-z0-9-]+),/g)].map((m) => m[1]!));
+    const undocumented = [...hooks].filter((h) => !INTERNAL.test(h) && !docs.includes(h)).sort();
+    expect(undocumented, "hooks the theme reads but no doc mentions").toEqual([]);
+  });
+});
