@@ -237,6 +237,8 @@ is harmless:
 | `ui-avatar` | `--ui-avatar-size` (diameter; sizes set it), `--ui-avatar-bg`, `--ui-avatar-fg` |
 | `ui-skeleton` | `--ui-skeleton-w`, `--ui-skeleton-h`, `--ui-skeleton-bg` |
 | `ui-separator` | `--ui-separator-color`, `--ui-separator-gap` |
+| `ui-breadcrumb` | `--ui-breadcrumb-fs` (sizes set it), `--ui-breadcrumb-sep` (separator colour) |
+| `ui-pagination` | `--ui-pagination-size` (item height and minimum width; sizes set it), `--ui-pagination-fs` (sizes set it); the current page reads `--ui-c` and `--ui-on-c` |
 | `ui-switch` | `--ui-switch-size` (height, default `1.25rem`; width is `1.75x`), `--ui-switch-track` (off colour, default a grey mixed from `--ui-surface-fg`), `--ui-switch-thumb` (thumb colour), `--ui-switch-pad` (thumb inset, default `2px`) |
 | `ui-card` | `--ui-card-pad` (padding shared by header, body and footer, default `1.25rem`), `--ui-card-border` (border colour, default `--ui-border`; intents mix their colour into it) |
 | `ui-modal` | `--ui-modal-w` (width of `ui-modal-box`, default `32rem`; `ui-sm` and `ui-lg` set `24rem` and `48rem`) |
