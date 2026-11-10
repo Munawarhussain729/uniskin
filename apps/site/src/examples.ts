@@ -46,8 +46,24 @@ const MARKUP_OVERRIDES: Record<string, string> = {
 </dialog>`,
 };
 
+/* A closed dropdown shows only its trigger, so the example opens it with
+   `ui-active` (one of the documented open mechanisms) and leaves room for
+   the panel. */
+MARKUP_OVERRIDES.dropdown = `<div style="min-height: 11.5rem">
+  <div class="ui-dropdown ui-active" data-placement="bottom-start">
+    <button class="ui-button" aria-haspopup="menu" aria-expanded="true">Options</button>
+    <div class="ui-menu" role="menu" aria-label="Options">
+      <div class="ui-menu-label" role="presentation">File</div>
+      <button class="ui-menu-item" role="menuitem">Rename</button>
+      <button class="ui-menu-item ui-disabled" role="menuitem" aria-disabled="true">Archive</button>
+      <hr class="ui-menu-separator" role="separator">
+      <button class="ui-menu-item ui-danger" role="menuitem">Delete</button>
+    </div>
+  </div>
+</div>`;
+
 /* Composites read better un-centered. */
-const BLOCK_LAYOUT = new Set(["card", "modal", "tabs"]);
+const BLOCK_LAYOUT = new Set(["card", "modal", "tabs", "dropdown"]);
 
 /** First doc paragraph under a heading, markdown formatting stripped. */
 function blurbOf(section: string): string {
