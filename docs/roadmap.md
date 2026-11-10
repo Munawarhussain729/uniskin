@@ -118,7 +118,7 @@ skin's intent pairs, so a few upstream palette values appear (see
 `docs/qa/tooltip-2026-11.md` and `docs/qa/toast-2026-11.md`); 0.9.0 revisits
 every allow-listed entry.
 
-### 0.7.0: menus
+### 0.7.0: menus (versioned once its Version Packages PR merges)
 
 | Item | Notes |
 |------|-------|
@@ -126,7 +126,11 @@ every allow-listed entry.
 | Decision | Whether to ship a small optional JavaScript helper or stay CSS-only and point to headless libraries. Decide before implementation; the 1.0 promise of "CSS only" must stay true for the core package. |
 
 Exit: keyboard e2e (arrows, Home/End, Escape, focus return) in all six
-skin and mode combinations; label v1.9.
+skin and mode combinations; label v1.9. Done: the decision is **CSS only,
+no helper**. The package ships no JavaScript, the keyboard contract is
+documented as the consumer's (with headless recipes), and the playground
+demo has a short working handler that the e2e drives. See
+`docs/qa/menu-2026-11.md`.
 
 ### 0.8.0: the remaining small components
 

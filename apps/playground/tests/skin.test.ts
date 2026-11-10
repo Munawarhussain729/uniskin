@@ -69,6 +69,11 @@ const COMPONENTS: Record<string, Slots> = {
   "tooltip-anchor": {},
   toast: { intents: true, styles: ["outline", "soft"], sizes: true, states: ["loading"] },
   "toast-region": {},
+  dropdown: {},
+  menu: { styles: ["ghost", "soft"], sizes: true },
+  "menu-item": { intents: true, sizes: true, states: ["disabled", "active"] },
+  "menu-label": {},
+  "menu-separator": {},
 };
 
 const cssCache = new Map<string, string>();
@@ -811,6 +816,66 @@ describe("ui-toast (roadmap 0.6.0)", () => {
     expect(css).toContain(".uk-toast-region");
     expect(css).toContain(".uk-toast");
     expect(css).toContain("uk-pulse");
+    expect(css).not.toMatch(/\.ui-/);
+  });
+});
+
+describe("ui-dropdown / ui-menu (roadmap 0.7.0)", () => {
+  for (const adapter of ADAPTERS) {
+    describe(adapter, () => {
+      it("the panel is hidden by default and opens on each documented mechanism", () => {
+        const css = skin(adapter);
+        const rest = ruleBlock(css, ".ui-dropdown");
+        expect(rest).toContain("visibility: hidden");
+        for (const open of ["&[open] > .ui-menu", "&.ui-active > .ui-menu", '[aria-expanded="true"]', ":popover-open"])
+          expect(rest, open).toContain(open);
+      });
+
+      it("opening shows at once, so a script can focus the first item in the same tick", () => {
+        const rest = ruleBlock(skin(adapter), ".ui-dropdown");
+        expect(rest).toMatch(/transition: opacity 0\.12s ease, visibility 0s;/);
+        expect(rest).toMatch(/transition: opacity 0\.12s ease, visibility 0s linear 0\.12s;/);
+      });
+
+      it("a menu is a plain list when not inside a dropdown", () => {
+        const menu = ruleBlock(skin(adapter), ".ui-menu");
+        expect(menu).not.toContain("position: absolute");
+        expect(menu).toContain("border: 1px solid");
+      });
+    });
+  }
+
+  it("items honour :hover, :focus-visible and data-highlighted, with a ring", () => {
+    const item = ruleBlock(skin("default"), ".ui-menu-item");
+    expect(item).toContain("&:hover, &:focus-visible, &[data-highlighted]");
+    expect(item).toContain("outline: 2px solid var(--ui-ring)");
+  });
+
+  it("the check mark has empty alt text and the transition respects reduced motion", () => {
+    const item = ruleBlock(skin("default"), ".ui-menu-item");
+    expect(item).toContain('/ ""');
+    expect(item).toMatch(/prefers-reduced-motion: reduce\)\s*\{[^}]*transition: none/);
+  });
+
+  it("the panel's open and close transitions are disabled under reduced motion", () => {
+    expect(ruleBlock(skin("default"), ".ui-dropdown")).toMatch(
+      /prefers-reduced-motion: reduce\)\s*\{[^}]*\.ui-menu[^}]*transition: none/,
+    );
+  });
+
+  it("has no outline style on the menu or its items", () => {
+    const css = skin("default");
+    expect(css).not.toContain(".ui-menu.ui-outline");
+    expect(css).not.toContain(".ui-menu-item.ui-outline");
+  });
+
+  it('prefix: "uk" renames the dropdown, the menu and its parts', () => {
+    const css = compileWithFiles(
+      { "index.html": '<div class="uk-dropdown"><div class="uk-menu"><button class="uk-menu-item">a</button><div class="uk-menu-label">b</div><hr class="uk-menu-separator"></div></div>' },
+      'prefix: "uk";',
+    );
+    for (const c of [".uk-dropdown", ".uk-menu", ".uk-menu-item", ".uk-menu-label", ".uk-menu-separator"])
+      expect(css).toContain(c);
     expect(css).not.toMatch(/\.ui-/);
   });
 });

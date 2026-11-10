@@ -157,6 +157,15 @@ later) take a `data-placement` attribute instead of a modifier class:
   side then a horizontal one (`top-start`, `bottom-center`, ...), and
   `pointer-events: none` so it never blocks the page.
 
+A dropdown places its menu with the same two-part `data-placement` as the
+toast region, set on the **wrapper** (`ui-dropdown`) because the menu is
+positioned against it. Show a floating panel with `visibility` and
+`opacity`, and give the *open* rule `transition: ... visibility 0s` while
+the closed rule delays it (`visibility 0s linear <duration>`): a plain
+`visibility` transition keeps the panel hidden for the first frame, and a
+script that opens it and focuses the first item in the same tick would
+focus nothing.
+
 ## Entering elements
 
 Components inserted into the page at runtime (toasts now) enter with a
@@ -223,6 +232,8 @@ is harmless:
 | `ui-progress` | `--ui-progress-h` (height; sizes set it), `--ui-progress-track` (track fill), `--ui-progress-bar` (bar colour, default `--ui-c-text` so intents tint it), `--ui-progress-border` (track outline under `ui-outline`) |
 | `ui-tooltip` | `--ui-tooltip-bg`, `--ui-tooltip-fg` (override the intent-driven fill and text), `--ui-tooltip-gap` (distance from the anchor), `--ui-tooltip-arrow` (arrow size, `0` removes it), `--ui-tooltip-max-w`, `--ui-tooltip-fs`, `--ui-tooltip-pad-x`, `--ui-tooltip-pad-y` (sizes set the last three) |
 | `ui-toast` | `--ui-toast-w` (toast width, default `22rem`), `--ui-toast-gap` (stack gap), `--ui-toast-shadow`, `--ui-toast-offset` (distance from the viewport edge), `--ui-toast-edge` (border colour; intents set it), `--ui-toast-fs`, `--ui-toast-pad-x`, `--ui-toast-pad-y` (sizes set the last three) |
+| `ui-menu` | `--ui-menu-w` (minimum width, default `10rem`), `--ui-menu-max-h`, `--ui-menu-pad`, `--ui-menu-gap` (distance from the trigger, set on the dropdown or above), `--ui-menu-shadow`, `--ui-menu-z` (default `50`), `--ui-menu-fs`, `--ui-menu-item-py`, `--ui-menu-item-px` (sizes set these on the menu and on items) |
+| `ui-menu-item` | `--ui-menu-item-hover-bg`, `--ui-menu-item-hover-fg` (hover, focus and `[data-highlighted]` tint and label) |
 | `ui-switch` | `--ui-switch-size` (height, default `1.25rem`; width is `1.75x`), `--ui-switch-track` (off colour, default a grey mixed from `--ui-surface-fg`), `--ui-switch-thumb` (thumb colour), `--ui-switch-pad` (thumb inset, default `2px`) |
 | `ui-card` | `--ui-card-pad` (padding shared by header, body and footer, default `1.25rem`), `--ui-card-border` (border colour, default `--ui-border`; intents mix their colour into it) |
 | `ui-modal` | `--ui-modal-w` (width of `ui-modal-box`, default `32rem`; `ui-sm` and `ui-lg` set `24rem` and `48rem`) |

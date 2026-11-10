@@ -240,6 +240,28 @@ export default defineAdapter({
         "font-size": "0.875rem",
       },
     },
+    /* shadcn DropdownMenuContent: min-w-[8rem] rounded-md border bg-background p-1
+       shadow-md; DropdownMenuItem: rounded-sm px-2 py-1.5 text-sm, accent hover */
+    menu: {
+      base: {
+        "--ui-menu-fs": "0.875rem",
+        "--ui-menu-w": "8rem",
+        "--ui-menu-shadow": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+        "background-color": "hsl(var(--background))",
+        color: "hsl(var(--foreground))",
+        "border-color": "hsl(var(--border))",
+        "border-radius": "calc(var(--ui-radius) - 2px)",
+      },
+    },
+    "menu-item": {
+      base: {
+        "--ui-menu-item-py": "0.375rem",
+        "--ui-menu-item-px": "0.5rem",
+        "--ui-menu-item-hover-bg": "hsl(var(--accent))",
+        "--ui-menu-item-hover-fg": "hsl(var(--accent-foreground))",
+        "border-radius": "calc(var(--ui-radius) - 4px)",
+      },
+    },
     tooltip: {
       base: {
         /* shadcn TooltipContent: bg-primary text-primary-foreground
