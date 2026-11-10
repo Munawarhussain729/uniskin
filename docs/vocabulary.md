@@ -1,6 +1,7 @@
 # Vocabulary reference
 
-Every class in Uniskin vocabulary v1.9, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.12, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.12, grouped by component. The prefix is
 `ui-` by default — if you set `prefix: "uk"` in the `@plugin` options,
 read every `ui-*` class below as `uk-*`.
 
@@ -648,6 +649,62 @@ headless library's), and is spelled out below.
   and returns focus to the trigger**; Tab closes it; a click outside closes
   it. Radix `DropdownMenu` and Ark `Menu` do all of this and set
   `data-highlighted`. The playground's demo has a short working handler.
+### `ui-avatar`
+
+A circle holding initials, an icon or an `<img>`.
+
+```html
+<span class="ui-avatar" role="img" aria-label="Ada Lovelace">AL</span>
+<span class="ui-avatar ui-lg"><img src="ada.jpg" alt="Ada Lovelace"></span>
+```
+
+- **Intents:** the fill (solid by default) and its content colour. With no
+  intent it is the neutral fill.
+- **Styles:** `ui-soft` (tinted) and `ui-outline` (transparent, accent edge).
+- **Sizes:** `ui-sm` (1.75rem), default (2.5rem), `ui-lg` (3.5rem); the font
+  scales with it. `--ui-avatar-size` sets any other size.
+- **Hooks:** `--ui-avatar-size`, `--ui-avatar-bg`, `--ui-avatar-fg`.
+- **Consumer provides:** the accessible name: `alt` on the image, or
+  `role="img"` with `aria-label` on text initials (or hide it with
+  `aria-hidden` when the name is printed next to it). There is no status
+  dot or group stacking.
+
+### `ui-skeleton`
+
+A placeholder block shown while content loads. It pulses, and stops under
+`prefers-reduced-motion`.
+
+```html
+<div aria-busy="true">
+  <span class="ui-skeleton" aria-hidden="true" style="--ui-skeleton-w: 40%"></span>
+  <span class="ui-skeleton" aria-hidden="true"></span>
+</div>
+```
+
+- **No modifiers.** Size it with `--ui-skeleton-w` (default `100%`) and
+  `--ui-skeleton-h` (default `1rem`), or with your own width, height and
+  radius; `--ui-skeleton-bg` sets the colour.
+- **Consumer provides:** `aria-hidden="true"` on each block and
+  `aria-busy="true"` on the region that is loading, so screen readers
+  hear the real content when it arrives rather than empty boxes.
+
+### `ui-separator`
+
+A 1px rule. Horizontal by default; vertical with `aria-orientation="vertical"`
+or `data-orientation="vertical"`.
+
+```html
+<hr class="ui-separator">
+<span class="ui-separator" role="separator" aria-orientation="vertical"></span>
+```
+
+- **No modifiers.** `--ui-separator-color` and `--ui-separator-gap` (the
+  margin along the axis, default `1rem`) are the hooks. The vertical rule
+  stretches in a flex row.
+- **Consumer provides:** a native `<hr>` for a horizontal rule (it already
+  has the separator role); `role="separator"` for anything else. A purely
+  decorative rule can use `role="none"`. Inside a menu use
+  `ui-menu-separator` instead.
 
 ## Coverage matrix
 
@@ -693,6 +750,9 @@ fewer — anything omitted falls back to the default):
 | `ui-menu-item`   | ✓ | — | ✓ | disabled active |
 | `ui-menu-label`  | — | — | — | — |
 | `ui-menu-separator` | — | — | — | — |
+| `ui-avatar`      | ✓ | outline soft | ✓ | — |
+| `ui-skeleton`    | — | — | — | — |
+| `ui-separator`   | — | — | — | — |
 
 ## Accessibility
 

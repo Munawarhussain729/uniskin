@@ -195,6 +195,14 @@ export default defineAdapter({
       },
     },
     "menu-item": { base: { "border-radius": "var(--radius-field, 0.25rem)" } },
+    /* daisyUI avatar placeholder: neutral fill, rounded-full; skeleton on base-300 */
+    avatar: {
+      base: {
+        "--ui-c": "var(--color-neutral, oklch(14% 0.005 285))",
+        "--ui-on-c": "var(--color-neutral-content, oklch(98% 0 0))",
+      },
+    },
+    skeleton: { base: { "--ui-skeleton-bg": "var(--color-base-300, oklch(95% 0 0))", "border-radius": "var(--radius-box, 1rem)" } },
     tooltip: {
       base: {
         /* daisy tooltip-content: neutral fill, neutral-content text, rounded-field */
