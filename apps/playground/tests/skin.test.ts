@@ -879,6 +879,10 @@ describe("ui-dropdown / ui-menu (roadmap 0.7.0)", () => {
     );
     for (const c of [".uk-dropdown", ".uk-menu", ".uk-menu-item", ".uk-menu-label", ".uk-menu-separator"])
       expect(css).toContain(c);
+    expect(css).not.toMatch(/\.ui-/);
+  });
+});
+
 describe("ui-avatar / ui-skeleton / ui-separator (roadmap 0.8.0)", () => {
   it("the avatar is a circle sized by --ui-avatar-size, and sizes only set the variable", () => {
     const css = skin("default");
