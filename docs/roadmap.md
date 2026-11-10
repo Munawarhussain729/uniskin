@@ -4,8 +4,9 @@ Status: proposed. The scope of each release is a plan, not a promise; it
 is reviewed when the previous release ships.
 
 Latest published release: **0.4.0** (vocabulary v1.4). **0.5.0**
-(`2399ba0`, vocabulary v1.6) and **0.6.0** (`a137182`, vocabulary v1.8) are
-versioned on `main` and waiting to be published; see
+(`2399ba0`, vocabulary v1.6), **0.6.0** (`a137182`, vocabulary v1.8) and
+**0.7.0** (vocabulary v1.15) are versioned on `main` and waiting to be
+published; see
 [Release log](#release-log). The component order comes
 from [ADR-003](decisions/003-vocabulary-expansion.md); the release
 mechanics are in [releasing.md](releasing.md).
@@ -59,6 +60,7 @@ git tag uniskin@<version> <version commit> && git push origin uniskin@<version>
 | 0.4.0 | v1.4 | `c6f81a3` | published |
 | 0.5.0 | v1.6 | `2399ba0` | versioned, not yet published |
 | 0.6.0 | v1.8 | `a137182` | versioned, not yet published |
+| 0.7.0 | v1.15 | `62e7d8c` | versioned, not yet published |
 
 Merging a Version Packages PR only versions a release. A GitHub Release
 appears when the tag is pushed, and the tag comes after the npm publish. To
@@ -118,7 +120,7 @@ skin's intent pairs, so a few upstream palette values appear (see
 `docs/qa/tooltip-2026-11.md` and `docs/qa/toast-2026-11.md`); 0.9.0 revisits
 every allow-listed entry.
 
-### 0.7.0: menus (versioned once its Version Packages PR merges)
+### 0.7.0: menus and the small components (versioned)
 
 | Item | Notes |
 |------|-------|
@@ -132,7 +134,7 @@ documented as the consumer's (with headless recipes), and the playground
 demo has a short working handler that the e2e drives. See
 `docs/qa/menu-2026-11.md`.
 
-### 0.8.0: the remaining small components
+### 0.8.0: the remaining small components (folded into 0.7.0)
 
 Pulled from the deferred list in ADR-003, ordered by demand when the
 release starts: `ui-avatar`, `ui-breadcrumb`, `ui-pagination`,
@@ -140,10 +142,16 @@ release starts: `ui-avatar`, `ui-breadcrumb`, `ui-pagination`,
 and `ui-drawer` (evaluated first as a `ui-modal` placement).
 `ui-combobox`/`ui-listbox` stay out of scope; the name `ui-listbox` stays
 reserved (decision 9). If the list is too long, split it into 0.8.0 and
-0.8.1.
+0.8.1. Done, and shipped in **0.7.0**: the menu and these components all
+merged before the Version Packages PR was opened, so they are one release
+and there is no 0.8.0.
 
 Exit: each item passes the checklist or is explicitly dropped in this
-file with a reason.
+file with a reason. Shipped: avatar, skeleton and separator (v1.12);
+breadcrumb and pagination (v1.14); slider (v1.15). The drawer is a
+`data-placement` on `ui-modal` (no new class, so no label step). QA notes
+are in `docs/qa/small-2026-11.md`, `nav-2026-11.md`, `slider-2026-11.md` and
+`drawer-2026-11.md`.
 
 ### 0.9.0: release candidate
 
