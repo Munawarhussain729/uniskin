@@ -62,6 +62,8 @@ git tag uniskin@<version> <version commit> && git push origin uniskin@<version>
 | 0.5.0 | v1.6 | `2399ba0` | versioned, not yet published |
 | 0.6.0 | v1.8 | `a137182` | versioned, not yet published |
 | 0.7.0 | v1.15 | `62e7d8c` | versioned, not yet published |
+| 0.8.0 | v1.15 | `e6c3a1d` | versioned, not yet published (the release candidate) |
+| 1.0.0 | v1.15 | `ce2191a` | versioned, not yet published |
 
 Merging a Version Packages PR only versions a release. A GitHub Release
 appears when the tag is pushed, and the tag comes after the npm publish. To
@@ -78,8 +80,16 @@ git checkout a137182 && pnpm install --frozen-lockfile && pnpm -r build
 pnpm --filter uniskin publish && pnpm --filter @uniskin/shadcn publish && pnpm --filter @uniskin/daisyui publish
 git tag uniskin@0.6.0 a137182
 
+# 0.7.0, 0.8.0 and 1.0.0 the same way, from 62e7d8c, e6c3a1d and ce2191a
+
 git checkout main && git push origin uniskin@0.5.0 uniskin@0.6.0
 ```
+
+Everything between 0.4.0 and 1.0.0 is additive and none of it is breaking, so
+publishing only 1.0.0 is also valid; the intermediate versions are then
+versioned history that npm never sees. If you do publish them, 0.8.0 is the
+release candidate: run `scripts/release-smoke.sh 0.8.0 --upgrade-from 0.4.0`
+against it before publishing 1.0.0.
 
 Run `scripts/release-smoke.sh <version>` after each publish. Pushing the
 tags starts the GitHub Release workflow; it failed with a GitHub-side error
