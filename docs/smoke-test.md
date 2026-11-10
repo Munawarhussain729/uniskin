@@ -22,6 +22,21 @@ scripts/release-smoke.sh 0.2.0
 pnpm release:smoke
 ```
 
+## Upgrade path
+
+```sh
+# install 0.4.0, run init, upgrade to the version under test, compile again
+scripts/release-smoke.sh 0.7.0 --upgrade-from 0.4.0
+scripts/release-smoke.sh --from-tarballs DIR --upgrade-from 0.6.0
+```
+
+With `--upgrade-from VERSION` each adapter gets a second project: the three
+packages are installed at `VERSION`, `uniskin init` runs, then the packages
+are moved to the version under test. The step fails if the install is
+refused (a wrong peer range), if `init` left the stylesheet different after
+the upgrade, or if the compiled output lacks `.ui-button` or the dark block.
+Run it with the previous minor before every release.
+
 ## What it checks
 
 In a temp dir outside the repo, for each of `default`, `shadcn` and
