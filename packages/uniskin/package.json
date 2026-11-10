@@ -16,6 +16,10 @@
     "./adapter": {
       "types": "./dist/types.d.ts",
       "default": "./dist/types.js"
+    },
+    "./conformance": {
+      "types": "./dist/conformance.d.ts",
+      "default": "./dist/conformance.js"
     }
   },
   "files": [

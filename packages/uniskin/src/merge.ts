@@ -1,12 +1,11 @@
 import { createRequire } from "node:module";
 import path from "node:path";
-import { COVERAGE } from "./coverage.js";
+import { missingCoverage } from "./coverage.js";
 import {
   INTENTS,
   SIZES,
   STATES,
   STYLES,
-  VOCABULARY,
   type Adapter,
   type ComponentDef,
   type CssRuleObject,
@@ -193,27 +192,9 @@ export function warnUnsupported(adapter: Adapter, opts: WarnOptions = {}): void 
     if (process.env.NODE_ENV === "production") return;
   }
 
-  const missing: string[] = [];
-  const comps = adapter.components ?? {};
-  for (const name of VOCABULARY) {
-    const def = comps[name];
-    if (!def) {
-      missing.push(name);
-      continue;
-    }
-    // Only modifiers the vocabulary documents for this component count
-    // (see COVERAGE); undocumented combinations are never expected.
-    const cov = COVERAGE[name];
-    const slots: string[] = [];
-    // An intent also counts as covered when the adapter remaps its token
-    // (--ui-primary …) — the default intent rule picks the var up.
-    for (const intent of cov.intents)
-      if (!def.intents?.[intent] && !adapter.tokens?.[`--ui-${intent}`]) slots.push(intent);
-    for (const style of cov.styles) if (!def.styles?.[style]) slots.push(style);
-    for (const size of cov.sizes) if (!def.sizes?.[size]) slots.push(size);
-    for (const state of cov.states) if (!def.states?.[state]) slots.push(state);
-    if (slots.length > 0) missing.push(`${name} (${slots.join(", ")})`);
-  }
+  const missing = missingCoverage(adapter).map((m) =>
+    m.whole ? m.component : `${m.component} (${m.slots.join(", ")})`,
+  );
 
   if (missing.length === 0) return;
   if (debug) {

@@ -838,7 +838,7 @@ fewer — anything omitted falls back to the default):
 | `ui-modal-box`   | ✓ | — | ✓ | — |
 | `ui-tabs`        | ✓ | outline ghost soft | ✓ | — |
 | `ui-tab`         | ✓ | — | ✓ | disabled loading active |
-| `ui-table`       | ✓ | outline ghost soft | ✓ | loading (table); disabled active (`<tr>`) |
+| `ui-table`       | ✓ | outline ghost soft | ✓ | loading |
 | `ui-table-wrap`  | — | — | — | — |
 | `ui-accordion`   | ✓ | outline ghost soft | ✓ | — |
 | `ui-accordion-item` | — | — | — | — |

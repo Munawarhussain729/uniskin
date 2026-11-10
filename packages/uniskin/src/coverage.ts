@@ -1,4 +1,6 @@
 import {
+  VOCABULARY,
+  type Adapter,
   INTENTS,
   SIZES,
   STATES,
@@ -50,7 +52,8 @@ export const COVERAGE: Record<ComponentName, Coverage> = {
   "modal-box": { ...NONE, intents: INTENTS, sizes: SIZES },
   tabs: { ...ALL, states: [] },
   tab: { ...NONE, intents: INTENTS, sizes: SIZES, states: STATES },
-  table: ALL,
+  /* row states (`ui-disabled`, `ui-active` on a <tr>) are nested selectors in `base`, not slots */
+  table: { ...ALL, states: ["loading"] },
   "table-wrap": NONE,
   accordion: { ...ALL, states: [] },
   "accordion-item": NONE,
@@ -74,3 +77,39 @@ export const COVERAGE: Record<ComponentName, Coverage> = {
   slider: { ...NONE, intents: INTENTS, sizes: SIZES, states: ["disabled"] },
   progress: { ...NONE, intents: INTENTS, styles: ["outline", "ghost"], sizes: SIZES },
 };
+
+/** A component the adapter leaves to the default style, and which slots. */
+export interface MissingCoverage {
+  component: ComponentName;
+  /** `true` when the adapter does not define the component at all. */
+  whole: boolean;
+  /** Modifier names (`primary`, `outline`, `sm`, `loading`, ...) it does not define. */
+  slots: string[];
+}
+
+/**
+ * What an adapter leaves to the default style, measured against the
+ * documented matrix. An intent also counts as covered when the adapter
+ * remaps its token (`--ui-primary` ...): the default intent rule picks the
+ * variable up.
+ */
+export function missingCoverage(adapter: Adapter): MissingCoverage[] {
+  const out: MissingCoverage[] = [];
+  const comps = adapter.components ?? {};
+  for (const name of VOCABULARY) {
+    const def = comps[name];
+    if (!def) {
+      out.push({ component: name, whole: true, slots: [] });
+      continue;
+    }
+    const cov = COVERAGE[name];
+    const slots: string[] = [];
+    for (const intent of cov.intents)
+      if (!def.intents?.[intent] && !adapter.tokens?.[`--ui-${intent}`]) slots.push(intent);
+    for (const style of cov.styles) if (!def.styles?.[style]) slots.push(style);
+    for (const size of cov.sizes) if (!def.sizes?.[size]) slots.push(size);
+    for (const state of cov.states) if (!def.states?.[state]) slots.push(state);
+    if (slots.length > 0) out.push({ component: name, whole: false, slots });
+  }
+  return out;
+}
