@@ -1,5 +1,11 @@
 # @uniskin/daisyui
 
+## 1.0.1
+
+### Patch Changes
+
+- 7c50c4e: Documentation only: the package READMEs now describe 1.0 (the full 26-component vocabulary, the stability policy, the upgrade guide and `checkAdapter`), so the npm pages match the release. No code changes.
+
 ## 1.0.0
 
 ### Major Changes
