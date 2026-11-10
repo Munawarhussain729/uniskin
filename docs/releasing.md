@@ -51,6 +51,13 @@ change published behaviour.
    `scripts/release-smoke.sh <version>` — see
    [smoke-test.md](smoke-test.md).
 
+## Versions move together
+
+`.changeset/config.json` lists the three packages under `fixed`, so a
+changeset for any one of them versions all three to the same number. That
+keeps `scripts/release-smoke.sh <version>` (which installs the same version of
+each) meaningful, and means a release is one number, not three.
+
 ## Dependency order
 
 ```
