@@ -1,7 +1,7 @@
 import { stripComments } from "./project.js";
 
-export type AdapterChoice = "default" | "shadcn" | "daisyui";
-export const ADAPTERS: readonly AdapterChoice[] = ["default", "shadcn", "daisyui"];
+export type AdapterChoice = "default" | "shadcn" | "daisyui" | "bootstrap";
+export const ADAPTERS: readonly AdapterChoice[] = ["default", "shadcn", "daisyui", "bootstrap"];
 
 /** Packages each adapter choice needs in the project. */
 export const ADAPTER_PACKAGES: Record<AdapterChoice, string[]> = {
@@ -10,6 +10,9 @@ export const ADAPTER_PACKAGES: Record<AdapterChoice, string[]> = {
   // daisyUI is a peer of the adapter: the adapter maps --ui-* onto daisyUI's
   // --color-* variables, which only exist once daisyUI itself is loaded.
   daisyui: ["uniskin", "@uniskin/daisyui", "daisyui"],
+  // Bootstrap is optional: the adapter carries Bootstrap's own values as
+  // fallbacks, and follows --bs-* when Bootstrap's stylesheet is also loaded.
+  bootstrap: ["uniskin", "@uniskin/bootstrap"],
 };
 
 /** The `@plugin` lines for a choice. Only the documented `adapter` option is used. */
@@ -21,6 +24,8 @@ export function pluginLines(adapter: AdapterChoice): string[] {
       return ['@plugin "uniskin" { adapter: "shadcn"; }'];
     case "daisyui":
       return ['@plugin "daisyui";', '@plugin "uniskin" { adapter: "daisyui"; }'];
+    case "bootstrap":
+      return ['@plugin "uniskin" { adapter: "bootstrap"; }'];
   }
 }
 

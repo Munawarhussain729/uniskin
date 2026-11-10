@@ -7,12 +7,13 @@
     "css": "node scripts/build-css.mjs",
     "dev": "node scripts/dev.mjs",
     "build": "node scripts/build-css.mjs && vite build",
-    "pretest": "pnpm --filter uniskin --filter @uniskin/shadcn --filter @uniskin/daisyui build",
+    "pretest": "pnpm --filter uniskin --filter @uniskin/shadcn --filter @uniskin/daisyui --filter @uniskin/bootstrap build",
     "test": "vitest run && pnpm run test:a11y",
     "test:a11y": "playwright install chromium --only-shell || playwright install chromium; playwright test",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
+    "@uniskin/bootstrap": "workspace:*",
     "@uniskin/daisyui": "workspace:*",
     "@uniskin/shadcn": "workspace:*",
     "uniskin": "workspace:*"

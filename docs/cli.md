@@ -34,10 +34,11 @@ stylesheet.
 | `default` | `uniskin` | `@plugin "uniskin";` |
 | `shadcn` | `uniskin`, `@uniskin/shadcn` | `@plugin "uniskin" { adapter: "shadcn"; }` |
 | `daisyui` | `uniskin`, `@uniskin/daisyui`, `daisyui` | `@plugin "daisyui";` and `@plugin "uniskin" { adapter: "daisyui"; }` |
+| `bootstrap` | `uniskin`, `@uniskin/bootstrap` | `@plugin "uniskin" { adapter: "bootstrap"; }` |
 
 Flags:
 
-- `--adapter <default|shadcn|daisyui>`: skip the prompt.
+- `--adapter <default|shadcn|daisyui|bootstrap>`: skip the prompt.
 - `--css <path>`: the stylesheet to edit.
 - `--yes`, `-y`: never prompt; uses `default` when `--adapter` is absent and
   fails instead of asking which stylesheet to use.
