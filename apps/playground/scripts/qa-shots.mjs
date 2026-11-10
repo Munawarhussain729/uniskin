@@ -6,7 +6,7 @@ import { mkdirSync } from "node:fs";
 const [selector, out, pad = "40"] = process.argv.slice(2);
 mkdirSync(out, { recursive: true });
 const browser = await chromium.launch();
-for (const adapter of ["default", "shadcn", "daisyui"]) {
+for (const adapter of (process.env.ADAPTERS ?? "default,shadcn,daisyui").split(",")) {
   for (const mode of ["light", "dark"]) {
     for (const width of [360, 768, 1280]) {
       const page = await browser.newPage({ viewport: { width, height: 900 } });

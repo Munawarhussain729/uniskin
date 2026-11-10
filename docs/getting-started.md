@@ -17,13 +17,16 @@ one CSS file. Verified end-to-end against tailwindcss **4.3.5** (any 4.x ≥
 pnpm add uniskin            # core plugin + built-in default skin
 pnpm add @uniskin/shadcn    # optional: shadcn/ui skin
 pnpm add @uniskin/daisyui   # optional: daisyUI skin
+pnpm add @uniskin/bootstrap  # optional: Bootstrap 5.3 skin
 ```
 
 Only `uniskin` is required. `@uniskin/daisyui` works standalone — installing
 the `daisyui` package itself is optional and only needed if you want the
 adapter to follow your active daisyUI theme (it maps onto daisyUI's
 `--color-*` variables; without it, bundled fallbacks render the daisyUI
-light look).
+light look). `@uniskin/bootstrap` also works standalone: it carries
+Bootstrap's own values and follows `--bs-*` and `data-bs-theme` when
+Bootstrap's stylesheet is loaded too.
 
 ## 2. Enable the plugin
 
@@ -37,7 +40,7 @@ In your Tailwind entry CSS:
 `adapter` accepts:
 
 - `"default"` — the built-in skin (also the value when the option is omitted);
-- `"shadcn"` or `"daisyui"` — the published adapters;
+- `"shadcn"`, `"daisyui"` or `"bootstrap"` — the published adapters;
 - any package name — shorthand resolves `name`, `@uniskin/name`, then
   `uniskin-adapter-name`;
 - a path like `"./my-adapter.js"` — resolved **relative to the stylesheet

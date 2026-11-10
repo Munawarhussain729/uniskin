@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { checkAdapter } from "uniskin/conformance";
+import bootstrapAdapter from "@uniskin/bootstrap";
 import { compileAdapter, compileAdapterStderr, compileWithFiles } from "./compile.js";
 
-const ADAPTERS = ["default", "shadcn", "daisyui"] as const;
+const ADAPTERS = ["default", "shadcn", "daisyui", "bootstrap"] as const;
 
 const INTENTS = ["primary", "secondary", "success", "warning", "danger"] as const;
 const STYLES = ["outline", "ghost", "soft"] as const;
@@ -297,7 +299,7 @@ describe("content scanning", () => {
 });
 
 describe("radio and checkbox/select gap fixes (decision 003, wave 1)", () => {
-  for (const adapter of ["default", "shadcn", "daisyui"]) {
+  for (const adapter of ["default", "shadcn", "daisyui", "bootstrap"]) {
     describe(adapter, () => {
       const css = () => skin(adapter);
 
@@ -354,7 +356,7 @@ describe("radio and checkbox/select gap fixes (decision 003, wave 1)", () => {
 });
 
 describe("ui-switch (decision 003, component 3)", () => {
-  for (const adapter of ["default", "shadcn", "daisyui"]) {
+  for (const adapter of ["default", "shadcn", "daisyui", "bootstrap"]) {
     describe(adapter, () => {
       const css = () => skin(adapter);
 
@@ -410,7 +412,7 @@ describe("ui-switch (decision 003, component 3)", () => {
 });
 
 describe("ui-field (decision 003, component 4)", () => {
-  for (const adapter of ["default", "shadcn", "daisyui"]) {
+  for (const adapter of ["default", "shadcn", "daisyui", "bootstrap"]) {
     describe(adapter, () => {
       const css = () => skin(adapter);
 
@@ -991,6 +993,38 @@ describe("ui-slider (roadmap 0.8.0)", () => {
   });
 });
 
+describe("@uniskin/bootstrap", () => {
+  it("defines every component and modifier: checkAdapter is complete", () => {
+    const report = checkAdapter(bootstrapAdapter);
+    expect(report.missing).toEqual([]);
+    expect(report.unknownSlots).toEqual([]);
+    expect(report.covered).toBe(report.total);
+  });
+
+  it("reads Bootstrap's variables with Bootstrap's own values as fallbacks", () => {
+    const tokens = bootstrapAdapter.tokens as Record<string, string>;
+    expect(tokens["--ui-primary"]).toBe("var(--bs-primary, #0d6efd)");
+    expect(tokens["--ui-radius"]).toContain("var(--bs-border-radius, 0.375rem)");
+    expect(tokens["--ui-surface"]).toContain("var(--bs-body-bg, #fff)");
+  });
+
+  it("follows Bootstrap's dark switch as well as Uniskin's", () => {
+    const css = compileAdapter("bootstrap");
+    expect(css).toContain('[data-bs-theme="dark"]');
+    expect(css).toContain('[data-theme="dark"]');
+  });
+
+  it("the focus ring is solid, not Bootstrap's translucent glow, and controls have a 3:1 border", () => {
+    const css = skin("bootstrap");
+    expect(ruleBlock(css, ".ui-button")).toContain("0 0 0 0.125rem var(--ui-surface)");
+    expect(ruleBlock(css, ".ui-input")).toContain("color-mix(in oklab, var(--ui-surface-fg) 55%");
+  });
+
+  it("is listed by the CLI and resolves from its shorthand", () => {
+    expect(skin("bootstrap")).toContain(".ui-button");
+  });
+});
+
 describe("custom prefix", () => {
   it('prefix: "uk" namespaces classes, keyframes and animation references', () => {
     const css = compileWithFiles(
@@ -1045,7 +1079,7 @@ describe("dark mode", () => {
 });
 
 describe("contrast and dark-theme legibility", () => {
-  for (const adapter of ["default", "shadcn", "daisyui"]) {
+  for (const adapter of ["default", "shadcn", "daisyui", "bootstrap"]) {
     it(`${adapter}: soft tints derive from the surface, not hard-coded white/black`, () => {
       const css = compileAdapter(adapter);
       expect(css).toMatch(/--ui-c-soft:\s*var\(--ui-\w+-soft, color-mix\([^;]*var\(--ui-surface\)\)\)/);
