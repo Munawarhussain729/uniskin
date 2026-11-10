@@ -150,7 +150,7 @@ export function resolveAdapter(option: string, options?: ResolveAdapterOptions):
   throw new Error(
     `[uniskin] Could not resolve adapter "${option}" (base: ${base}):\n` +
       failures.map((f) => `  - ${f}`).join("\n") +
-      `\nPass a built-in name ("default", "shadcn", "daisyui", "bootstrap", "flowbite"), a package name, or a relative path like "./my-adapter.js". ` +
+      `\nPass a built-in name ("default", "shadcn", "daisyui", "bootstrap", "flowbite", "radix"), a package name, or a relative path like "./my-adapter.js". ` +
       `Adapters must be created with defineAdapter({ name, tokens, components }).`,
   );
 }

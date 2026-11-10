@@ -139,7 +139,7 @@ const ALLOWLIST: AllowEntry[] = [
 /** `incomplete` (needs-review) results we verified manually — see the report. */
 const INCOMPLETE_ALLOW: AllowEntry[] = [
   {
-    adapters: ["default", "shadcn", "daisyui", "bootstrap", "flowbite"],
+    adapters: ["default", "shadcn", "daisyui", "bootstrap", "flowbite", "radix"],
     modes: ["light", "dark"],
     rule: "color-contrast",
     selector: "select.ui-select",
@@ -147,7 +147,7 @@ const INCOMPLETE_ALLOW: AllowEntry[] = [
     why: "select chevron is an inline-SVG background image — axe cannot resolve the background; contrast verified manually",
   },
   {
-    adapters: ["default", "shadcn", "daisyui", "bootstrap", "flowbite"],
+    adapters: ["default", "shadcn", "daisyui", "bootstrap", "flowbite", "radix"],
     modes: ["light", "dark"],
     rule: "color-contrast",
     selector: "table.ui-loading td, table[aria-busy] td",
@@ -155,7 +155,7 @@ const INCOMPLETE_ALLOW: AllowEntry[] = [
     why: "ui-loading/aria-busy pulses the tbody opacity — axe samples mid-animation and reports indeterminate; static text contrast asserted in table.spec.ts",
   },
   {
-    adapters: ["default", "shadcn", "daisyui", "bootstrap", "flowbite"],
+    adapters: ["default", "shadcn", "daisyui", "bootstrap", "flowbite", "radix"],
     modes: ["light", "dark"],
     rule: "color-contrast",
     selector: ".ui-toast.ui-loading, .ui-toast.ui-loading *",

@@ -240,6 +240,9 @@ importers:
       '@uniskin/flowbite':
         specifier: workspace:*
         version: link:../../packages/adapter-flowbite
+      '@uniskin/radix':
+        specifier: workspace:*
+        version: link:../../packages/adapter-radix
       '@uniskin/shadcn':
         specifier: workspace:*
         version: link:../../packages/adapter-shadcn
@@ -341,6 +344,18 @@ importers:
         version: link:../uniskin
 
   packages/adapter-flowbite:
+    devDependencies:
+      tailwindcss:
+        specifier: ^4.3.5
+        version: 4.3.5
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      uniskin:
+        specifier: workspace:*
+        version: link:../uniskin
+
+  packages/adapter-radix:
     devDependencies:
       tailwindcss:
         specifier: ^4.3.5

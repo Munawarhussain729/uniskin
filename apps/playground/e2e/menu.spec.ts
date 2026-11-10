@@ -52,7 +52,7 @@ const shown = (el: Element) => {
  * docs/qa/a11y-2026-11.md). Asserted exactly so a fix or a regression both fail.
  */
 const KNOWN_LOW: Record<string, string[]> = {
-  "daisyui/dark": ["ui-menu-item ui-primary rest 3.40", "ui-menu-item ui-primary hover 3.40"],
+  "daisyui/dark": ["ui-menu-item ui-primary rest 3.40", "ui-menu-item ui-primary hover 3.20"],
 };
 
 for (const adapter of ADAPTERS) {
@@ -61,6 +61,7 @@ for (const adapter of ADAPTERS) {
       test.beforeEach(async ({ page }) => {
         await openPlayground(page, adapter, mode);
       });
+
 
       test("the panel is closed until an open mechanism holds", async ({ page }) => {
         const closed = await page.locator("#dd-live-menu").evaluate(shown);
@@ -158,6 +159,8 @@ for (const adapter of ADAPTERS) {
       });
 
       test("item text contrast is at least 4.5:1 (open demo menus, hovered and resting)", async ({ page }) => {
+        // hover tints fade in; sample the settled colours, not a frame in the middle
+        await page.addStyleTag({ content: "*,*::before,*::after{transition:none!important}" });
         const bad: string[] = [];
         const items = page.locator("#dd-open-menu .ui-menu-item, #dd-top-menu .ui-menu-item, #menu-static .ui-menu-item, #menu-soft .ui-menu-item");
         for (let i = 0; i < (await items.count()); i++) {
