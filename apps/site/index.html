@@ -52,12 +52,12 @@
           <p class="lede">
             Uniskin is one semantic <code>ui-*</code> vocabulary —
             <code>ui-button ui-primary ui-outline ui-sm</code> — that any &ldquo;skin&rdquo; can
-            wear. Pick the default look, a shadcn/ui look, a daisyUI look, or write your own
+            wear. Pick the default look, a shadcn/ui, daisyUI, Bootstrap, Flowbite or Radix Themes look, or write your own
             adapter. Switching never touches your markup.
           </p>
 
           <div class="install" id="install">
-            <pre class="code"><code><span class="c-p">$</span> pnpm add uniskin @uniskin/shadcn @uniskin/daisyui
+            <pre class="code"><code><span class="c-p">$</span> pnpm add uniskin @uniskin/shadcn
 
 <span class="c-c">/* app.css */</span>
 <span class="c-k">@import</span> <span class="c-s">"tailwindcss"</span>;
@@ -78,6 +78,15 @@
                 <button role="radio" aria-checked="false" tabindex="-1" data-adapter="daisyui">
                   daisyui
                 </button>
+                <button role="radio" aria-checked="false" tabindex="-1" data-adapter="bootstrap">
+                  bootstrap
+                </button>
+                <button role="radio" aria-checked="false" tabindex="-1" data-adapter="flowbite">
+                  flowbite
+                </button>
+                <button role="radio" aria-checked="false" tabindex="-1" data-adapter="radix">
+                  radix
+                </button>
               </div>
               <button class="switch" id="appearance" role="switch" aria-checked="false">
                 <span class="switch-track"><span class="switch-thumb"></span></span>
@@ -91,7 +100,7 @@
               title="Live Uniskin demo — the same markup rendered by the selected adapter"
             ></iframe>
             <p class="demo-note">
-              One HTML file, three stylesheets — the control only swaps
+              One HTML file, six stylesheets — the control only swaps
               <code id="skin-path">/adapters/default.css</code>. The markup is identical for every
               adapter.
             </p>
@@ -119,7 +128,8 @@
               <h3>Pick an adapter</h3>
               <p>
                 One <code>@plugin</code> option decides how the vocabulary looks:
-                <code>"default"</code>, <code>"shadcn"</code>, <code>"daisyui"</code>, or a path to
+                <code>"default"</code>, <code>"shadcn"</code>, <code>"daisyui"</code>,
+                <code>"bootstrap"</code>, <code>"flowbite"</code>, <code>"radix"</code>, or a path to
                 your own adapter file.
               </p>
             </div>
@@ -323,6 +333,57 @@
                 data-pin
                 src="frames/swatches.html?adapter=daisyui"
                 title="daisyUI skin preview"
+              ></iframe>
+            </article>
+            <article class="adapter">
+              <div class="adapter-info">
+                <h3>bootstrap</h3>
+                <p>
+                  The Bootstrap 5.3 look, with every colour as <code>var(--bs-*)</code> and Bootstrap&rsquo;s own value as the fallback, and <code>data-bs-theme="dark"</code> support. Defines the whole vocabulary.
+                </p>
+                <pre class="code code-inline"><code><span class="c-k">@plugin</span> <span class="c-s">"uniskin"</span> { adapter: <span class="c-s">"bootstrap"</span>; }</code></pre>
+              </div>
+              <iframe
+                class="swatch-frame"
+                data-skin-frame
+                data-frame="swatches"
+                data-pin
+                src="frames/swatches.html?adapter=bootstrap"
+                title="Bootstrap skin preview"
+              ></iframe>
+            </article>
+            <article class="adapter">
+              <div class="adapter-info">
+                <h3>flowbite</h3>
+                <p>
+                  The Flowbite look on Tailwind&rsquo;s own <code>--color-*</code> theme variables: override one in <code>@theme</code> and the skin follows. Defines the whole vocabulary.
+                </p>
+                <pre class="code code-inline"><code><span class="c-k">@plugin</span> <span class="c-s">"uniskin"</span> { adapter: <span class="c-s">"flowbite"</span>; }</code></pre>
+              </div>
+              <iframe
+                class="swatch-frame"
+                data-skin-frame
+                data-frame="swatches"
+                data-pin
+                src="frames/swatches.html?adapter=flowbite"
+                title="Flowbite skin preview"
+              ></iframe>
+            </article>
+            <article class="adapter">
+              <div class="adapter-info">
+                <h3>radix</h3>
+                <p>
+                  The Radix Themes look on its 12-step colour scales (<code>--blue-9</code> and friends), with <code>.dark</code> and <code>.dark-theme</code> support. Defines the whole vocabulary.
+                </p>
+                <pre class="code code-inline"><code><span class="c-k">@plugin</span> <span class="c-s">"uniskin"</span> { adapter: <span class="c-s">"radix"</span>; }</code></pre>
+              </div>
+              <iframe
+                class="swatch-frame"
+                data-skin-frame
+                data-frame="swatches"
+                data-pin
+                src="frames/swatches.html?adapter=radix"
+                title="Radix Themes skin preview"
               ></iframe>
             </article>
           </div>

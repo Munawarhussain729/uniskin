@@ -11,10 +11,13 @@
     "test": "vitest run && pnpm run test:e2e",
     "test:unit": "vitest run",
     "test:e2e": "playwright install chromium --only-shell || playwright install chromium; playwright test",
-    "pretest": "pnpm --filter uniskin --filter @uniskin/shadcn --filter @uniskin/daisyui build"
+    "pretest": "pnpm --filter uniskin --filter @uniskin/shadcn --filter @uniskin/daisyui --filter @uniskin/bootstrap --filter @uniskin/flowbite --filter @uniskin/radix build"
   },
   "dependencies": {
+    "@uniskin/bootstrap": "workspace:*",
     "@uniskin/daisyui": "workspace:*",
+    "@uniskin/flowbite": "workspace:*",
+    "@uniskin/radix": "workspace:*",
     "@uniskin/shadcn": "workspace:*",
     "uniskin": "workspace:*"
   },
