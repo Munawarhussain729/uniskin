@@ -60,7 +60,7 @@ git tag uniskin@<version> <version commit> && git push origin uniskin@<version>
 | 0.4.0 | v1.4 | `c6f81a3` | published |
 | 0.5.0 | v1.6 | `2399ba0` | versioned, not yet published |
 | 0.6.0 | v1.8 | `a137182` | versioned, not yet published |
-| 0.7.0 | v1.15 | see `git log -1 --grep "chore: version packages"` on the merge of the Version Packages PR #70 | versioned, not yet published |
+| 0.7.0 | v1.15 | `62e7d8c` | versioned, not yet published |
 
 Merging a Version Packages PR only versions a release. A GitHub Release
 appears when the tag is pushed, and the tag comes after the npm publish. To
