@@ -2,6 +2,8 @@
 
 One semantic class vocabulary, swappable Tailwind CSS v4 UI skins.
 
+**1.0:** the public surface is stable under semver ([policy](https://github.com/Munawarhussain729/uniskin/blob/main/docs/stability.md), [upgrading from 0.x](https://github.com/Munawarhussain729/uniskin/blob/main/docs/migrating.md)).
+
 [Live demo](https://uniskin-css.vercel.app) · [Skin builder](https://uniskin-css.vercel.app/builder/) · [GitHub](https://github.com/Munawarhussain729/uniskin)
 
 Write `ui-button ui-primary` once, in plain HTML, React, Vue, PHP or anything
@@ -40,7 +42,7 @@ npm install @uniskin/daisyui daisyui  # optional: daisyUI look
 
 Then add the `@plugin` line to your Tailwind entry CSS (see above).
 
-Requires **tailwindcss 4.3.3 or newer**.
+Requires **tailwindcss 4.3.3 or newer**, on Node 20 or 22.
 
 ## Plugin options
 
@@ -63,8 +65,8 @@ Requires **tailwindcss 4.3.3 or newer**.
 
 | Kind       | Classes |
 |------------|---------|
-| Components | `ui-button`, `ui-input`, `ui-textarea`, `ui-select`, `ui-checkbox`, `ui-radio`, `ui-switch`, `ui-field`, `ui-card`, `ui-badge`, `ui-alert`, `ui-modal`, `ui-tabs` |
-| Parts      | `ui-field-label`, `ui-field-hint`, `ui-field-error`, `ui-card-header`, `ui-card-body`, `ui-card-footer`, `ui-modal-box`, `ui-tab` |
+| Components | `ui-button`, `ui-input`, `ui-textarea`, `ui-select`, `ui-checkbox`, `ui-radio`, `ui-switch`, `ui-field`, `ui-card`, `ui-badge`, `ui-alert`, `ui-modal`, `ui-tabs`, `ui-table`, `ui-accordion`, `ui-progress`, `ui-tooltip`, `ui-toast`, `ui-dropdown`, `ui-menu`, `ui-avatar`, `ui-skeleton`, `ui-separator`, `ui-breadcrumb`, `ui-pagination`, `ui-slider` |
+| Parts      | `ui-field-label`, `ui-field-hint`, `ui-field-error`, `ui-card-header`, `ui-card-body`, `ui-card-footer`, `ui-modal-box`, `ui-tab`, `ui-table-wrap`, `ui-accordion-item`, `ui-accordion-trigger`, `ui-accordion-panel`, `ui-tooltip-anchor`, `ui-toast-region`, `ui-menu-item`, `ui-menu-label`, `ui-menu-separator`, `ui-pagination-item` |
 | Intent     | `ui-primary`, `ui-secondary`, `ui-success`, `ui-warning`, `ui-danger` |
 | Style      | `ui-outline`, `ui-ghost`, `ui-soft` (solid is the default) |
 | Size       | `ui-sm`, `ui-lg` (medium is the default) |
@@ -110,7 +112,9 @@ export default defineAdapter({
 @plugin "uniskin" { adapter: "./my-adapter.ts"; }
 ```
 
-`npx uniskin new-adapter <name>` scaffolds one. See the
+`npx uniskin new-adapter <name>` scaffolds one, and `checkAdapter` from
+`uniskin/conformance` reports which components and modifiers an adapter still
+leaves to the default skin. See the
 [adapter guide](https://github.com/Munawarhussain729/uniskin/blob/main/docs/writing-adapters.md).
 
 ## Documentation
@@ -119,6 +123,8 @@ export default defineAdapter({
 - [CLI reference](https://github.com/Munawarhussain729/uniskin/blob/main/docs/cli.md)
 - [Vocabulary reference](https://github.com/Munawarhussain729/uniskin/blob/main/docs/vocabulary.md)
 - [Writing adapters](https://github.com/Munawarhussain729/uniskin/blob/main/docs/writing-adapters.md)
+- [Stability and support policy](https://github.com/Munawarhussain729/uniskin/blob/main/docs/stability.md)
+- [Upgrading to 1.0](https://github.com/Munawarhussain729/uniskin/blob/main/docs/migrating.md)
 - [Changelog](https://github.com/Munawarhussain729/uniskin/blob/main/packages/uniskin/CHANGELOG.md)
 
 ## License

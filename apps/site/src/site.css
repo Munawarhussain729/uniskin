@@ -161,19 +161,6 @@ h1, h2, h3 { line-height: 1.15; }
   margin: 0 0 2rem;
 }
 
-.release-note {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  color: var(--accent);
-  background: var(--accent-soft);
-  border: 1px solid var(--accent);
-  border-radius: 4px;
-  padding: 0.45rem 0.9rem;
-  margin: 0 0 1rem;
-}
-.release-note[hidden] { display: none; }
-
 /* ---------- code blocks ---------- */
 
 .code {

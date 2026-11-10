@@ -2,4 +2,4 @@
 @plugin "uniskin" { adapter: "shadcn"; }
 
 @source "../frames";
-@source "../../docs/vocabulary.md";
+@source "../../../docs/vocabulary.md";

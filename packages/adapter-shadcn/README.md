@@ -30,11 +30,14 @@ and add the `@plugin` line shown above to your Tailwind v4 entry CSS.
 
 Requires **tailwindcss 4.3.3 or newer** and the `uniskin` core package.
 
+**1.0:** stable under semver; this adapter depends on `uniskin` at `^1.0.0`.
+
 ## What you get
 
 - Every uniskin component restyled with shadcn's neutral palette, radius and
-  focus ring: button, input, textarea, select, checkbox, radio, switch, field,
-  card, badge, alert, modal and tabs.
+  focus ring: the whole vocabulary,
+  from buttons and form controls to tables, accordions, tooltips, toasts, menus,
+  pagination and sliders.
 - A dark palette, active with `.dark`, `[data-theme="dark"]` or
   `prefers-color-scheme: dark`.
 - Form-control boundaries and error text tuned to meet WCAG contrast

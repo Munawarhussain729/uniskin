@@ -34,11 +34,13 @@ not.
 
 Requires **tailwindcss 4.3.3 or newer** and the `uniskin` core package.
 
+**1.0:** stable under semver; this adapter depends on `uniskin` at `^1.0.0`.
+
 ## What you get
 
-- Every uniskin component restyled from daisyUI's theme tokens: button, input,
-  textarea, select, checkbox, radio, switch, field, card, badge, alert, modal
-  and tabs.
+- Every uniskin component restyled from daisyUI's theme tokens: the whole vocabulary,
+  from buttons and form controls to tables, accordions, tooltips, toasts, menus,
+  pagination and sliders.
 - Your daisyUI themes apply automatically: tokens re-resolve on every
   `[data-theme]` element, so switching themes just works.
 - Form-control boundaries and error text tuned to meet WCAG contrast

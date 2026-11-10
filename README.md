@@ -2,7 +2,11 @@
 
 One class vocabulary, swappable Tailwind CSS v4 skins.
 
-**[Live demo](https://uniskin-css.vercel.app)** · **[Skin builder](https://uniskin-css.vercel.app/builder/)** · [npm](https://www.npmjs.com/package/uniskin) · [Docs](docs/getting-started.md)
+[![npm](https://img.shields.io/npm/v/uniskin?label=npm)](https://www.npmjs.com/package/uniskin) [![license](https://img.shields.io/npm/l/uniskin)](LICENSE)
+
+**1.0 is out.** The class vocabulary, the plugin options, the adapter interface and the CLI are stable under semver; breaking them needs 2.0. See the [stability and support policy](docs/stability.md) and, if you are coming from 0.x, [upgrading to 1.0](docs/migrating.md).
+
+**[Live demo](https://uniskin-css.vercel.app)** · **[Skin builder](https://uniskin-css.vercel.app/builder/)** · [npm](https://www.npmjs.com/package/uniskin) · [Docs](docs/getting-started.md) · [Changelog](packages/uniskin/CHANGELOG.md)
 
 ![The same Project settings markup rendered by the default, shadcn and daisyUI adapters](docs/assets/social-preview.png)
 
@@ -68,7 +72,7 @@ Prefix is `ui-` by default; change it with `prefix: "uk"` → `uk-button`.
   `ui-active` ⇔ `[aria-selected="true"]`/`[aria-pressed="true"]`.
 - Every interactive component has `:focus-visible` styling.
 
-Status: the full vocabulary ships in the default skin. The shadcn and
+Status: stable (1.0). The full vocabulary ships in the default skin. The shadcn and
 daisyUI adapters restyle every component; slots they don't define fall
 back to the default skin. Per-component markup, modifiers, native-attribute
 equivalents and accessibility notes: [docs/vocabulary.md](docs/vocabulary.md).
@@ -118,7 +122,8 @@ interface and the `--ui-c` composition model.
 ## Pairing with JS behaviour
 
 Uniskin is CSS-only. For interactive behaviour pair it with native
-`<dialog>` (`ui-modal` styles it), Alpine.js (`x-show` + `ui-*` classes),
+`<dialog>` (`ui-modal` styles it, and as a drawer with `data-placement`), native
+`<details>` (`ui-accordion`, `ui-dropdown`), Alpine.js (`x-show` + `ui-*` classes),
 or a headless library like Radix/Ark UI — their unstyled components take
 `ui-*` classes directly.
 
@@ -126,6 +131,7 @@ or a headless library like Radix/Ark UI — their unstyled components take
 
 - `packages/uniskin` — the plugin, default theme, adapter interface
 - `packages/adapter-shadcn`, `packages/adapter-daisyui` — adapters
+- `apps/site` — the home page and the skin builder
 - `apps/playground` — Vite demo + manual test (`pnpm dev` in there)
 - `docs/` — decisions, adapter guide, [stability and support policy](docs/stability.md), [upgrading to 1.0](docs/migrating.md)
 
