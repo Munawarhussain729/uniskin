@@ -280,9 +280,18 @@ importers:
 
   apps/site:
     dependencies:
+      '@uniskin/bootstrap':
+        specifier: workspace:*
+        version: link:../../packages/adapter-bootstrap
       '@uniskin/daisyui':
         specifier: workspace:*
         version: link:../../packages/adapter-daisyui
+      '@uniskin/flowbite':
+        specifier: workspace:*
+        version: link:../../packages/adapter-flowbite
+      '@uniskin/radix':
+        specifier: workspace:*
+        version: link:../../packages/adapter-radix
       '@uniskin/shadcn':
         specifier: workspace:*
         version: link:../../packages/adapter-shadcn

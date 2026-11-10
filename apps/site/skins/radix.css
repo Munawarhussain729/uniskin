@@ -1,0 +1,5 @@
+@import "tailwindcss" source(none);
+@plugin "uniskin" { adapter: "radix"; }
+
+@source "../frames";
+@source "../../../docs/vocabulary.md";

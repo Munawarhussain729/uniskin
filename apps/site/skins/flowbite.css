@@ -1,0 +1,5 @@
+@import "tailwindcss" source(none);
+@plugin "uniskin" { adapter: "flowbite"; }
+
+@source "../frames";
+@source "../../../docs/vocabulary.md";

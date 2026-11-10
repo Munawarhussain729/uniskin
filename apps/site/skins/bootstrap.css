@@ -1,0 +1,5 @@
+@import "tailwindcss" source(none);
+@plugin "uniskin" { adapter: "bootstrap"; }
+
+@source "../frames";
+@source "../../../docs/vocabulary.md";
