@@ -80,6 +80,7 @@ const COMPONENTS: Record<string, Slots> = {
   breadcrumb: { sizes: true },
   pagination: { intents: true, sizes: true },
   "pagination-item": { states: ["disabled", "active"] },
+  slider: { intents: true, sizes: true, states: ["disabled"] },
 };
 
 const cssCache = new Map<string, string>();
@@ -965,6 +966,28 @@ describe("ui-modal as a drawer (roadmap 0.8.0)", () => {
     expect(ruleBlock(skin("default"), ".ui-modal")).toMatch(
       /prefers-reduced-motion: reduce\)\s*\{[^}]*transition: none[^}]*\[data-placement\] > \.ui-modal-box[^}]*transition: none/s,
     );
+  });
+});
+
+describe("ui-slider (roadmap 0.8.0)", () => {
+  it("styles the track and the thumb for both WebKit/Blink and Firefox", () => {
+    const sl = ruleBlock(skin("default"), ".ui-slider");
+    for (const part of ["-webkit-slider-runnable-track", "-moz-range-track", "-webkit-slider-thumb", "-moz-range-thumb"])
+      expect(sl, part).toContain(`::${part}`);
+  });
+
+  it("paints the fill from --ui-slider-fill, defaulting to empty", () => {
+    expect(ruleBlock(skin("default"), ".ui-slider")).toContain("var(--ui-slider-fill, 0%)");
+  });
+
+  it("keeps a keyboard focus ring", () => {
+    expect(ruleBlock(skin("default"), ".ui-slider")).toContain("&:focus-visible");
+  });
+
+  it('prefix: "uk" renames it', () => {
+    const css = compileWithFiles({ "index.html": '<input class="uk-slider uk-primary" type="range">' }, 'prefix: "uk";');
+    expect(css).toContain(".uk-slider");
+    expect(css).not.toMatch(/\.ui-/);
   });
 });
 

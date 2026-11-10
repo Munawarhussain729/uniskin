@@ -1,6 +1,6 @@
 # Vocabulary reference
 
-Every class in Uniskin vocabulary v1.14, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.15, grouped by component. The prefix is
 Every class in Uniskin vocabulary v1.12, grouped by component. The prefix is
 `ui-` by default — if you set `prefix: "uk"` in the `@plugin` options,
 read every `ui-*` class below as `uk-*`.
@@ -783,6 +783,33 @@ A row of page links. Put the class on the `<ul>`; items go on the links.
   Next visible text (an icon-only label that differs from its visible text
   fails WCAG 2.5.3). Compute the page window and the ellipsis yourself.
 
+### `ui-slider`
+
+A native `<input type="range">`, so the keyboard, the value, `min`, `max`,
+`step` and the accessible role come from the browser.
+
+```html
+<input class="ui-slider ui-primary" type="range" min="0" max="100" value="40"
+       aria-label="Volume" style="--ui-slider-fill: 40%">
+```
+
+- **Intents:** the thumb and the filled part of the track. With no intent
+  they use the text colour, so the control is always visible.
+- **Sizes:** `ui-sm`, `ui-lg` (track and thumb).
+- **State:** `ui-disabled` (also `:disabled`) dims it.
+- **The filled track needs one line of script.** WebKit and Blink cannot
+  style the progress side of a range track, so Uniskin paints it from
+  `--ui-slider-fill`, a percentage. Set it from the value:
+  `oninput="this.style.setProperty('--ui-slider-fill', (this.value - this.min) / (this.max - this.min) * 100 + '%')"`.
+  Without it the track is unfilled and the thumb alone shows the value,
+  which is still fully usable.
+- **Hooks:** `--ui-slider-fill`, `--ui-slider-color`, `--ui-slider-track-bg`,
+  `--ui-slider-track` (track height), `--ui-slider-thumb` (thumb size).
+- **Consumer provides:** an accessible name (`aria-label` or a `<label>`),
+  and the visible value if the user needs to read it (an `<output>`). It
+  does not style `<input type="range" orient="vertical">` or a two-thumb
+  range.
+
 ## Coverage matrix
 
 Supported modifiers in the built-in default skin (adapters may cover
@@ -833,6 +860,7 @@ fewer — anything omitted falls back to the default):
 | `ui-breadcrumb`  | — | — | ✓ | — |
 | `ui-pagination`  | ✓ | — | ✓ | — |
 | `ui-pagination-item` | — | — | — | disabled active |
+| `ui-slider`      | ✓ | — | ✓ | disabled |
 
 ## Accessibility
 

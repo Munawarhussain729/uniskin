@@ -62,6 +62,29 @@ const focusRing: CssRuleObject = {
   "outline-offset": "2px",
 };
 
+/* ---- slider: pseudo-element parts shared by WebKit/Blink and Firefox ---- */
+
+const sliderFillGradient =
+  "linear-gradient(to right, var(--ui-slider-color, var(--ui-c-text)) var(--ui-slider-fill, 0%), var(--ui-slider-track-bg, var(--ui-surface-muted)) var(--ui-slider-fill, 0%))";
+
+const sliderTrack: CssRuleObject = {
+  height: "var(--ui-slider-track, 0.375rem)",
+  "border-radius": "9999px",
+  "background-color": "transparent",
+  "background-image": sliderFillGradient,
+};
+
+const sliderThumb: CssRuleObject = {
+  "box-sizing": "border-box",
+  width: "var(--ui-slider-thumb, 1.25rem)",
+  height: "var(--ui-slider-thumb, 1.25rem)",
+  "border-radius": "9999px",
+  border: "2px solid var(--ui-surface)",
+  "background-color": "var(--ui-slider-color, var(--ui-c-text))",
+  "box-shadow": "0 0 0 1px var(--ui-slider-color, var(--ui-c-text))",
+  cursor: "pointer",
+};
+
 /* ---- text fields (input / textarea / select) ---- */
 
 const fieldBase: CssRuleObject = {
@@ -1741,6 +1764,46 @@ export const defaultAdapter = defineAdapter({
           "border-color": "var(--ui-c)",
           "&:hover": { "background-color": "var(--ui-c)" },
         },
+      },
+    },
+    /* ui-slider: a native <input type="range">. The filled part of the track
+       is painted from --ui-slider-fill (a percentage the consumer sets, for
+       example style="--ui-slider-fill: 40%"), because WebKit and Blink cannot
+       style the progress side of the track natively. */
+    slider: {
+      base: {
+        "--ui-c": "var(--ui-neutral)",
+        "--ui-c-text": "var(--ui-surface-fg)",
+        "--ui-on-c": "var(--ui-neutral-fg)",
+        "--ui-c-soft": "var(--ui-neutral-soft)",
+        "--ui-c-soft-fg": "var(--ui-neutral-soft-fg)",
+        appearance: "none",
+        "-webkit-appearance": "none",
+        display: "block",
+        width: "100%",
+        height: "var(--ui-slider-thumb, 1.25rem)",
+        margin: "0",
+        padding: "0",
+        "background-color": "transparent",
+        cursor: "pointer",
+        "&::-webkit-slider-runnable-track": sliderTrack,
+        "&::-moz-range-track": sliderTrack,
+        "&::-webkit-slider-thumb": {
+          "-webkit-appearance": "none",
+          appearance: "none",
+          "margin-top": "calc((var(--ui-slider-track, 0.375rem) - var(--ui-slider-thumb, 1.25rem)) / 2)",
+          ...sliderThumb,
+        },
+        "&::-moz-range-thumb": sliderThumb,
+        "&:focus-visible": { outline: "2px solid var(--ui-ring)", "outline-offset": "4px", "border-radius": "9999px" },
+      },
+      intents,
+      sizes: {
+        sm: { "--ui-slider-track": "0.25rem", "--ui-slider-thumb": "1rem" },
+        lg: { "--ui-slider-track": "0.5rem", "--ui-slider-thumb": "1.5rem" },
+      },
+      states: {
+        disabled: { opacity: "0.45", cursor: "not-allowed" },
       },
     },
     modal: {

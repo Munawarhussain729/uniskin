@@ -71,5 +71,6 @@ export const COVERAGE: Record<ComponentName, Coverage> = {
   breadcrumb: { ...NONE, sizes: SIZES },
   pagination: { ...NONE, intents: INTENTS, sizes: SIZES },
   "pagination-item": { ...NONE, states: ["disabled", "active"] },
+  slider: { ...NONE, intents: INTENTS, sizes: SIZES, states: ["disabled"] },
   progress: { ...NONE, intents: INTENTS, styles: ["outline", "ghost"], sizes: SIZES },
 };
