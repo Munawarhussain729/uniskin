@@ -127,7 +127,7 @@ or a headless library like Radix/Ark UI — their unstyled components take
 - `packages/uniskin` — the plugin, default theme, adapter interface
 - `packages/adapter-shadcn`, `packages/adapter-daisyui` — adapters
 - `apps/playground` — Vite demo + manual test (`pnpm dev` in there)
-- `docs/` — decisions, adapter guide, [stability and support policy](docs/stability.md)
+- `docs/` — decisions, adapter guide, [stability and support policy](docs/stability.md), [upgrading to 1.0](docs/migrating.md)
 
 ## Development
 
