@@ -28,7 +28,7 @@ const ALLOWLIST: AllowEntry[] = [
   // ── Intentional exceptions (mirror the upstream design system) ────────────
   {
     adapters: ["shadcn"],
-    modes: ["light", "dark"],
+    modes: ["light"],
     rule: "color-contrast",
     selector: ".ui-button.ui-danger:not(.ui-outline):not(.ui-ghost):not(.ui-soft)",
     kind: "upstream",
@@ -125,7 +125,7 @@ const ALLOWLIST: AllowEntry[] = [
   },
   {
     adapters: ["shadcn"],
-    modes: ["light", "dark"],
+    modes: ["light"],
     rule: "color-contrast",
     selector:
       ".ui-badge.ui-danger:not(.ui-outline):not(.ui-ghost):not(.ui-soft), " +
@@ -185,9 +185,10 @@ for (const adapter of ADAPTERS) {
       await openPlayground(page, adapter, mode);
       const results = await new AxeBuilder({ page }).analyze();
 
-      const allow = [...ALLOWLIST, ...INCOMPLETE_ALLOW]
-        .filter((a) => a.adapters.includes(adapter) && a.modes.includes(mode))
-        .map(({ rule, selector }) => ({ rule, selector }));
+      const applicable = [...ALLOWLIST, ...INCOMPLETE_ALLOW].filter(
+        (a) => a.adapters.includes(adapter) && a.modes.includes(mode),
+      );
+      const allow = applicable.map(({ rule, selector }) => ({ rule, selector }));
 
       // Resolve every result node target to its element; mark allowlist hits.
       const mark = (list: typeof results.violations) => {
@@ -208,6 +209,26 @@ for (const adapter of ADAPTERS) {
           }),
         { flat, allow },
       );
+      // An entry that suppresses nothing in a combination it lists is stale:
+      // remove it, or narrow its adapters and modes, so the list stays an
+      // exact record of the known exceptions.
+      const used = await page.evaluate(
+        ({ flat, allow }) =>
+          allow.map((a) =>
+            flat.some(({ rule, target }) => rule === a.rule && !!document.querySelector(target)?.matches(a.selector)),
+          ),
+        { flat, allow },
+      );
+      // The incomplete (indeterminate) list depends on where an animation is
+      // when axe samples it, so only the violation list is held to this.
+      const stale = applicable
+        .filter((a, i) => !used[i] && ALLOWLIST.includes(a))
+        .map((a) => `${a.rule} ${a.selector}`);
+      expect(stale, `allow-list entries that match nothing in ${adapter}/${mode}`).toEqual([]);
+      for (const a of applicable) {
+        expect(a.why.trim().length, `reason for ${a.selector}`).toBeGreaterThan(20);
+      }
+
       const hit = new Map<string, boolean>();
       flat.forEach((f, i) => hit.set(`${f.rule}${f.target}`, hits[i]));
 
