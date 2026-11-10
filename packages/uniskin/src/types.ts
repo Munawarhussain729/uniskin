@@ -104,6 +104,7 @@ export const VOCABULARY = [
   "breadcrumb",
   "pagination",
   "pagination-item",
+  "slider",
   "modal",
   "modal-box",
   "tabs",
