@@ -8,7 +8,7 @@ import { newAdapter } from "./new-adapter.js";
 const HELP = `uniskin - set up the Uniskin Tailwind v4 plugin
 
 Usage:
-  uniskin init [--adapter default|shadcn|daisyui|bootstrap] [--css <path>] [--yes] [--dry-run]
+  uniskin init [--adapter default|shadcn|daisyui|bootstrap|flowbite] [--css <path>] [--yes] [--dry-run]
   uniskin new-adapter <name> [--file]
 
 init         Install packages and add the @plugin line to your Tailwind CSS.

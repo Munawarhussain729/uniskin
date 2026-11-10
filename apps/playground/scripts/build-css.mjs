@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const adapters = ["default", "shadcn", "daisyui", "bootstrap"];
+const adapters = ["default", "shadcn", "daisyui", "bootstrap", "flowbite"];
 
 mkdirSync(join(root, "public/adapters"), { recursive: true });
 

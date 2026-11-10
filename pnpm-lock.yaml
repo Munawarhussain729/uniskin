@@ -237,6 +237,9 @@ importers:
       '@uniskin/daisyui':
         specifier: workspace:*
         version: link:../../packages/adapter-daisyui
+      '@uniskin/flowbite':
+        specifier: workspace:*
+        version: link:../../packages/adapter-flowbite
       '@uniskin/shadcn':
         specifier: workspace:*
         version: link:../../packages/adapter-shadcn
@@ -326,6 +329,18 @@ importers:
       daisyui:
         specifier: ^5.0.0
         version: 5.7.50
+    devDependencies:
+      tailwindcss:
+        specifier: ^4.3.5
+        version: 4.3.5
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      uniskin:
+        specifier: workspace:*
+        version: link:../uniskin
+
+  packages/adapter-flowbite:
     devDependencies:
       tailwindcss:
         specifier: ^4.3.5

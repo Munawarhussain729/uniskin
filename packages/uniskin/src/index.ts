@@ -30,7 +30,7 @@ export interface UniskinOptions {
   debug?: boolean;
 }
 
-const BUILTIN_ADAPTERS = new Set(["default", "shadcn", "daisyui", "bootstrap"]);
+const BUILTIN_ADAPTERS = new Set(["default", "shadcn", "daisyui", "bootstrap", "flowbite"]);
 
 function isDebug(option: unknown): boolean {
   if (option === true || option === "true") return true;

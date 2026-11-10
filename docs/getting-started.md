@@ -18,6 +18,7 @@ pnpm add uniskin            # core plugin + built-in default skin
 pnpm add @uniskin/shadcn    # optional: shadcn/ui skin
 pnpm add @uniskin/daisyui   # optional: daisyUI skin
 pnpm add @uniskin/bootstrap  # optional: Bootstrap 5.3 skin
+pnpm add @uniskin/flowbite   # optional: Flowbite skin
 ```
 
 Only `uniskin` is required. `@uniskin/daisyui` works standalone — installing
@@ -40,7 +41,7 @@ In your Tailwind entry CSS:
 `adapter` accepts:
 
 - `"default"` — the built-in skin (also the value when the option is omitted);
-- `"shadcn"`, `"daisyui"` or `"bootstrap"` — the published adapters;
+- `"shadcn"`, `"daisyui"`, `"bootstrap"` or `"flowbite"` — the published adapters;
 - any package name — shorthand resolves `name`, `@uniskin/name`, then
   `uniskin-adapter-name`;
 - a path like `"./my-adapter.js"` — resolved **relative to the stylesheet

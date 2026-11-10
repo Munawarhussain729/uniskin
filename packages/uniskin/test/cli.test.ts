@@ -104,6 +104,14 @@ describe("init: adapters", () => {
     expect(read(css)).toContain('@plugin "uniskin" { adapter: "bootstrap"; }');
   });
 
+  it("flowbite adds the adapter and no extra library", async () => {
+    const css = project(root);
+    const h = harness();
+    await main(["init", "--adapter", "flowbite"], h.io, root);
+    expect(h.runs[0]!.args).toEqual(["install", "uniskin", "@uniskin/flowbite"]);
+    expect(read(css)).toContain('@plugin "uniskin" { adapter: "flowbite"; }');
+  });
+
   it("skips packages already declared", async () => {
     project(root, { deps: { uniskin: "^0.1.0" } });
     const h = harness();

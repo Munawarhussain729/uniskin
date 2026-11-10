@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 
-export const ADAPTERS = ["default", "shadcn", "daisyui", "bootstrap"] as const;
+export const ADAPTERS = ["default", "shadcn", "daisyui", "bootstrap", "flowbite"] as const;
 export type Adapter = (typeof ADAPTERS)[number];
 export const MODES = ["light", "dark"] as const;
 export type Mode = (typeof MODES)[number];
