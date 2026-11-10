@@ -943,6 +943,9 @@ describe("ui-breadcrumb / ui-pagination (roadmap 0.8.0)", () => {
     );
     for (const c of [".uk-breadcrumb", ".uk-pagination", ".uk-pagination-item"]) expect(css).toContain(c);
     expect(css).not.toMatch(/\.ui-/);
+  });
+});
+
 describe("ui-modal as a drawer (roadmap 0.8.0)", () => {
   for (const adapter of ADAPTERS) {
     it(`${adapter}: data-placement docks the box to each edge and slides it in`, () => {
