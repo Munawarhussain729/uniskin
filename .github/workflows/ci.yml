@@ -154,7 +154,7 @@ jobs:
       - name: Pack publishable packages
         run: |
           mkdir -p "$RUNNER_TEMP/tarballs"
-          for pkg in uniskin adapter-shadcn adapter-daisyui adapter-bootstrap; do
+          for pkg in uniskin adapter-shadcn adapter-daisyui adapter-bootstrap adapter-flowbite; do
             (cd "packages/$pkg" && pnpm pack --pack-destination "$RUNNER_TEMP/tarballs")
           done
           ls -la "$RUNNER_TEMP/tarballs"
@@ -170,7 +170,7 @@ jobs:
               "|---|---:|---:|---:|",
             ];
             const kib = (n) => `${(n / 1024).toFixed(1)} KiB`;
-            for (const dir of ["uniskin", "adapter-shadcn", "adapter-daisyui", "adapter-bootstrap"]) {
+            for (const dir of ["uniskin", "adapter-shadcn", "adapter-daisyui", "adapter-bootstrap", "adapter-flowbite"]) {
               const out = execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], { cwd: `packages/${dir}`, encoding: "utf8" });
               const p = JSON.parse(out)[0];
               lines.push(`| ${p.name}@${p.version} | ${p.entryCount} | ${kib(p.size)} | ${kib(p.unpackedSize)} |`);
@@ -190,7 +190,7 @@ jobs:
           SCRATCH="$RUNNER_TEMP/uniskin-install-check"
           cd "$SCRATCH"
           printf '<button class="ui-button ui-primary ui-outline ui-sm">Save</button>\n' > index.html
-          for adapter in default shadcn daisyui bootstrap; do
+          for adapter in default shadcn daisyui bootstrap flowbite; do
             printf '@import "tailwindcss";\n@plugin "uniskin" { adapter: "%s"; }\n@source "./index.html";\n' "$adapter" > "input-$adapter.css"
             ./node_modules/.bin/tailwindcss -i "input-$adapter.css" -o "output-$adapter.css"
             grep -q '.ui-button.ui-primary' "output-$adapter.css"

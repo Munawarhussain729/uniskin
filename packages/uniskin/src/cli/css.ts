@@ -1,7 +1,7 @@
 import { stripComments } from "./project.js";
 
-export type AdapterChoice = "default" | "shadcn" | "daisyui" | "bootstrap";
-export const ADAPTERS: readonly AdapterChoice[] = ["default", "shadcn", "daisyui", "bootstrap"];
+export type AdapterChoice = "default" | "shadcn" | "daisyui" | "bootstrap" | "flowbite";
+export const ADAPTERS: readonly AdapterChoice[] = ["default", "shadcn", "daisyui", "bootstrap", "flowbite"];
 
 /** Packages each adapter choice needs in the project. */
 export const ADAPTER_PACKAGES: Record<AdapterChoice, string[]> = {
@@ -13,6 +13,9 @@ export const ADAPTER_PACKAGES: Record<AdapterChoice, string[]> = {
   // Bootstrap is optional: the adapter carries Bootstrap's own values as
   // fallbacks, and follows --bs-* when Bootstrap's stylesheet is also loaded.
   bootstrap: ["uniskin", "@uniskin/bootstrap"],
+  // Flowbite is Tailwind utilities: the adapter reads Tailwind's --color-* theme
+  // variables with the palette values as fallbacks, so no extra library.
+  flowbite: ["uniskin", "@uniskin/flowbite"],
 };
 
 /** The `@plugin` lines for a choice. Only the documented `adapter` option is used. */
@@ -26,6 +29,8 @@ export function pluginLines(adapter: AdapterChoice): string[] {
       return ['@plugin "daisyui";', '@plugin "uniskin" { adapter: "daisyui"; }'];
     case "bootstrap":
       return ['@plugin "uniskin" { adapter: "bootstrap"; }'];
+    case "flowbite":
+      return ['@plugin "uniskin" { adapter: "flowbite"; }'];
   }
 }
 

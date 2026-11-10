@@ -90,7 +90,7 @@ export async function init(opts: InitOptions, io: Io): Promise<number> {
   if (adapter === undefined) {
     if (opts.yes) adapter = "default";
     else if (io.select) adapter = (await io.select("Which adapter do you want?", [...ADAPTERS])) as AdapterChoice;
-    else throw new CliError("Not an interactive terminal: pass --adapter <default|shadcn|daisyui|bootstrap> or --yes.");
+    else throw new CliError("Not an interactive terminal: pass --adapter <default|shadcn|daisyui|bootstrap|flowbite> or --yes.");
   }
 
   const pm = detectPackageManager(cwd);
