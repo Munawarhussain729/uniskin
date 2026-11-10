@@ -1,4 +1,4 @@
-import { ADAPTERS, RELEASED, type AdapterName } from "./config";
+import { ADAPTERS, type AdapterName } from "./config";
 import { buildExamples, KIND_LABEL, type Example } from "./examples";
 import vocabularyMd from "../../../docs/vocabulary.md?raw";
 import "./site.css";
@@ -208,9 +208,6 @@ document.getElementById("appearance")?.addEventListener("click", () => {
 });
 
 /* ---- install snippet ---- */
-
-const releaseNote = document.getElementById("release-note");
-if (releaseNote && !RELEASED) releaseNote.hidden = false;
 
 const copyBtn = document.getElementById("copy-install");
 copyBtn?.addEventListener("click", async () => {

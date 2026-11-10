@@ -62,8 +62,22 @@ MARKUP_OVERRIDES.dropdown = `<div style="min-height: 11.5rem">
   </div>
 </div>`;
 
+/* The toast region is fixed to the viewport corner, which clips it inside a
+   small frame, so the example makes it a static stack. The avatar example
+   uses a data-URI image because the docs' `ada.jpg` does not exist here. */
+MARKUP_OVERRIDES.toast = `<div class="ui-toast-region" role="region" aria-label="Notifications" style="position: static; width: auto; padding: 0">
+  <div class="ui-toast ui-success" role="status">
+    Saved.
+    <button class="ui-button ui-ghost ui-sm" aria-label="Dismiss">x</button>
+  </div>
+  <div class="ui-toast ui-danger" role="alert">Upload failed.</div>
+</div>`;
+MARKUP_OVERRIDES.avatar = `<span class="ui-avatar" role="img" aria-label="Ada Lovelace">AL</span>
+<span class="ui-avatar ui-lg ui-primary" role="img" aria-label="Grace Hopper">GH</span>
+<span class="ui-avatar ui-soft ui-success" role="img" aria-label="Linus">LT</span>`;
+
 /* Composites read better un-centered. */
-const BLOCK_LAYOUT = new Set(["card", "modal", "tabs", "dropdown"]);
+const BLOCK_LAYOUT = new Set(["card", "modal", "tabs", "dropdown", "toast"]);
 
 /** First doc paragraph under a heading, markdown formatting stripped. */
 function blurbOf(section: string): string {
