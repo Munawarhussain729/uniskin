@@ -207,6 +207,35 @@ Measured on the CI Node matrix (20 and 22):
 - Whatever Node cannot load is named — path and underlying cause — in
   the `Could not resolve adapter` error.
 
+## Checking an adapter
+
+Nothing in an adapter is required: whatever it leaves out falls back to the
+default style, so a partial adapter is valid. To see how far a port has got,
+`uniskin/conformance` compares an adapter with the documented coverage matrix:
+
+```ts
+import { checkAdapter } from "uniskin/conformance";
+import adapter from "./my-adapter.js";
+
+const report = checkAdapter(adapter);
+console.log(`${report.covered}/${report.total} combinations defined`);
+for (const m of report.missing) console.log(m.whole ? `${m.component} (all)` : `${m.component}: ${m.slots.join(", ")}`);
+if (report.unknownSlots.length) console.error("never emitted:", report.unknownSlots);
+```
+
+- `missing` lists each component the adapter does not define at all
+  (`whole: true`) or the modifiers it lacks (`slots`).
+- An intent counts as covered when the adapter remaps its token
+  (`--ui-primary`), because the default intent rule picks the variable up.
+- `unknownSlots` lists keys outside the closed modifier sets (a
+  `styles: { classic: ... }`, a misspelt `intent:`), which are never emitted.
+- `complete` is `true` only when both lists are empty. Use it in a test if you
+  want a port to stay complete as the vocabulary grows; leave it out if
+  falling back is fine.
+
+The check is a plain function over the adapter object, so it runs in any test
+runner and needs no Tailwind.
+
 ## Publishing an adapter
 
 - Package it as anything resolvable (`@scope/name`, `uniskin-adapter-x`).
