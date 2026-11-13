@@ -231,7 +231,7 @@ additive minor changes; nothing in the 1.0 surface changes.
 
 | Item | Notes |
 |------|-------|
-| `ui-spinner` | A CSS-only busy indicator for places where `ui-loading` on a control does not fit. Intents and sizes, `role="status"` guidance, and a slow, non-rotating fallback under reduced motion. Defined in all six skins. Vocabulary v1.16. |
+| `ui-spinner` | A CSS-only busy indicator for places where `ui-loading` on a control does not fit. Intents and sizes, `role="status"` guidance, and a static ring under reduced motion (the emitter stops the rotation). Defined in all six skins. Vocabulary v1.16. |
 | `ui-popover` | A small anchored panel on the native Popover API (`popover` attribute), placed with `data-placement` like the tooltip and dropdown. It is the Escape-capable upgrade path that decision 11 promised. Defined in all six skins. Vocabulary v1.17. |
 
 Exit: each component passes the per-component checklist from ADR-003 (axe,
