@@ -221,6 +221,24 @@ Criteria, all required:
 After 1.0.0, vocabulary additions are minor releases and fixes are
 patches, per semver.
 
+## After 1.0
+
+### 1.2.0: spinner and popover (in progress)
+
+1.1.0 added the Bootstrap, Flowbite and Radix Themes adapters. 1.2.0 finishes
+the components left in the "Deliberately deferred" list of ADR-003. Both are
+additive minor changes; nothing in the 1.0 surface changes.
+
+| Item | Notes |
+|------|-------|
+| `ui-spinner` | A CSS-only busy indicator for places where `ui-loading` on a control does not fit. Intents and sizes, `role="status"` guidance, and a static ring under reduced motion (the emitter stops the rotation). Defined in all six skins. Vocabulary v1.16. |
+| `ui-popover` | A small anchored panel on the native Popover API (`popover` attribute), placed with `data-placement` like the tooltip and dropdown. It is the Escape-capable upgrade path that decision 11 promised. Defined in all six skins. Vocabulary v1.17. |
+
+Exit: each component passes the per-component checklist from ADR-003 (axe,
+reduced motion, `prefix: "uk"` smoke test, screenshots at 360, 768 and 1280 px
+in light and dark); every adapter keeps `checkAdapter` at full coverage; the
+Version Packages PR is merged. Publishing stays the owner's step.
+
 ## Risks
 
 - **Menus (0.7.0)** are the likeliest to slip: they carry the most JS and
