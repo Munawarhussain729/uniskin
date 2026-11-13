@@ -52,6 +52,9 @@ const alertIntent = {
  * See docs/decisions/001-daisyui-adapter.md for why we map variables
  * instead of @apply-ing daisyUI's component classes.
  */
+/* the arc already follows the intent colour; stating it makes the slot explicit */
+const spinnerIntent = { "--ui-spinner-color": "var(--ui-c-text)" };
+
 export default defineAdapter({
   name: "daisyui",
   /* the --ui-* tokens are var() aliases of daisyUI's theme variables; re-declare
@@ -203,6 +206,21 @@ export default defineAdapter({
       },
     },
     skeleton: { base: { "--ui-skeleton-bg": "var(--color-base-300, oklch(95% 0 0))", "border-radius": "var(--radius-box, 1rem)" } },
+    /* daisyUI loading-spinner: 1.5rem; xs 1rem; lg 2.5rem */
+    spinner: {
+      base: { "--ui-spinner-size": "1.5rem", "--ui-spinner-width": "2px" },
+      intents: {
+        primary: spinnerIntent,
+        secondary: spinnerIntent,
+        success: spinnerIntent,
+        warning: spinnerIntent,
+        danger: spinnerIntent,
+      },
+      sizes: {
+        sm: { "--ui-spinner-size": "1rem", "--ui-spinner-width": "2px" },
+        lg: { "--ui-spinner-size": "2.5rem", "--ui-spinner-width": "3px" },
+      },
+    },
     tooltip: {
       base: {
         /* daisy tooltip-content: neutral fill, neutral-content text, rounded-field */

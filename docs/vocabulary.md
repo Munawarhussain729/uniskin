@@ -1,6 +1,6 @@
 # Vocabulary reference
 
-Every class in Uniskin vocabulary v1.15, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.16, grouped by component. The prefix is
 Every class in Uniskin vocabulary v1.12, grouped by component. The prefix is
 `ui-` by default — if you set `prefix: "uk"` in the `@plugin` options,
 read every `ui-*` class below as `uk-*`.
@@ -712,6 +712,27 @@ A placeholder block shown while content loads. It pulses, and stops under
   `aria-busy="true"` on the region that is loading, so screen readers
   hear the real content when it arrives rather than empty boxes.
 
+### `ui-spinner`
+
+A busy indicator: a ring with a coloured arc that rotates. Use it where
+`ui-loading` on a control does not fit, such as a page section or a
+button label you build yourself.
+
+```html
+<span class="ui-spinner ui-primary" role="status" aria-label="Loading"></span>
+```
+
+- **Modifiers:** the five intents colour the arc; `ui-sm` and `ui-lg` set
+  the size. There are no style or state modifiers.
+- **Hooks:** `--ui-spinner-size`, `--ui-spinner-width`,
+  `--ui-spinner-color`, `--ui-spinner-track`.
+- **Reduced motion:** the rotation stops and the ring stays as a static
+  mark, so pair it with text when the wait matters.
+- **Consumer provides:** `role="status"` and an accessible name
+  (`aria-label` or visible text next to it), or hide a purely decorative
+  one with `aria-hidden="true"` inside a region that carries
+  `aria-busy="true"`.
+
 ### `ui-separator`
 
 A 1px rule. Horizontal by default; vertical with `aria-orientation="vertical"`
@@ -856,6 +877,7 @@ fewer — anything omitted falls back to the default):
 | `ui-menu-separator` | — | — | — | — |
 | `ui-avatar`      | ✓ | outline soft | ✓ | — |
 | `ui-skeleton`    | — | — | — | — |
+| `ui-spinner`     | ✓ | — | ✓ | — |
 | `ui-separator`   | — | — | — | — |
 | `ui-breadcrumb`  | — | — | ✓ | — |
 | `ui-pagination`  | ✓ | — | ✓ | — |

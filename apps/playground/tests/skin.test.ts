@@ -80,6 +80,7 @@ const COMPONENTS: Record<string, Slots> = {
   "menu-separator": {},
   avatar: { intents: true, styles: ["outline", "soft"], sizes: true },
   skeleton: {},
+  spinner: { intents: true, sizes: true },
   separator: {},
   breadcrumb: { sizes: true },
   pagination: { intents: true, sizes: true },
@@ -917,6 +918,28 @@ describe("ui-avatar / ui-skeleton / ui-separator (roadmap 0.8.0)", () => {
       'prefix: "uk";',
     );
     for (const c of [".uk-avatar", ".uk-skeleton", ".uk-separator", "uk-pulse"]) expect(css).toContain(c);
+    expect(css).not.toMatch(/\.ui-/);
+  });
+});
+
+describe("ui-spinner (roadmap 1.2.0)", () => {
+  it("rotates, takes its arc colour from the intent, and sizes only set variables", () => {
+    const css = skin("default");
+    const sp = ruleBlock(css, ".ui-spinner");
+    expect(sp).toContain("ui-spin");
+    expect(sp).toContain("border-top-color");
+    expect(ruleBlock(css, ".ui-spinner.ui-lg")).toContain("--ui-spinner-size");
+    expect(ruleBlock(css, ".ui-spinner.ui-lg")).not.toMatch(/(^|\s)(width|height):/);
+  });
+
+  it("stops rotating under reduced motion", () => {
+    expect(ruleBlock(skin("default"), ".ui-spinner")).toMatch(/prefers-reduced-motion: reduce\)\s*\{[^}]*animation: none/);
+  });
+
+  it('prefix: "uk" renames the class and the spin keyframes', () => {
+    const css = compileWithFiles({ "index.html": '<span class="uk-spinner uk-primary"></span>' }, 'prefix: "uk";');
+    expect(css).toContain(".uk-spinner");
+    expect(css).toContain("uk-spin");
     expect(css).not.toMatch(/\.ui-/);
   });
 });

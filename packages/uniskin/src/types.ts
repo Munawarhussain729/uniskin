@@ -100,6 +100,7 @@ export const VOCABULARY = [
   "menu-separator",
   "avatar",
   "skeleton",
+  "spinner",
   "separator",
   "breadcrumb",
   "pagination",

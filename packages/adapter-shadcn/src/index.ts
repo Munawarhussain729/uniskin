@@ -64,6 +64,9 @@ const uiMap = {
  * onto them. Users can re-theme by overriding the shadcn variables they
  * already know.
  */
+/* the arc already follows the intent colour; stating it makes the slot explicit */
+const spinnerIntent = { "--ui-spinner-color": "var(--ui-c-text)" };
+
 export default defineAdapter({
   name: "shadcn",
   darkTokens: {
@@ -271,6 +274,21 @@ export default defineAdapter({
       },
     },
     skeleton: { base: { "--ui-skeleton-bg": "hsl(var(--accent))", "border-radius": "calc(var(--ui-radius) - 2px)" } },
+    /* shadcn spinner (Loader2): 1rem icon, 2px ring */
+    spinner: {
+      base: { "--ui-spinner-size": "1rem", "--ui-spinner-width": "2px" },
+      intents: {
+        primary: spinnerIntent,
+        secondary: spinnerIntent,
+        success: spinnerIntent,
+        warning: spinnerIntent,
+        danger: spinnerIntent,
+      },
+      sizes: {
+        sm: { "--ui-spinner-size": "0.75rem", "--ui-spinner-width": "2px" },
+        lg: { "--ui-spinner-size": "1.5rem", "--ui-spinner-width": "3px" },
+      },
+    },
     tooltip: {
       base: {
         /* shadcn TooltipContent: bg-primary text-primary-foreground

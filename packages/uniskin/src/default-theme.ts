@@ -1643,6 +1643,34 @@ export const defaultAdapter = defineAdapter({
         "@media (prefers-reduced-motion: reduce)": { animation: "none" },
       },
     },
+    /* ui-spinner: a busy indicator. A ring whose arc is the intent colour.
+       Give it role="status" and an accessible name (aria-label), or put it
+       inside a labelled region. Under reduced motion the emitter stops the
+       rotation; the arc stays visible, so it reads as a static ring. */
+    spinner: {
+      base: {
+        "--ui-c": "var(--ui-neutral)",
+        "--ui-c-text": "var(--ui-surface-fg)",
+        "--ui-on-c": "var(--ui-neutral-fg)",
+        "--ui-c-soft": "var(--ui-neutral-soft)",
+        "--ui-c-soft-fg": "var(--ui-neutral-soft-fg)",
+        display: "inline-block",
+        "box-sizing": "border-box",
+        "flex-shrink": "0",
+        width: "var(--ui-spinner-size, 1.5rem)",
+        height: "var(--ui-spinner-size, 1.5rem)",
+        "vertical-align": "middle",
+        "border-radius": "9999px",
+        border: "var(--ui-spinner-width, 2px) solid var(--ui-spinner-track, color-mix(in oklab, var(--ui-c-text) 20%, transparent))",
+        "border-top-color": "var(--ui-spinner-color, var(--ui-c-text))",
+        animation: "ui-spin 0.75s linear infinite",
+      },
+      intents,
+      sizes: {
+        sm: { "--ui-spinner-size": "1rem" },
+        lg: { "--ui-spinner-size": "2.25rem", "--ui-spinner-width": "3px" },
+      },
+    },
     /* ui-separator: a 1px rule, horizontal by default; vertical with
        aria-orientation="vertical" (or data-orientation="vertical") */
     separator: {

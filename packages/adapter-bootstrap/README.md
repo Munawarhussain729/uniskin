@@ -34,7 +34,7 @@ and add the `@plugin` line shown above to your Tailwind v4 entry CSS.
 
 - **The whole vocabulary.** Every component and every documented modifier is
   defined for Bootstrap, not left to the default skin: `checkAdapter` from
-  `uniskin/conformance` reports 297 of 297 combinations, from buttons, form
+  `uniskin/conformance` reports 305 of 305 combinations, from buttons, form
   controls, cards and alerts to tables, accordions, tooltips, toasts, dropdown
   menus, pagination, sliders and the modal as a drawer.
 - **Bootstrap's own values.** Palette, radii, spacing, type scale, hover

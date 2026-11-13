@@ -184,6 +184,9 @@ const alertIntent = {
   "&:not(.ui-soft):not(.ui-ghost)": { "border-color": "transparent" },
 };
 
+/* the arc already follows the intent colour; stating it makes the slot explicit */
+const spinnerIntent = { "--ui-spinner-color": "var(--ui-c-text)" };
+
 export default defineAdapter({
   name: "flowbite",
   darkTokens: dark,
@@ -446,6 +449,21 @@ export default defineAdapter({
     /* ---- skeleton: gray-200 / dark gray-700, animate-pulse ---------- */
     skeleton: {
       base: { "--ui-skeleton-bg": "var(--ui-surface-muted)", "border-radius": "9999px", height: "0.625rem" },
+    },
+    /* ---- spinner: 2rem, 3px ring (Flowbite's w-8 h-8) ---------------- */
+    spinner: {
+      base: { "--ui-spinner-size": "2rem", "--ui-spinner-width": "3px" },
+      intents: {
+        primary: spinnerIntent,
+        secondary: spinnerIntent,
+        success: spinnerIntent,
+        warning: spinnerIntent,
+        danger: spinnerIntent,
+      },
+      sizes: {
+        sm: { "--ui-spinner-size": "1.25rem", "--ui-spinner-width": "2px" },
+        lg: { "--ui-spinner-size": "3rem", "--ui-spinner-width": "4px" },
+      },
     },
 
     separator: {
