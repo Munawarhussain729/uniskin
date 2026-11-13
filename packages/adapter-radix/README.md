@@ -33,7 +33,7 @@ and add the `@plugin` line shown above to your Tailwind v4 entry CSS.
 
 - **The whole vocabulary.** Every component and every documented modifier is
   defined for Radix Themes, not left to the default skin: `checkAdapter` from
-  `uniskin/conformance` reports 297 of 297 combinations.
+  `uniskin/conformance` reports 305 of 305 combinations.
 - **Radix Themes' own look.** 32px buttons and text fields at size 2, the
   12px/14px/16px type scale, `radius-2` to `radius-4`, the surface Card, the
   soft Badge and Callout, the dark-gray Tooltip, DropdownMenu with its solid

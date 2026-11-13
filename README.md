@@ -53,13 +53,13 @@ file type it scans (HTML, JSX, Vue, PHP, …). If you keep templates in a
 file type Tailwind doesn't scan, add an explicit
 [`@source`](https://tailwindcss.com/docs/functions-and-directives#source-directive).
 
-## Vocabulary (v1.15)
+## Vocabulary (v1.16)
 
 Prefix is `ui-` by default; change it with `prefix: "uk"` → `uk-button`.
 
 | Kind       | Classes |
 |------------|---------|
-| Components | `ui-button`, `ui-input`, `ui-textarea`, `ui-select`, `ui-checkbox`, `ui-radio`, `ui-switch`, `ui-field`, `ui-card`, `ui-badge`, `ui-alert`, `ui-modal`, `ui-tabs`, `ui-table`, `ui-accordion`, `ui-progress`, `ui-tooltip`, `ui-toast`, `ui-dropdown`, `ui-menu`, `ui-avatar`, `ui-skeleton`, `ui-separator`, `ui-breadcrumb`, `ui-pagination`, `ui-slider` |
+| Components | `ui-button`, `ui-input`, `ui-textarea`, `ui-select`, `ui-checkbox`, `ui-radio`, `ui-switch`, `ui-field`, `ui-card`, `ui-badge`, `ui-alert`, `ui-modal`, `ui-tabs`, `ui-table`, `ui-accordion`, `ui-progress`, `ui-tooltip`, `ui-toast`, `ui-dropdown`, `ui-menu`, `ui-avatar`, `ui-skeleton`, `ui-spinner`, `ui-separator`, `ui-breadcrumb`, `ui-pagination`, `ui-slider` |
 | Parts      | `ui-field-label`, `ui-field-hint`, `ui-field-error`, `ui-card-header`, `ui-card-body`, `ui-card-footer`, `ui-modal-box`, `ui-tab`, `ui-table-wrap`, `ui-accordion-item`, `ui-accordion-trigger`, `ui-accordion-panel`, `ui-tooltip-anchor`, `ui-toast-region`, `ui-menu-item`, `ui-menu-label`, `ui-menu-separator`, `ui-pagination-item` |
 | Intent     | `ui-primary`, `ui-secondary`, `ui-success`, `ui-warning`, `ui-danger` |
 | Style      | `ui-outline`, `ui-ghost`, `ui-soft` (`solid` is the default) |
@@ -78,7 +78,7 @@ Prefix is `ui-` by default; change it with `prefix: "uk"` → `uk-button`.
 Status: stable (1.0). The full vocabulary ships in the default skin. The shadcn and
 daisyUI adapters restyle the common components and fall back to the default
 skin for the rest; the Bootstrap, Flowbite and Radix Themes adapters define every component
-and every modifier (`checkAdapter` reports 297 of 297). Per-component markup, modifiers, native-attribute
+and every modifier (`checkAdapter` reports 305 of 305). Per-component markup, modifiers, native-attribute
 equivalents and accessibility notes: [docs/vocabulary.md](docs/vocabulary.md).
 
 Notes:

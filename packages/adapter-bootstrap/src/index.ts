@@ -211,6 +211,9 @@ const alertIntent = {
   },
 };
 
+/* the arc already follows the intent colour; stating it makes the slot explicit */
+const spinnerIntent = { "--ui-spinner-color": "var(--ui-c-text)" };
+
 export default defineAdapter({
   name: "bootstrap",
   /* Uniskin's own switches (.dark, [data-theme="dark"]) plus Bootstrap's */
@@ -516,6 +519,21 @@ export default defineAdapter({
         opacity: "0.5",
         "border-radius": "var(--bs-border-radius, 0.375rem)",
         "min-height": "1em",
+      },
+    },
+    /* ---- .spinner-border: 2rem, 0.25em ring; sm 1rem ---------------- */
+    spinner: {
+      base: { "--ui-spinner-size": "2rem", "--ui-spinner-width": "0.25rem" },
+      intents: {
+        primary: spinnerIntent,
+        secondary: spinnerIntent,
+        success: spinnerIntent,
+        warning: spinnerIntent,
+        danger: spinnerIntent,
+      },
+      sizes: {
+        sm: { "--ui-spinner-size": "1rem", "--ui-spinner-width": "0.2rem" },
+        lg: { "--ui-spinner-size": "3rem", "--ui-spinner-width": "0.3rem" },
       },
     },
 

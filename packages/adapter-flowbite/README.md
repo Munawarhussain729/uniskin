@@ -33,7 +33,7 @@ and add the `@plugin` line shown above to your Tailwind v4 entry CSS.
 
 - **The whole vocabulary.** Every component and every documented modifier is
   defined for Flowbite, not left to the default skin: `checkAdapter` from
-  `uniskin/conformance` reports 297 of 297 combinations.
+  `uniskin/conformance` reports 305 of 305 combinations.
 - **Flowbite's own look.** `px-5 py-2.5 rounded-lg` buttons, `bg-gray-50`
   inputs, `bg-*-50` alerts and `bg-*-100` badges, `h-2.5` progress, the dark
   `bg-gray-900` tooltip, `w-44` dropdown menus, `h-8` pagination and the blue
