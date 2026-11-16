@@ -804,6 +804,16 @@
         });
       })();
     </script>
+    <h2 class="group">Popover</h2>
+    <div id="popover-demo" style="display:flex;gap:.75rem;flex-wrap:wrap;padding-block:1rem">
+      <button class="ui-button" popovertarget="pop-a">Share</button>
+      <div class="ui-popover" id="pop-a" popover aria-label="Share options">
+        <p style="margin:0 0 .5rem">Anyone with the link can view.</p>
+        <button class="ui-button ui-sm ui-primary" popovertarget="pop-a" popovertargetaction="hide">Copy link</button>
+      </div>
+      <button class="ui-button ui-outline" popovertarget="pop-b">Top end</button>
+      <div class="ui-popover ui-sm" id="pop-b" popover data-placement="top-end" aria-label="Hint">Small, above, end-aligned.</div>
+    </div>
     <h2 class="group">Avatar, skeleton, spinner, separator</h2>
     <div id="small-demo" style="display:grid;gap:1rem;max-width:30rem">
       <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">

@@ -450,6 +450,14 @@ export default defineAdapter({
     skeleton: {
       base: { "--ui-skeleton-bg": "var(--ui-surface-muted)", "border-radius": "9999px", height: "0.625rem" },
     },
+    /* Flowbite popover: w-64 text-sm, p-3, rounded-lg border shadow-sm */
+    popover: {
+      base: { "--ui-popover-w": "16rem", "--ui-popover-pad": "0.75rem" },
+      sizes: {
+        sm: { "--ui-popover-w": "12rem", "--ui-popover-pad": "0.5rem" },
+        lg: { "--ui-popover-w": "20rem", "--ui-popover-pad": "1rem" },
+      },
+    },
     /* ---- spinner: 2rem, 3px ring (Flowbite's w-8 h-8) ---------------- */
     spinner: {
       base: { "--ui-spinner-size": "2rem", "--ui-spinner-width": "3px" },

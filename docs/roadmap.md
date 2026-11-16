@@ -223,7 +223,7 @@ patches, per semver.
 
 ## After 1.0
 
-### 1.2.0: spinner and popover (in progress)
+### 1.2.0: spinner and popover (in progress; both implemented, release pending)
 
 1.1.0 added the Bootstrap, Flowbite and Radix Themes adapters. 1.2.0 finishes
 the components left in the "Deliberately deferred" list of ADR-003. Both are
