@@ -521,6 +521,14 @@ export default defineAdapter({
         "min-height": "1em",
       },
     },
+    /* Bootstrap .popover: max-width 276px, 0.5rem 1rem body padding */
+    popover: {
+      base: { "--ui-popover-w": "12rem", "--ui-popover-max-w": "276px", "--ui-popover-pad": "0.5rem 1rem" },
+      sizes: {
+        sm: { "--ui-popover-w": "9rem", "--ui-popover-pad": "0.375rem 0.75rem" },
+        lg: { "--ui-popover-w": "16rem", "--ui-popover-pad": "0.75rem 1.25rem" },
+      },
+    },
     /* ---- .spinner-border: 2rem, 0.25em ring; sm 1rem ---------------- */
     spinner: {
       base: { "--ui-spinner-size": "2rem", "--ui-spinner-width": "0.25rem" },

@@ -1,7 +1,6 @@
 # Vocabulary reference
 
-Every class in Uniskin vocabulary v1.16, grouped by component. The prefix is
-Every class in Uniskin vocabulary v1.12, grouped by component. The prefix is
+Every class in Uniskin vocabulary v1.17, grouped by component. The prefix is
 `ui-` by default — if you set `prefix: "uk"` in the `@plugin` options,
 read every `ui-*` class below as `uk-*`.
 
@@ -733,6 +732,35 @@ button label you build yourself.
   one with `aria-hidden="true"` inside a region that carries
   `aria-busy="true"`.
 
+### `ui-popover`
+
+A small panel anchored to the button that opens it, built on the native
+Popover API. The browser provides the top layer, light dismiss (click
+outside), **Escape** and focus return, so there is no script. It is the
+Escape-capable upgrade path for the CSS-only `ui-tooltip`, and the place
+for interactive content that a tooltip must not hold.
+
+```html
+<button class="ui-button" popovertarget="share">Share</button>
+<div class="ui-popover" id="share" popover data-placement="bottom-start">
+  <p>Anyone with the link can view.</p>
+  <button class="ui-button ui-sm">Copy link</button>
+</div>
+```
+
+- **Placement:** `data-placement` on the popover: `bottom-start` (default),
+  `bottom-end`, `top-start`, `top-end`. It uses CSS anchor positioning
+  against the `popovertarget` button and flips at the viewport edge. In a
+  browser without anchor positioning the panel is centred in the viewport.
+- **Modifiers:** sizes `ui-sm` and `ui-lg`. No intents, styles or states.
+- **Hooks:** `--ui-popover-w`, `--ui-popover-max-w`, `--ui-popover-pad`,
+  `--ui-popover-gap`, `--ui-popover-shadow`.
+- **Reduced motion:** the 0.12s fade is removed.
+- **Consumer provides:** the `popover` attribute and a `popovertarget`
+  button (or `showPopover()`), and an accessible name for the panel
+  (`aria-label` or `aria-labelledby`) when it is more than short text.
+  Use `popover="manual"` if it must not light-dismiss.
+
 ### `ui-separator`
 
 A 1px rule. Horizontal by default; vertical with `aria-orientation="vertical"`
@@ -878,6 +906,7 @@ fewer — anything omitted falls back to the default):
 | `ui-avatar`      | ✓ | outline soft | ✓ | — |
 | `ui-skeleton`    | — | — | — | — |
 | `ui-spinner`     | ✓ | — | ✓ | — |
+| `ui-popover`     | — | — | ✓ | — |
 | `ui-separator`   | — | — | — | — |
 | `ui-breadcrumb`  | — | — | ✓ | — |
 | `ui-pagination`  | ✓ | — | ✓ | — |

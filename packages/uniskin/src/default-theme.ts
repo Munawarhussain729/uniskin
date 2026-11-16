@@ -1671,6 +1671,48 @@ export const defaultAdapter = defineAdapter({
         lg: { "--ui-spinner-size": "2.25rem", "--ui-spinner-width": "3px" },
       },
     },
+    /* ui-popover: a small anchored panel on the native Popover API. Put
+       `popover` on the element and point a button at it with `popovertarget`;
+       the browser supplies the top layer, light dismiss, Escape and focus
+       return. Placement uses CSS anchor positioning against that invoker
+       (data-placement, with flip fallbacks at the viewport edge); a browser
+       without it shows the panel centred, which is still usable. */
+    popover: {
+      base: {
+        "--ui-popover-fs": "0.9375rem",
+        "box-sizing": "border-box",
+        "min-width": "var(--ui-popover-w, 12rem)",
+        "max-width": "min(var(--ui-popover-max-w, 20rem), calc(100vw - 1rem))",
+        margin: "auto",
+        padding: "var(--ui-popover-pad, 0.75rem)",
+        "font-family": "var(--ui-font-sans)",
+        "font-size": "var(--ui-popover-fs)",
+        "line-height": "1.4",
+        color: "var(--ui-surface-fg)",
+        "background-color": "var(--ui-surface)",
+        border: "1px solid var(--ui-border)",
+        "border-radius": "var(--ui-radius)",
+        "box-shadow": "var(--ui-popover-shadow, 0 10px 24px -10px rgb(0 0 0 / 0.35))",
+        overflow: "auto",
+        opacity: "0",
+        transition: "opacity 0.12s ease, display 0.12s allow-discrete, overlay 0.12s allow-discrete",
+        "&:popover-open": { opacity: "1" },
+        "@starting-style": { "&:popover-open": { opacity: "0" } },
+        "@supports (position-area: top)": {
+          "position-area": "block-end span-inline-end",
+          "position-try-fallbacks": "flip-block, flip-inline",
+          margin: "var(--ui-popover-gap, 0.375rem)",
+          '&[data-placement^="top"]': { "position-area": "block-start span-inline-end" },
+          '&[data-placement="bottom-end"]': { "position-area": "block-end span-inline-start" },
+          '&[data-placement="top-end"]': { "position-area": "block-start span-inline-start" },
+        },
+        "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+      },
+      sizes: {
+        sm: { "--ui-popover-fs": "0.8125rem", "--ui-popover-pad": "0.5rem", "--ui-popover-w": "9rem" },
+        lg: { "--ui-popover-fs": "1.0625rem", "--ui-popover-pad": "1rem", "--ui-popover-w": "16rem" },
+      },
+    },
     /* ui-separator: a 1px rule, horizontal by default; vertical with
        aria-orientation="vertical" (or data-orientation="vertical") */
     separator: {

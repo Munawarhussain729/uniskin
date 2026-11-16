@@ -81,6 +81,7 @@ const COMPONENTS: Record<string, Slots> = {
   avatar: { intents: true, styles: ["outline", "soft"], sizes: true },
   skeleton: {},
   spinner: { intents: true, sizes: true },
+  popover: { sizes: true },
   separator: {},
   breadcrumb: { sizes: true },
   pagination: { intents: true, sizes: true },
@@ -940,6 +941,29 @@ describe("ui-spinner (roadmap 1.2.0)", () => {
     const css = compileWithFiles({ "index.html": '<span class="uk-spinner uk-primary"></span>' }, 'prefix: "uk";');
     expect(css).toContain(".uk-spinner");
     expect(css).toContain("uk-spin");
+    expect(css).not.toMatch(/\.ui-/);
+  });
+});
+
+describe("ui-popover (roadmap 1.2.0)", () => {
+  it("is a bordered surface that fades, anchors with data-placement, and sizes only set variables", () => {
+    const css = skin("default");
+    const p = ruleBlock(css, ".ui-popover");
+    expect(p).toContain("border: 1px solid");
+    expect(p).toContain("allow-discrete");
+    expect(p).toContain("position-area");
+    expect(p).toContain("position-try-fallbacks");
+    expect(ruleBlock(css, ".ui-popover.ui-lg")).toContain("--ui-popover-pad");
+    expect(ruleBlock(css, ".ui-popover.ui-lg")).not.toMatch(/(^|\s)(width|padding):/);
+  });
+
+  it("drops the fade under reduced motion", () => {
+    expect(ruleBlock(skin("default"), ".ui-popover")).toMatch(/prefers-reduced-motion: reduce\)\s*\{[^}]*transition: none/);
+  });
+
+  it('prefix: "uk" renames the class', () => {
+    const css = compileWithFiles({ "index.html": '<div class="uk-popover uk-lg" popover></div>' }, 'prefix: "uk";');
+    expect(css).toContain(".uk-popover");
     expect(css).not.toMatch(/\.ui-/);
   });
 });

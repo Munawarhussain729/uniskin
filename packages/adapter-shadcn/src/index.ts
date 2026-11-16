@@ -274,6 +274,14 @@ export default defineAdapter({
       },
     },
     skeleton: { base: { "--ui-skeleton-bg": "hsl(var(--accent))", "border-radius": "calc(var(--ui-radius) - 2px)" } },
+    /* shadcn PopoverContent: w-72 p-4, rounded-md border bg-popover shadow-md */
+    popover: {
+      base: { "--ui-popover-w": "18rem", "--ui-popover-pad": "1rem", "--ui-popover-shadow": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)" },
+      sizes: {
+        sm: { "--ui-popover-w": "12rem", "--ui-popover-pad": "0.75rem" },
+        lg: { "--ui-popover-w": "24rem", "--ui-popover-pad": "1.25rem" },
+      },
+    },
     /* shadcn spinner (Loader2): 1rem icon, 2px ring */
     spinner: {
       base: { "--ui-spinner-size": "1rem", "--ui-spinner-width": "2px" },

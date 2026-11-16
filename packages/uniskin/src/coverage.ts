@@ -71,6 +71,7 @@ export const COVERAGE: Record<ComponentName, Coverage> = {
   avatar: { ...NONE, intents: INTENTS, styles: ["outline", "soft"], sizes: SIZES },
   skeleton: NONE,
   spinner: { ...NONE, intents: INTENTS, sizes: SIZES },
+  popover: { ...NONE, sizes: SIZES },
   separator: NONE,
   breadcrumb: { ...NONE, sizes: SIZES },
   pagination: { ...NONE, intents: INTENTS, sizes: SIZES },

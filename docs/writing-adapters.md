@@ -266,6 +266,7 @@ is harmless:
 | `ui-avatar` | `--ui-avatar-size` (diameter; sizes set it), `--ui-avatar-bg`, `--ui-avatar-fg` |
 | `ui-skeleton` | `--ui-skeleton-w`, `--ui-skeleton-h`, `--ui-skeleton-bg` |
 | `ui-spinner` | `--ui-spinner-size` (diameter; sizes set it), `--ui-spinner-width` (ring thickness), `--ui-spinner-color` (the arc), `--ui-spinner-track` (the rest of the ring) |
+| `ui-popover` | `--ui-popover-w` (minimum width; sizes set it), `--ui-popover-max-w`, `--ui-popover-pad` (sizes set it), `--ui-popover-fs` (sizes set it), `--ui-popover-gap` (distance from the button), `--ui-popover-shadow` |
 | `ui-separator` | `--ui-separator-color`, `--ui-separator-gap` |
 | `ui-breadcrumb` | `--ui-breadcrumb-fs` (sizes set it), `--ui-breadcrumb-sep` (separator colour) |
 | `ui-pagination` | `--ui-pagination-size` (item height and minimum width; sizes set it), `--ui-pagination-fs` (sizes set it); the current page reads `--ui-c` and `--ui-on-c` |

@@ -468,6 +468,14 @@ export default defineAdapter({
     skeleton: {
       base: { "--ui-skeleton-bg": "var(--ui-surface-muted)", "border-radius": "var(--radius-2, 4px)" },
     },
+    /* Radix Themes Popover.Content: 12px padding, panel surface */
+    popover: {
+      base: { "--ui-popover-w": "14rem", "--ui-popover-pad": "12px" },
+      sizes: {
+        sm: { "--ui-popover-w": "10rem", "--ui-popover-pad": "8px" },
+        lg: { "--ui-popover-w": "18rem", "--ui-popover-pad": "16px" },
+      },
+    },
     /* ---- Spinner size 2: 20px, 2px ring ----------------------------- */
     spinner: {
       base: { "--ui-spinner-size": "20px", "--ui-spinner-width": "2px" },

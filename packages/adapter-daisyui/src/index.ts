@@ -206,6 +206,14 @@ export default defineAdapter({
       },
     },
     skeleton: { base: { "--ui-skeleton-bg": "var(--color-base-300, oklch(95% 0 0))", "border-radius": "var(--radius-box, 1rem)" } },
+    /* daisyUI popover: a base-100 card-like panel, rounded-box, shadow-sm */
+    popover: {
+      base: { "--ui-popover-w": "14rem", "--ui-popover-pad": "1rem" },
+      sizes: {
+        sm: { "--ui-popover-w": "10rem", "--ui-popover-pad": "0.75rem" },
+        lg: { "--ui-popover-w": "20rem", "--ui-popover-pad": "1.25rem" },
+      },
+    },
     /* daisyUI loading-spinner: 1.5rem; xs 1rem; lg 2.5rem */
     spinner: {
       base: { "--ui-spinner-size": "1.5rem", "--ui-spinner-width": "2px" },
